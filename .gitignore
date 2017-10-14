@@ -1,5 +1,7 @@
 # RTV1
  obj/
+rtv1
+libft/*.o
 
 # Prerequisites
 *.d
