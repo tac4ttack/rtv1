@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 17:34:53 by fmessina          #+#    #+#             */
-/*   Updated: 2017/10/05 21:38:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/10/14 14:14:56 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,13 @@ void		scene_init(t_env *e)
 
 	if (!(e->scene = malloc(sizeof(t_frame))))
 		s_error("\x1b[2;31mCan't initialize the scene\x1b[0m");
-	e->sce_w = e->win_w;
-	e->sce_h = e->win_h;
-	e->scene->ptr = mlx_new_image(e->mlx, e->sce_w, e->sce_h);
+	e->scene->w = e->win_w;
+	e->scene->h = e->win_h;
+//	a proteger les 2 instructions en dessous
+	e->scene->ptr = mlx_new_image(e->mlx, e->scene->w, e->scene->h);
 	e->scene->pix = mlx_get_data_addr(e->scene->ptr, &(bpp), &(row), &(endian));
 	e->scene->bpp = bpp;
 	e->scene->row = row;
-	e->scene->w = e->sce_w;
-	e->scene->h = e->sce_h;
 	e->scene->endian = endian;
 }
 

@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/15 17:48:16 by fmessina          #+#    #+#              #
-#    Updated: 2017/10/04 00:47:44 by fmessina         ###   ########.fr        #
+#    Updated: 2017/10/14 14:09:51 by adalenco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,7 @@ SRC_NAME =  			init.c \
 						vector_3d_maths.c \
 						vector_basic_maths.c
 
-default: cpu
+default: gpu
 
 all: $(NAME)
 
