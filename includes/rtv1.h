@@ -6,7 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 20:04:04 by fmessina          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2017/10/14 15:55:03 by adalenco         ###   ########.fr       */
+=======
+/*   Updated: 2017/10/14 16:36:09 by fmessina         ###   ########.fr       */
+>>>>>>> b12d3cab598a6d22f3a60ff5ecd73d5eb7d09ffa
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +59,12 @@
 # define HEIGHT					1080
 # define DEPTH					2000
 
+typedef struct			s_p2i
+{
+	int					x;
+	int					y;
+}						t_p2i;
+
 typedef struct			s_v3f
 {
 	float				x;
@@ -62,28 +72,16 @@ typedef struct			s_v3f
 	float				z;
 }						t_v3f;
 
-typedef struct			s_p3f
-{
-	float				x;
-	float				y;
-	float				z;
-}						t_p3f;
-
 typedef struct			s_ray
 {
-	t_p3f				ori;
+	t_v3f				ori;
 	t_v3f				dir;
+	float				t;
 }						t_ray;
-
-typedef struct			s_p2i
-{
-	int					x;
-	int					y;
-}						t_p2i;
 
 typedef struct			s_sphere
 {
-	t_p3f				center;
+	t_v3f				center;
 	float				radius;
 	int					hue;
 }						t_sphere;
