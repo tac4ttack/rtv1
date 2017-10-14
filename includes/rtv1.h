@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 20:04:04 by fmessina          #+#    #+#             */
-/*   Updated: 2017/10/14 14:09:02 by adalenco         ###   ########.fr       */
+/*   Updated: 2017/10/14 15:04:48 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,11 @@ typedef	struct			s_env
 	int					debug;
 	char				*kernel_src;
 	cl_device_id		device_id;
-    cl_context			context;
-    cl_command_queue	commands;
-    cl_program			program;
-    cl_kernel			kernel;
-    cl_mem				output;
+	cl_context			context;
+	cl_command_queue	commands;
+	cl_program			program;
+	cl_kernel			kernel;
+	cl_mem				output;
 	int					gpu;
 	size_t				global;
 	size_t				local;

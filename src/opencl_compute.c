@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 23:51:15 by fmessina          #+#    #+#             */
-/*   Updated: 2017/10/14 14:26:50 by adalenco         ###   ########.fr       */
+/*   Updated: 2017/10/14 15:48:34 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int			draw(t_env *e)
 		ft_putchar('\n');
 		s_error("Error: Failed to retrieve kernel work group info!");
 	}
-	e->local = 768;
 	e->global = (size_t)e->count;
 	err = clEnqueueNDRangeKernel(e->commands, e->kernel, 1, NULL, \
 			&e->global, &e->local, 0, NULL, NULL);
