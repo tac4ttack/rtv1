@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 20:04:04 by fmessina          #+#    #+#             */
-/*   Updated: 2017/10/14 15:04:48 by adalenco         ###   ########.fr       */
+/*   Updated: 2017/10/14 15:55:03 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@
 # define DEG2RAD				(M_PI / 180)
 # define RAD2DEG				(180 / M_PI)
 
-# define WIDTH					1024
-# define HEIGHT					768
+# define WIDTH					1920
+# define HEIGHT					1080
+# define DEPTH					2000
 
 typedef struct			s_v3f
 {
