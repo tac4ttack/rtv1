@@ -3,6 +3,8 @@
 #define BACKCOLOR 0x00000000
 #define SCOLOR 0x000000FF
 #define PCOLOR 0x00FF0000
+#define SSCOLOR 0x0000FF00
+#define PUTE ((__global unsigned int *)output)[id]
 
 float3			sub_vect(float3 v1, float3 v2)
 {
@@ -78,7 +80,9 @@ float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_
 	abc = get_abc(radius, ray, cam_origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
-		return (-1.0);
+		return (1000000000);
+	if (d == 0)
+		return (-abc[1] / (2 * abc[0]));
 	res1 = -(abc[1] + sqrt(d));
 	res2 = -(abc[1] - sqrt(d));
 	if (res1 < res2)
@@ -92,10 +96,10 @@ float			inter_plan(float3 plan_origin, float3 plan_normale, float3 ray, float3 c
 
 	t = dot_vect(ray, plan_normale);
 	if (t < 0.0000001)
-		return (-1.0);
+		return (1000000000);
 	t = dot_vect(sub_vect(plan_origin, cam_origin), plan_normale) / t;
 	if (t < 0)
-		return (-1.0);
+		return (1000000000);
 	return (t);
 }
 
@@ -120,7 +124,7 @@ float3			get_ray(float3 n, float3 v, float3 h, int x, int y)
 	return (res);
 }
 
-__kernel void	ray_trace(__global char *output)
+__kernel void	ray_trace(__global char *output, float mvx, float mvy, float mvz)
 {
 	int		id = get_global_id(0);
 	int		x = id % WINX;
@@ -128,9 +132,9 @@ __kernel void	ray_trace(__global char *output)
 	
 	// CAM
 	float3	cam_origin;
-	cam_origin.x = 0;
-	cam_origin.y = 0;
-	cam_origin.z = -10;
+	cam_origin.x = -20 + mvx;
+	cam_origin.y = 0 + mvy;
+	cam_origin.z = 50 + mvz;
 	float3	hor;
 	hor.x = 0.6;
 	hor.y = 0;
@@ -146,28 +150,47 @@ __kernel void	ray_trace(__global char *output)
 
 	// SPHERE
 	float3	boule_origin;
-	boule_origin.x = 1;
-	boule_origin.y = -1;
-	boule_origin.z = 3;
-	float	radius = 2;
-	
+	boule_origin.x = 0;
+	boule_origin.y = 10;
+	boule_origin.z = 200;
+	float	radius = 50;
+
+	// SPHERE2
+	float3	boule_origin2;
+	boule_origin2.x = 0;
+	boule_origin2.y = -10;
+	boule_origin2.z = 50;
+	float	radius2 = 10;
+
 	// PLANE
 	float3	plan_origin;
-	plan_origin.x = -100;
+	plan_origin.x = 0;
 	plan_origin.y = 0;
-	plan_origin.z = 0;	
+	plan_origin.z = 300;
 	float3	plan_normale;
 	plan_normale.x = 0;
 	plan_normale.y = 0;
 	plan_normale.z = 1;
 
+	float plan;
+	float sphere;
+	float sphere2;
+
 	float3 ray = get_ray(cam_dir, vert, hor, x ,y);
-	float plan = inter_plan(plan_origin, plan_normale, ray, cam_origin);
-	float sphere = inter_sphere(radius, ray, cam_origin, boule_origin);
-	if (plan < 0 && sphere < 0)
-		((__global unsigned int *)output)[id] = BACKCOLOR;
-	else if (plan < sphere)
-		((__global unsigned int *)output)[id] = PCOLOR;
+	if (( plan = inter_plan(plan_origin, plan_normale, ray, cam_origin)) < 0)
+		plan = 1000000000;
+	if (( sphere= inter_sphere(radius, ray, cam_origin, boule_origin)) < 0)
+		sphere = 1000000000;
+	if ((sphere2 = inter_sphere(radius2, ray, cam_origin, boule_origin2)) < 0)
+		sphere2 = 1000000000;
+//	if (id > (WINX * WINY / 3) && id < (WINX * WINY / 3 * 2))
+//	printf("plan = %f sphere = %f\n", plan, sphere);
+	if (sphere == 1000000000 && plan == 1000000000 && sphere2 == 1000000000)
+		PUTE = BACKCOLOR;
+	else if (sphere < plan && sphere < sphere2)
+		PUTE = SCOLOR;
+	else if (plan < sphere && plan < sphere2)
+		PUTE = PCOLOR;
 	else
-		((__global unsigned int *)output)[id] = SCOLOR;
+		PUTE = SSCOLOR;
 }

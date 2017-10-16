@@ -36,6 +36,9 @@ void		init(t_env *e)
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
 	e->mou_x = 0;
+	e->mvx = 0;
+	e->mvy = 0;
+	e->mvz = 0;
 
 	e->run = 1;
 

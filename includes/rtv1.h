@@ -111,6 +111,9 @@ typedef	struct			s_env
 	size_t				dif;
 	unsigned int		count;
 	char				run;
+	float				mvx;
+	float				mvy;
+	float				mvz;
 }						t_env;
 
 /*

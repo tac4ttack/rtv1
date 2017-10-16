@@ -6,8 +6,9 @@ void		opencl_set_args(t_env *e)
 
 	err = 0;
 	err = clSetKernelArg(e->kernel, 0, sizeof(cl_mem), &e->output);
-//	err |= clSetKernelArg(e->kernel, 1, sizeof(int), &e->win_w);
-//	err |= clSetKernelArg(e->kernel, 2, sizeof(int), &e->win_h);
+	err |= clSetKernelArg(e->kernel, 1, sizeof(float), &e->mvx);
+	err |= clSetKernelArg(e->kernel, 2, sizeof(float), &e->mvy);
+	err |= clSetKernelArg(e->kernel, 3, sizeof(float), &e->mvz);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
