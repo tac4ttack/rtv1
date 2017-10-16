@@ -109,13 +109,9 @@ __kernel void	ray_trace(__global char *output)
 	float3	vert;
 	float3	cam_dir;
 
-
-
-// recuperation des coordonees actuelles
 	int		id = get_global_id(0);
 	int		x = id % WINX;
 	int		y = id / WINX;
-
 
 	hor[0] = 0.6;
 	hor[1] = 0;
@@ -126,7 +122,6 @@ __kernel void	ray_trace(__global char *output)
 	cam_dir[0] = 0;
 	cam_dir[1] = 0;
 	cam_dir[2] = 1;
-
 
 	boule_origin[0] = 0;
 	boule_origin[1] = 0;
@@ -139,8 +134,4 @@ __kernel void	ray_trace(__global char *output)
 		((__global unsigned int *)output)[id] = BACKCOLOR;
 	else
 		((__global unsigned int *)output)[id] = OBJCOLOR;
-
-
-
-
 }
