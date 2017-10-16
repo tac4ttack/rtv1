@@ -65,14 +65,17 @@ float3			get_abc(float radius, float3 ray, float3 origin)
 	return (abc);
 }
 
-float			inter_sphere(float radius, float3 ray, float3 origin)
+float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_origin)
 {
 	float3		abc;
 	float		d;
 	float		res1;
 	float		res2;
 
-	abc = get_abc(radius, ray, origin);
+	cam_origin.x -= sphere_origin.x;
+	cam_origin.y -= sphere_origin.y;
+	cam_origin.z -= sphere_origin.z;
+	abc = get_abc(radius, ray, cam_origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (-1.0);
@@ -119,48 +122,48 @@ float3			get_ray(float3 n, float3 v, float3 h, int x, int y)
 
 __kernel void	ray_trace(__global char *output)
 {
-	float3	cam_origin;
-	float3	boule_origin;
-	float3	direction_base;
-	float	radius = 2;
-	float3	ray;
-	float3	hor;
-	float3	vert;
-	float3	cam_dir;
-
-//plan
-	float3	plan_origin;
-	float3	plan_normale;
-
 	int		id = get_global_id(0);
 	int		x = id % WINX;
 	int		y = id / WINX;
-
+	
+	// CAM
+	float3	cam_origin;
+	cam_origin.x = 0;
+	cam_origin.y = 0;
+	cam_origin.z = -10;
+	float3	hor;
 	hor.x = 0.6;
 	hor.y = 0;
 	hor.z = 0;
+	float3	vert;
 	vert.x = 0;
 	vert.y = 0.6;
 	vert.z = 0;
+	float3	cam_dir;
 	cam_dir.x = 0;
 	cam_dir.y = 0;
 	cam_dir.z = 1;
 
-	boule_origin.x = 0;
-	boule_origin.y = 0;
-	boule_origin.z = 0;
+	// SPHERE
+	float3	boule_origin;
+	boule_origin.x = 1;
+	boule_origin.y = -1;
+	boule_origin.z = 3;
+	float	radius = 2;
+	
+	// PLANE
+	float3	plan_origin;
 	plan_origin.x = -100;
 	plan_origin.y = 0;
-	plan_origin.z = 0;
+	plan_origin.z = 0;	
+	float3	plan_normale;
 	plan_normale.x = 0;
 	plan_normale.y = 0;
 	plan_normale.z = 1;
-	cam_origin.x = 0;
-	cam_origin.y = 0;
-	cam_origin.z = -10;
-	ray = get_ray(cam_dir, vert, hor, x ,y);
+
+	float3 ray = get_ray(cam_dir, vert, hor, x ,y);
 	float plan = inter_plan(plan_origin, plan_normale, ray, cam_origin);
-	float sphere = inter_sphere(radius, ray, cam_origin);
+	float sphere = inter_sphere(radius, ray, cam_origin, boule_origin);
 	if (plan < 0 && sphere < 0)
 		((__global unsigned int *)output)[id] = BACKCOLOR;
 	else if (plan < sphere)
