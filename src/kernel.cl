@@ -1,7 +1,7 @@
 #define WINX 1920
 #define WINY 1080
 #define BACKCOLOR 0x00000000
-#define OBJCOLOR 0x0000FFFF
+#define OBJCOLOR 0x000000FF
 
 float3			sub_vect(float3 v1, float3 v2)
 {
