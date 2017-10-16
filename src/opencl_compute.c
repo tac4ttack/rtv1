@@ -5,7 +5,11 @@ void		opencl_set_args(t_env *e)
 	int		err;
 
 	err = 0;
+	e->test.x = 1;
+	e->test.y = 2;
+	e->test.z = 3;
 	err = clSetKernelArg(e->kernel, 0, sizeof(cl_mem), &e->output);
+//	err |= clSetKernelArg(e->kernel, 1, sizeof(t_env), &e);
 //	err |= clSetKernelArg(e->kernel, 1, sizeof(int), &e->win_w);
 //	err |= clSetKernelArg(e->kernel, 2, sizeof(int), &e->win_h);
 	if (err != CL_SUCCESS)

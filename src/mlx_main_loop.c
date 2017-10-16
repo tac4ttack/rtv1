@@ -4,7 +4,6 @@ void	refresh(t_env *e)
 {
 	if (e->run == 1)
 	{
-		printf("oto");
 		draw(e);
 	//	ft_bzero(e->scene->pix, (e->sce_w * e->sce_h));
 		mlx_put_image_to_window(e->mlx, e->win, e->scene->ptr, 0, 0);
