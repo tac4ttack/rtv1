@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/03 17:34:53 by fmessina          #+#    #+#             */
+/*   Updated: 2017/10/16 17:14:02 by adalenco         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "rtv1.h"
 
 void		set_hooks(t_env *e)
@@ -38,6 +49,7 @@ void		init(t_env *e)
 	e->mou_x = 0;
 	e->mou_y = 0;
 	e->gpu = IS_GPU;
+	ft_bzero(&e->keys, sizeof(t_key));
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m");
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))
