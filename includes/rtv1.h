@@ -110,6 +110,8 @@ typedef	struct			s_env
 	size_t				local;
 	size_t				dif;
 	unsigned int		count;
+//	next data can be deleted after testing etc
+	cl_float3			test;
 	char				run;
 	float				mvx;
 	float				mvy;
