@@ -110,6 +110,7 @@ typedef	struct			s_env
 	size_t				local;
 	size_t				dif;
 	unsigned int		count;
+	char				run;
 }						t_env;
 
 /*
@@ -132,8 +133,8 @@ int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
 
 int						opencl_init(t_env *e);
-int			draw(t_env *e);
-
+int						draw(t_env *e);
+void					refresh(t_env *e);
 
 t_v3f					v3f_add(t_v3f v1, t_v3f v2);
 t_v3f					v3f_sub(t_v3f v1, t_v3f v2);

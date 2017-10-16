@@ -36,6 +36,9 @@ void		init(t_env *e)
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
 	e->mou_x = 0;
+
+	e->run = 1;
+
 	e->mou_y = 0;
 	e->gpu = IS_GPU;
 	ft_bzero(&e->keys, sizeof(t_key));
