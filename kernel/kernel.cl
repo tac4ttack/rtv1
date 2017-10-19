@@ -76,9 +76,9 @@ float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_
 	if (d < 0)
 		return (1000000000);
 	if (d == 0)
-		return (-abc[1] / (2 * abc[0]));
-	res1 = -(abc[1] + sqrt(d));
-	res2 = -(abc[1] - sqrt(d));
+		return ((-abc[1]) / (2 * abc[0]));
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
 	if (res1 < res2)
 		return(res1);
 	return(res2);
@@ -89,10 +89,9 @@ float			inter_plan(float3 plan_origin, float3 plan_normale, float3 ray, float3 c
 	float		t;
 
 	t = dot_vect(ray, plan_normale);
-	if (t < 0.0000001)
-		return (1000000000);
+	
 	t = dot_vect(sub_vect(plan_origin, cam_origin), plan_normale) / t;
-	if (t < 0)
+	if (t < 0.0000001)
 		return (1000000000);
 	return (t);
 }
@@ -130,9 +129,9 @@ __kernel void	ray_trace(__global char *output,
 	
 	// CAM
 	float3	cam_origin;
-	cam_origin.x = -20 + mvx;
+	cam_origin.x = 0 + mvx;
 	cam_origin.y = 0 + mvy;
-	cam_origin.z = 50 + mvz;
+	cam_origin.z = 0 + mvz;
 	float3	hor;
 	hor.x = 0.6;
 	hor.y = 0;
@@ -167,8 +166,8 @@ __kernel void	ray_trace(__global char *output,
 	plan_origin.z = 300;
 	float3	plan_normale;
 	plan_normale.x = 0;
-	plan_normale.y = 0;
-	plan_normale.z = 1;
+	plan_normale.y = -1;
+	plan_normale.z = 0;
 
 	float plan;
 	float sphere;
@@ -187,8 +186,8 @@ __kernel void	ray_trace(__global char *output,
 		OUTPUTE = BACKCOLOR;
 	else if (sphere < plan && sphere < sphere2)
 		OUTPUTE = SCOLOR;
-	else if (plan < sphere && plan < sphere2)
-		OUTPUTE = PCOLOR;
-	else
+	else if (sphere2 < sphere && sphere2 < plan)
 		OUTPUTE = SSCOLOR;
+	else
+		OUTPUTE = PCOLOR;
 }
