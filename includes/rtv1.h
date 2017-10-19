@@ -139,7 +139,7 @@ typedef	struct			s_env
 {
 	void				*mlx;
 	void				*win;
-	t_frame				*scene;
+	t_frame				*frame;
 	t_key				keys; 
 	int					win_w;
 	int					win_h;
@@ -162,6 +162,7 @@ typedef	struct			s_env
 	size_t				local;
 	size_t				dif;
 	unsigned int		count;
+	t_object			*scene;
 //	next data can be deleted after testing etc
 	cl_float3			test;
 	char				run;
