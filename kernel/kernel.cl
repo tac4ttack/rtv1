@@ -28,7 +28,7 @@ float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_
 		return ((-abc[1]) / (2 * abc[0]));
 	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
 	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	if (res1 < res2)
+	if (res1 < res2 && res1 > 0)
 		return(res1);
 	return(res2);
 }
@@ -111,6 +111,8 @@ __kernel void	ray_trace(__global char *output,
 	float plan;
 	float sphere;
 	float sphere2;
+
+	plan_origin = plan_origin + plan_normale;
 
 	float3 ray = get_ray(cam_dir, vert, hor, x ,y);
 	if (( plan = inter_plan(plan_origin, plan_normale, ray, cam_origin)) < 0)
