@@ -28,7 +28,7 @@ float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_
 		return ((-abc[1]) / (2 * abc[0]));
 	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
 	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	if (res1 < res2 && res1 > 0 || res1 > res2 && res2 < 0)
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 		return(res1);
 	return(res2);
 }
