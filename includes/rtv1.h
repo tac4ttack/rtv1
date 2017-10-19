@@ -78,15 +78,15 @@ typedef struct			s_cone
 {
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_int					color;
+	cl_int				color;
 }						t_cone;
 
 typedef struct			s_cylinder
 {
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float				radius;
-	cl_int					color;
+	cl_float			radius;
+	cl_int				color;
 }						t_cylinder;
 
 typedef struct			s_light
@@ -94,23 +94,23 @@ typedef struct			s_light
 	cl_char				type;
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float				intensity;
-	cl_int					color;
+	cl_float			intensity;
+	cl_int				color;
 }						t_light;
 
 typedef struct			s_plane
 {
 	cl_float3			pos;
 	cl_float3			normale;
-	cl_int					color;
+	cl_int				color;
 }						t_plane;
 
 typedef struct			s_sphere
 {
-	cl_float				radius;
+	cl_float			radius;
 	cl_float3			pos;
 //	cl_float3			dir;
-	cl_int					color;
+	cl_int				color;
 }						t_sphere;
 
 typedef struct			s_object
