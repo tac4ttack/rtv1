@@ -20,9 +20,9 @@ t_object	*load_scene(void)
 	ft_bzero(&res[0], sizeof(t_object));
 	res[0].type = 0;
 	res[0].id = 0;
-	res[0].cam.pos.x = -20;
+	res[0].cam.pos.x = 0;
 	res[0].cam.pos.y = 0;
-	res[0].cam.pos.z = 50;
+	res[0].cam.pos.z = -10;
 	res[0].cam.dir.x = 0;
 	res[0].cam.dir.y = 0;
 	res[0].cam.dir.z = 1;
