@@ -12,6 +12,7 @@ void		opencl_set_args(t_env *e)
 	err |= clSetKernelArg(e->kernel, 1, sizeof(float), &e->mvx);
 	err |= clSetKernelArg(e->kernel, 2, sizeof(float), &e->mvy);
 	err |= clSetKernelArg(e->kernel, 3, sizeof(float), &e->mvz);
+//	err |= clSetKernelArg(e->kernel, 4, sizeof(t_object), &e->scene);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
@@ -30,7 +31,7 @@ int			get_imgptr(t_env *e)
 
 	clFinish(e->commands);
 	err = clEnqueueReadBuffer(e->commands, e->output, CL_TRUE, 0, \
-			sizeof(char) * (e->count * 4), e->scene->pix, 0, NULL, NULL);
+			sizeof(char) * (e->count * 4), e->frame->pix, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);

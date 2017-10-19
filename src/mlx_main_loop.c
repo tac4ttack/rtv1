@@ -6,7 +6,7 @@ void	refresh(t_env *e)
 	{
 		mlx_clear_window(e->mlx, e->win);
 		draw(e);
-		mlx_put_image_to_window(e->mlx, e->win, e->scene->ptr, 0, 0);
+		mlx_put_image_to_window(e->mlx, e->win, e->frame->ptr, 0, 0);
 		mlx_string_put(e->mlx, e->win, 10, 10, 0x00ffffff, ft_ftoa(e->mvx));
 		mlx_string_put(e->mlx, e->win, 10, 25, 0x00ffffff, ft_ftoa(e->mvy));
 		mlx_string_put(e->mlx, e->win, 10, 40, 0x00ffffff, ft_ftoa(e->mvz));
