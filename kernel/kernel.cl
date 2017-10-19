@@ -118,7 +118,11 @@ float3			get_ray(float3 n, float3 v, float3 h, int x, int y)
 	return (res);
 }
 
-__kernel void	ray_trace(__global char *output, float mvx, float mvy, float mvz)
+__kernel void	ray_trace(__global char *output,
+							float mvx,
+							float mvy,
+							float mvz,
+							constant t_object *scene)
 {
 	int		id = get_global_id(0);
 	int		x = id % WINX;
