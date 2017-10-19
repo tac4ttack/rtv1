@@ -57,9 +57,7 @@ float3			get_ray(float3 n, float3 v, float3 h, int x, int y)
 }
 
 __kernel void	ray_trace(__global char *output,
-							float mvx,
-							float mvy,
-							float mvz,
+							float3 mvt,
 							__constant t_object *scene)
 {
 	int		id = get_global_id(0);
@@ -68,9 +66,9 @@ __kernel void	ray_trace(__global char *output,
 
 	// CAM
 	float3	cam_origin;
-	cam_origin.x = 0 + mvx;
-	cam_origin.y = 0 + mvy;
-	cam_origin.z = 0 + mvz;
+	cam_origin.x = 0 + mvt.x;
+	cam_origin.y = 0 + mvt.y;
+	cam_origin.z = 0 + mvt.z;
 	float3	hor;
 	hor.x = 0.6;
 	hor.y = 0;
