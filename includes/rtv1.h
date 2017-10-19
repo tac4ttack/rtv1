@@ -163,12 +163,11 @@ typedef	struct			s_env
 	size_t				dif;
 	unsigned int		count;
 	t_object			*scene;
-//	next data can be deleted after testing etc
-	cl_float3			test;
-	char				run;
 	float				mvx;
 	float				mvy;
 	float				mvz;
+//	next data can be deleted after testing etc
+	char				run;
 }						t_env;
 
 /*
