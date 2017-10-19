@@ -126,9 +126,6 @@ __kernel void	ray_trace(__global char *output,
 	int		id = get_global_id(0);
 	int		x = id % WINX;
 	int		y = id / WINX;
-	
-	if (id == 1)
-		printf("test %f\n", scene[0].cam.hor.x);
 
 	// CAM
 	float3	cam_origin;
@@ -183,8 +180,6 @@ __kernel void	ray_trace(__global char *output,
 		sphere = 1000000000;
 	if ((sphere2 = inter_sphere(radius2, ray, cam_origin, boule_origin2)) < 0)
 		sphere2 = 1000000000;
-//	if (id > (WINX * WINY / 3) && id < (WINX * WINY / 3 * 2))
-//	printf("plan = %f sphere = %f\n", plan, sphere);
 	if (sphere == 1000000000 && plan == 1000000000 && sphere2 == 1000000000)
 		OUTPUTE = BACKCOLOR;
 	else if (sphere < plan && sphere < sphere2)
