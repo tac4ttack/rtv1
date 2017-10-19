@@ -43,6 +43,9 @@ int			opencl_build(t_env *e)
 	if (!(e->output = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 				e->count * 4, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
+	if (!(e->scene_mem = clCreateBuffer(e->context,  CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR , \
+		sizeof(t_object) * 5, e->scene, NULL)))
+	return (opencl_builderrors(e, 7));
 	return (0);
 }
 

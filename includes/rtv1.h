@@ -43,25 +43,28 @@
 # define HEIGHT					1080
 # define DEPTH					2000
 
+//////////////////////////////
+// USELESS??
 typedef struct			s_p2i
 {
 	int					x;
 	int					y;
 }						t_p2i;
-
+// USELESS??
 typedef struct			s_v3f
 {
 	float				x;
 	float				y;
 	float				z;
 }						t_v3f;
-
+// USELESS??
 typedef struct			s_ray
 {
 	t_v3f				ori;
 	t_v3f				dir;
 	float				t;
 }						t_ray;
+//////////////////////////////
 
 typedef struct			s_cam
 {
@@ -75,45 +78,45 @@ typedef struct			s_cone
 {
 	cl_float3			pos;
 	cl_float3			dir;
-	int					color;
+	cl_int					color;
 }						t_cone;
 
 typedef struct			s_cylinder
 {
 	cl_float3			pos;
 	cl_float3			dir;
-	float				radius;
-	int					color;
+	cl_float				radius;
+	cl_int					color;
 }						t_cylinder;
 
 typedef struct			s_light
 {
-	char				type;
+	cl_char				type;
 	cl_float3			pos;
 	cl_float3			dir;
-	float				intensity;
-	int					color;
+	cl_float				intensity;
+	cl_int					color;
 }						t_light;
 
 typedef struct			s_plane
 {
 	cl_float3			pos;
 	cl_float3			normale;
-	int					color;
+	cl_int					color;
 }						t_plane;
 
 typedef struct			s_sphere
 {
-	float				radius;
+	cl_float				radius;
 	cl_float3			pos;
 //	cl_float3			dir;
-	int					color;
+	cl_int					color;
 }						t_sphere;
 
 typedef struct			s_object
 {
-	char				type;
-	char				id;
+	cl_char				type;
+	cl_char				id;
 	t_cam				cam;
 	t_cone				cone;
 	t_cylinder			cylinder;
@@ -163,9 +166,10 @@ typedef	struct			s_env
 	size_t				dif;
 	unsigned int		count;
 	t_object			*scene;
-	float				mvx;
-	float				mvy;
-	float				mvz;
+	cl_mem				scene_mem;
+	cl_float				mvx;
+	cl_float				mvy;
+	cl_float				mvz;
 //	next data can be deleted after testing etc
 	char				run;
 }						t_env;
@@ -193,11 +197,12 @@ int						opencl_init(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
 
-t_v3f					v3f_add(t_v3f v1, t_v3f v2);
-t_v3f					v3f_sub(t_v3f v1, t_v3f v2);
-t_v3f					v3f_mul(float a, t_v3f vec);
-float					v3f_norm(t_v3f vec);
-t_v3f					v3f_c_prod(t_v3f v1, t_v3f v2);
-float					v3f_d_prod(t_v3f v1, t_v3f v2);
-
+// USELESS??
+//t_v3f					v3f_add(t_v3f v1, t_v3f v2);
+//t_v3f					v3f_sub(t_v3f v1, t_v3f v2);
+//t_v3f					v3f_mul(float a, t_v3f vec);
+//float					v3f_norm(t_v3f vec);
+//t_v3f					v3f_c_prod(t_v3f v1, t_v3f v2);
+//float					v3f_d_prod(t_v3f v1, t_v3f v2);
+///////////////////////////////////////////////////////
 #endif

@@ -121,12 +121,15 @@ __kernel void	ray_trace(__global char *output,
 							float mvx,
 							float mvy,
 							float mvz,
-							constant t_object *scene)
+							__constant t_object *scene)
 {
 	int		id = get_global_id(0);
 	int		x = id % WINX;
 	int		y = id / WINX;
 	
+	if (id == 1)
+		printf("test %f\n", scene[0].cam.hor.x);
+
 	// CAM
 	float3	cam_origin;
 	cam_origin.x = 0 + mvx;
