@@ -68,7 +68,7 @@ __kernel void	ray_trace(__global char *output,
 	float3	cam_origin;
 	cam_origin.x = 0 + mvt.x;
 	cam_origin.y = 0 + mvt.y;
-	cam_origin.z = 0 + mvt.z;
+	cam_origin.z = -10 + mvt.z;
 	float3	hor;
 	hor.x = 0.6;
 	hor.y = 0;
