@@ -56,7 +56,7 @@ typedef struct			s_sphere
 typedef struct			s_object
 {
 	char				type;
-	char				id
+	char				id;
 	t_cam				cam;
 	t_cone				cone;
 	t_cylinder			cylinder;
