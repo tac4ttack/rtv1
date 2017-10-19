@@ -43,9 +43,9 @@ int			opencl_build(t_env *e)
 	if (!(e->output = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 				e->count * 4, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
-	if (!(e->scene_mem = clCreateBuffer(e->context,  CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR , \
-		sizeof(t_object) * 5, e->scene, NULL)))
-	return (opencl_builderrors(e, 7));
+	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_object) * 5, e->scene, NULL)))
+		return (opencl_builderrors(e, 7));
 	return (0);
 }
 
@@ -64,8 +64,8 @@ void		load_kernel(t_env *e)
 		s_error("Error opening kernel");
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-	e->kernel_src = ft_strjoin_frs1(e->kernel_src, "\n");		
-	e->kernel_src = ft_strjoin_free(e->kernel_src, line);		
+		e->kernel_src = ft_strjoin_frs1(e->kernel_src, "\n");
+		e->kernel_src = ft_strjoin_free(e->kernel_src, line);
 	}
 	(ret == -1 ? s_error("GNL read error") : 0);
 	e->kernel_src = ft_strjoin_frs1(e->kernel_src, "\n");
