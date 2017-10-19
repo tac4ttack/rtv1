@@ -1,5 +1,18 @@
 #include "rtv1.h"
 
+void	reset_cam_pos(t_env *e)
+{
+	if (e)
+	{
+		e->mvx = 0;
+		e->mvy = 0;
+		e->mvz = 0;
+//		e->rtx = 0;
+//		e->rty = 0;
+//		e->rtz = 0;
+	}
+}
+
 void			mlx_keyboard_repeated(t_env *e)
 {
 	if (!e)
@@ -12,4 +25,5 @@ void			mlx_keyboard_repeated(t_env *e)
 	(KP_D ? e->mvx += 0.1 : 0);
 	(KP_SPC ? e->mvy -= 0.1 : 0);
 	(KP_C ? e->mvy += 0.1 : 0);
+	(KP_R ? reset_cam_pos(e) : 0);
 }

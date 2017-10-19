@@ -1,10 +1,4 @@
-#define WINX 1920
-#define WINY 1080
-#define BACKCOLOR 0x00000000
-#define SCOLOR 0x000000FF
-#define PCOLOR 0x0000FF00
-#define SSCOLOR 0x00FF0000
-#define PUTE ((__global unsigned int *)output)[id]
+#include "kernel_header.h"
 
 float3			sub_vect(float3 v1, float3 v2)
 {
@@ -152,7 +146,7 @@ __kernel void	ray_trace(__global char *output, float mvx, float mvy, float mvz)
 	boule_origin.x = 0;
 	boule_origin.y = 10;
 	boule_origin.z = 200;
-	float	radius = 50;
+	float	radius = 10;
 
 	// SPHERE2
 	float3	boule_origin2;
@@ -185,11 +179,11 @@ __kernel void	ray_trace(__global char *output, float mvx, float mvy, float mvz)
 //	if (id > (WINX * WINY / 3) && id < (WINX * WINY / 3 * 2))
 //	printf("plan = %f sphere = %f\n", plan, sphere);
 	if (sphere == 1000000000 && plan == 1000000000 && sphere2 == 1000000000)
-		PUTE = BACKCOLOR;
+		OUTPUTE = BACKCOLOR;
 	else if (sphere < plan && sphere < sphere2)
-		PUTE = SCOLOR;
+		OUTPUTE = SCOLOR;
 	else if (sphere2 < sphere && sphere2 < plan)
-		PUTE = SSCOLOR;
+		OUTPUTE = SSCOLOR;
 	else
-		PUTE = PCOLOR;
+		OUTPUTE = PCOLOR;
 }

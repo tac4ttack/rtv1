@@ -16,7 +16,7 @@ void	error(void)
 
 int		quit(t_env *e)
 {
-	mlx_destroy_image(e->mlx, e->scene->ptr);
+	mlx_destroy_image(e->mlx, e->frame->ptr);
 	mlx_destroy_window(e->mlx, e->win);
 	free(e);
 	ft_putendl("Exiting");

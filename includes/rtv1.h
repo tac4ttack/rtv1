@@ -63,12 +63,64 @@ typedef struct			s_ray
 	float				t;
 }						t_ray;
 
+typedef struct			s_cam
+{
+	cl_float3			hor;
+	cl_float3			ver;
+	cl_float3			dir;
+	cl_float3			pos;
+}						t_cam;
+
+typedef struct			s_cone
+{
+	cl_float3			pos;
+	cl_float3			dir;
+	int					color;
+}						t_cone;
+
+typedef struct			s_cylinder
+{
+	cl_float3			pos;
+	cl_float3			dir;
+	float				radius;
+	int					color;
+}						t_cylinder;
+
+typedef struct			s_light
+{
+	char				type;
+	cl_float3			pos;
+	cl_float3			dir;
+	float				intensity;
+	int					color;
+}						t_light;
+
+typedef struct			s_plane
+{
+	cl_float3			pos;
+	cl_float3			normale;
+	int					color;
+}						t_plane;
+
 typedef struct			s_sphere
 {
-	t_v3f				center;
 	float				radius;
-	int					hue;
+	cl_float3			pos;
+//	cl_float3			dir;
+	int					color;
 }						t_sphere;
+
+typedef struct			s_object
+{
+	char				type;
+	char				id;
+	t_cam				cam;
+	t_cone				cone;
+	t_cylinder			cylinder;
+	t_light				light;
+	t_plane				plane;
+	t_sphere			sphere;
+}						t_object;
 
 typedef struct			s_frame
 {
@@ -87,7 +139,7 @@ typedef	struct			s_env
 {
 	void				*mlx;
 	void				*win;
-	t_frame				*scene;
+	t_frame				*frame;
 	t_key				keys; 
 	int					win_w;
 	int					win_h;
@@ -110,6 +162,7 @@ typedef	struct			s_env
 	size_t				local;
 	size_t				dif;
 	unsigned int		count;
+	t_object			*scene;
 //	next data can be deleted after testing etc
 	cl_float3			test;
 	char				run;
