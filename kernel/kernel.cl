@@ -1,56 +1,5 @@
 #include "kernel_header.h"
 
-float3			sub_vect(float3 v1, float3 v2)
-{
-	float3		res;
-
-	res.x = v1.x - v2.x;
-	res.y = v1.y - v2.y;
-	res.z = v1.z - v2.z;
-	return (res);
-}
-
-float3			add_vect(float3 v1, float3 v2)
-{
-	float3		res;
-
-	res.x = v1.x + v2.x;
-	res.y = v1.y + v2.y;
-	res.z = v1.z + v2.z;
-	return (res);
-}
-
-float			norme_vect(float3 v)
-{
-	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
-}
-
-float3			normalize_vect(float3 v)
-{
-	float3		res;
-	int			id = 1 / sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-
-	res.x = v.x * id;
-	res.y = v.y * id;
-	res.z = v.z * id;
-	return (res);
-}
-
-float			dot_vect(float3 v1, float3 v2)
-{
-	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
-}
-
-float3			mult_fvect(float m, float3 v)
-{
-	float3		res;
-
-	res.x = m * v.x;
-	res.y = m * v.y;
-	res.z = m * v.z;
-	return (res);
-}
-
 float3			get_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc;
@@ -94,16 +43,6 @@ float			inter_plan(float3 plan_origin, float3 plan_normale, float3 ray, float3 c
 	if (t < 0.0000001)
 		return (1000000000);
 	return (t);
-}
-
-float			modh_vect(int x)
-{
-	return ((float)((float)x - (WINX / 2.0)) / (WINX / 2.0));
-}
-
-float			modv_vect(int y)
-{
-	return ((float)(((float)y - (WINY / 2.0)) / (WINY / 2.0) * WINY / WINX));
 }
 
 float3			get_ray(float3 n, float3 v, float3 h, int x, int y)
