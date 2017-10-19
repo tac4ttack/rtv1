@@ -33,8 +33,8 @@ int			opencl_build(t_env *e)
 {
 	int		err;
 
-	if ((err = clBuildProgram(e->program, 0, NULL, NULL, NULL, \
-				NULL)) != CL_SUCCESS)
+	if ((err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/", \
+				NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5));
 	if (!(e->kernel = clCreateKernel(e->program, "ray_trace", &err)) \
 				|| err != CL_SUCCESS)
@@ -57,7 +57,7 @@ void		load_kernel(t_env *e)
 		s_error("Error during allocating memory for kernel source code");
 		exit(1);
 	}
-	if ((fd = open("./src/kernel.cl", O_RDONLY)) == -1)
+	if ((fd = open("./kernel/kernel.cl", O_RDONLY)) == -1)
 		s_error("Error opening kernel");
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
