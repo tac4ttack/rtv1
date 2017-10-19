@@ -104,9 +104,9 @@ void		init(t_env *e)
 	e->cen_y = e->win_h / 2;
 	e->mou_x = 0;
 	e->mou_y = 0;
-	e->mvx = 0;
-	e->mvy = 0;
-	e->mvz = 0;	
+	e->mvt.x = 0;
+	e->mvt.y = 0;
+	e->mvt.z = 0;
 	e->gpu = IS_GPU;
 
 	e->run = 1;

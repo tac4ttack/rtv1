@@ -167,9 +167,7 @@ typedef	struct			s_env
 	unsigned int		count;
 	t_object			*scene;
 	cl_mem				scene_mem;
-	cl_float				mvx;
-	cl_float				mvy;
-	cl_float				mvz;
+	cl_float3			mvt;
 //	next data can be deleted after testing etc
 	char				run;
 }						t_env;
