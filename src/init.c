@@ -93,7 +93,6 @@ void		frame_init(t_env *e)
 	e->frame->row = row;
 	e->frame->endian = endian;
 	e->scene = load_scene();
-//	printf("test = %f\n", e->scene[3].sphere.radius);
 }
 
 void		init(t_env *e)

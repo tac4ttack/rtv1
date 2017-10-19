@@ -15,10 +15,6 @@ void		opencl_set_args(t_env *e)
 		ft_putnbr(err);
 		ft_putchar('\n');
 		s_error("Error: Failed to send arguments to kernel!");
-//		ft_putstr("Error: Failed to set kernel arguments!");
-//		ft_putnbr(err);
-//		ft_putchar('\n');
-//		exit(1);
 	}
 }
 
@@ -34,10 +30,6 @@ int			get_imgptr(t_env *e)
 		ft_putnbr(err);
 		ft_putchar('\n');
 		s_error("Error: Failed to read output array!");
-//		ft_putstr("Error: Failed to read output array!");
-//		ft_putnbr(err);
-//		ft_putchar('\n');
-//		exit(1);
 	}
 	return (0);
 }
