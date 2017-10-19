@@ -1,0 +1,67 @@
+<!--
+
+<cam id="0"
+		pos="0, 0, 0"
+		hor="0.6, 0, 0"
+		ver="0, 0.6, 0"
+		dir="0, 0, 1"
+		/>
+
+<cone id="0"
+		pos="0, 0, 0"
+		dir="0, 0, 0"
+		color="0x00ff0000"
+		/>
+
+<cylinder id="0"
+		pos="0, 0, 0"
+		dir="0, 0, 0"
+		radius="42"
+		color="0x00ff0000"
+		/>
+
+<light id="0"
+		pos="0, 0, 0"
+		dir="0, 0, 0"
+		type="0"
+		intensity="42"
+		color="0x00ffffff"
+		/>
+
+<plane id="0"
+		pos="0, 0, 0"
+		normale="0, 0, 1"
+		color="0x00ff0000"
+		/>
+
+<sphere id="0"
+		pos="0, 0, 0"
+		dir="0, 0, 0"
+		color="0x00ff0000"
+		/>
+		
+-->
+
+<scene>
+	<cam id="0"
+			pos="-20, 0, 50"
+			hor="0.6, 0, 0"
+			ver="0, 0.6, 0"
+			dir="0, 0, 1"
+			/>
+	<plane id="1"
+			pos="0, 0, 0"
+			normale="0, 0, 1"
+			color="0x00ff0000"
+			/>
+	<sphere id="2"
+			pos="0, 0, 0"
+			dir="0, 0, 0"
+			color="0x00ff0000"
+			/>
+	<sphere id="3"
+			pos="0, 0, 0"
+			dir="0, 0, 0"
+			color="0x00ff0000"
+			/>
+</scene>
