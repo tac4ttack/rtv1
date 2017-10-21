@@ -4,6 +4,9 @@
 #define SCOLOR 0x000000FF
 #define PCOLOR 0x00FF0000
 #define SSCOLOR 0x0000FF00
+#define LCOLOR 0x00FFFFFF
+#define DEG2RAD (M_PI / 180)
+#define RAD2DEG (180 / M_PI)
 #define OUTPUTE ((__global unsigned int *)output)[id]
 
 typedef struct			s_cam
