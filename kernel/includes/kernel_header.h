@@ -49,7 +49,7 @@ typedef struct			s_sphere
 {
 	float				radius;
 	float3				pos;
-//	float3				dir;
+	float3				dir;
 	int					color;
 }						t_sphere;
 

@@ -29,6 +29,35 @@ int			opencl_builderrors(t_env *e, int err)
 	return (EXIT_FAILURE);
 }
 
+int			opencl_allocate_scene_memory(t_env *e)
+{
+	if (NCAM > 0)
+		if (!(e->cameras_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_cam) * NCAM, e->cameras, NULL)))
+			return (opencl_builderrors(e, 7));
+	if (NCON > 0)
+		if (!(e->cones_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_cone) * NCON, e->cones, NULL)))
+			return (opencl_builderrors(e, 7));
+	if (NCYL > 0)
+		if (!(e->cylinders_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_cylinder) * NCYL, e->cylinders, NULL)))
+			return (opencl_builderrors(e, 7));
+	if (NLIG > 0)
+		if (!(e->lights_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_light) * NLIG, e->lights, NULL)))
+			return (opencl_builderrors(e, 7));
+	if (NPLA > 0)
+		if (!(e->planes_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_plane) * NPLA, e->planes, NULL)))
+			return (opencl_builderrors(e, 7));
+	if (NSPH > 0)
+		if (!(e->spheres_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_sphere) * NSPH, e->spheres, NULL)))
+			return (opencl_builderrors(e, 7));
+	return (0);
+}
+
 int			opencl_build(t_env *e)
 {
 	int		err;
@@ -37,15 +66,13 @@ int			opencl_build(t_env *e)
 				NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5));
 	if (!(e->kernel = clCreateKernel(e->program, "ray_trace", &err)) \
-				|| err != CL_SUCCESS)
+		|| err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6));
 	e->count = e->win_w * e->win_h;
 	if (!(e->output = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
-				e->count * 4, NULL, NULL)))
+		e->count * 4, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
-	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_object) * 5, e->scene, NULL)))
-		return (opencl_builderrors(e, 7));
+	opencl_allocate_scene_memory(e);
 	return (0);
 }
 

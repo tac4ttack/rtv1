@@ -6,9 +6,9 @@ void	display_hud(t_env *e)
 	char *mvty;
 	char *mvtz;
 
-	mvtx = ft_ftoa(e->scene[0].cam.pos.x + e->mvt.x);
-	mvty = ft_ftoa(e->scene[0].cam.pos.y + e->mvt.y);
-	mvtz = ft_ftoa(e->scene[0].cam.pos.z + e->mvt.z);
+	mvtx = ft_ftoa(e->mvt.x);
+	mvty = ft_ftoa(e->mvt.y);
+	mvtz = ft_ftoa(e->mvt.z);
 	mlx_string_put(e->mlx, e->win, 10, 10, 0x00ffffff, mvtx);
 	mlx_string_put(e->mlx, e->win, 10, 25, 0x00ffffff, mvty);
 	mlx_string_put(e->mlx, e->win, 10, 40, 0x00ffffff, mvtz);

@@ -7,7 +7,12 @@ void		opencl_set_args(t_env *e)
 	err = 0;
 	err = clSetKernelArg(e->kernel, 0, sizeof(cl_mem), &e->output);
 	err |= clSetKernelArg(e->kernel, 1, sizeof(cl_float3), &e->mvt);
-	err |= clSetKernelArg(e->kernel, 2, sizeof(cl_mem), &e->scene_mem);
+	err |= clSetKernelArg(e->kernel, 2, sizeof(cl_mem), &e->cameras_mem);
+	err |= clSetKernelArg(e->kernel, 3, sizeof(cl_mem), &e->cones_mem);
+	err |= clSetKernelArg(e->kernel, 4, sizeof(cl_mem), &e->cylinders_mem);
+	err |= clSetKernelArg(e->kernel, 5, sizeof(cl_mem), &e->lights_mem);
+	err |= clSetKernelArg(e->kernel, 6, sizeof(cl_mem), &e->planes_mem);
+	err |= clSetKernelArg(e->kernel, 7, sizeof(cl_mem), &e->spheres_mem);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);

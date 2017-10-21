@@ -10,68 +10,103 @@ void		set_hooks(t_env *e)
 	mlx_loop(e->mlx);
 }
 
-t_object	*load_scene(void)
+void	load_scene(t_env *e)
 {
-	t_object	*res;
-	if (!(res = malloc(sizeof(t_object) * 4)))
-		s_error("\x1b[2;31mCan't create scene array\x1b[0m");
-	
+	NCAM = 1;
+	NPLA = 1;
+	NSPH = 2;
+
+	if (NCAM > 0)
+	{
+		if (!(e->cameras = malloc(sizeof(t_cam) * NCAM)))
+			s_error("\x1b[2;31mCan't create cameras array\x1b[0m");
+	}
+	else
+		e->cameras = NULL;
+	if (NCON > 0)
+	{
+		if (!(e->cones = malloc(sizeof(t_cone) * NCON)))
+			s_error("\x1b[2;31mCan't create cones array\x1b[0m");
+	}
+	else
+		e->cones = NULL;
+	if (NCYL > 0)
+	{
+		if (!(e->cylinders = malloc(sizeof(t_cylinder) * NCYL)))
+			s_error("\x1b[2;31mCan't create cylinders array\x1b[0m");
+	}
+	else
+		e->cylinders = NULL;
+	if (NLIG > 0)
+	{	
+		if (!(e->lights = malloc(sizeof(t_light) * NLIG)))
+			s_error("\x1b[2;31mCan't create lights array\x1b[0m");
+	}
+	else
+		e->lights = NULL;
+	if (NPLA > 0)
+	{
+		if (!(e->planes = malloc(sizeof(t_plane) * NPLA)))
+			s_error("\x1b[2;31mCan't create planes array\x1b[0m");
+	}
+	else
+		e->planes = NULL;
+	if (NSPH > 0)
+	{
+		if (!(e->spheres = malloc(sizeof(t_sphere) * NSPH)))
+			s_error("\x1b[2;31mCan't create spheres array\x1b[0m");
+	}
+	else
+		e->spheres = NULL;
+
+//	REMPLISSAGE MANOUEL AIE CARAMBA
 	//camera
-	ft_bzero(&res[0], sizeof(t_object));
-	res[0].type = 0;
-	res[0].id = 0;
-	res[0].cam.pos.x = 0;
-	res[0].cam.pos.y = 0;
-	res[0].cam.pos.z = -10;
-	res[0].cam.dir.x = 0;
-	res[0].cam.dir.y = 0;
-	res[0].cam.dir.z = 1;
-	res[0].cam.hor.x = 0.6;
-	res[0].cam.hor.y = 0;
-	res[0].cam.hor.z = 0;
-	res[0].cam.ver.x = 0;
-	res[0].cam.ver.y = 0.6;
-	res[0].cam.ver.z = 0;
+	ft_bzero(&e->cameras[0], sizeof(t_cam));
+	e->cameras[0].pos.x = 0;
+	e->cameras[0].pos.y = 0;
+	e->cameras[0].pos.z = -10;
+	e->cameras[0].dir.x = 0;
+	e->cameras[0].dir.y = 0;
+	e->cameras[0].dir.z = 1;
+	e->cameras[0].hor.x = 0.6;
+	e->cameras[0].hor.y = 0;
+	e->cameras[0].hor.z = 0;
+	e->cameras[0].ver.x = 0;
+	e->cameras[0].ver.y = 0.6;
+	e->cameras[0].ver.z = 0;
 
 	//plane
-	ft_bzero(&res[1], sizeof(t_object));
-	res[1].type = 4;
-	res[1].id = 1;
-	res[1].plane.pos.x = 0;
-	res[1].plane.pos.y = 0;
-	res[1].plane.pos.z = 0;
-	res[1].plane.normale.x = 0;
-	res[1].plane.normale.y = 1;
-	res[1].plane.normale.z = 0;
-	res[1].plane.color = 0x00ff0000;
+	ft_bzero(&e->planes[0], sizeof(t_plane));
+	e->planes[0].pos.x = 0;
+	e->planes[0].pos.y = 0;
+	e->planes[0].pos.z = 0;
+	e->planes[0].normale.x = 0;
+	e->planes[0].normale.y = 1;
+	e->planes[0].normale.z = 0;
+	e->planes[0].color = 0x00ff0000;
 
 	//sphere 1
-	ft_bzero(&res[2], sizeof(t_object));
-	res[2].type = 5;
-	res[2].id = 2;
-	res[2].sphere.pos.x = 0;
-	res[2].sphere.pos.y = 0;
-	res[2].sphere.pos.x = 0;
-//	res[2].sphere.dir.x = 0;
-//	res[2].sphere.dir.y = 0;
-//	res[2].sphere.dir.z = 0;
-	res[2].sphere.radius = 5;
-	res[2].sphere.color = 0x0000ff00;
+	ft_bzero(&e->spheres[0], sizeof(t_sphere));
+	e->spheres[0].pos.x = 0;
+	e->spheres[0].pos.y = 0;
+	e->spheres[0].pos.x = 0;
+	e->spheres[0].dir.x = 0;
+	e->spheres[0].dir.y = 0;
+	e->spheres[0].dir.z = 0;
+	e->spheres[0].radius = 5;
+	e->spheres[0].color = 0x0000ff00;
 
 	//sphere 2
-	ft_bzero(&res[3], sizeof(t_object));
-	res[3].type = 5;
-	res[3].id = 3;
-	res[3].sphere.pos.x = 0;
-	res[3].sphere.pos.y = 0;
-	res[3].sphere.pos.x = 0;
-//	res[3].sphere.dir.x = 0;
-//	res[3].sphere.dir.y = 0;
-//	res[3].sphere.dir.z = 0;
-	res[3].sphere.radius = 10;
-	res[3].sphere.color = 0x000000ff;
+	ft_bzero(&e->spheres[1], sizeof(t_sphere));
+	e->spheres[1].pos.x = 0;
+	e->spheres[1].pos.y = 0;
+	e->spheres[1].pos.x = 0;
+	e->spheres[1].dir.x = 0;
+	e->spheres[1].dir.y = 0;
+	e->spheres[1].dir.z = 0;
+	e->spheres[1].radius = 10;
+	e->spheres[1].color = 0x000000ff;
 
-	return (res);
 }
 
 void		frame_init(t_env *e)
@@ -92,11 +127,12 @@ void		frame_init(t_env *e)
 	e->frame->bpp = bpp;
 	e->frame->row = row;
 	e->frame->endian = endian;
-	e->scene = load_scene();
+	load_scene(e);
 }
 
 void		init(t_env *e)
 {
+	ft_bzero(e, sizeof(t_env));
 	e->debug = DBUG;
 	e->win_w = WIDTH;
 	e->win_h = HEIGHT;
@@ -104,14 +140,10 @@ void		init(t_env *e)
 	e->cen_y = e->win_h / 2;
 	e->mou_x = 0;
 	e->mou_y = 0;
-	e->mvt.x = 0;
-	e->mvt.y = 0;
-	e->mvt.z = 0;
 	e->gpu = IS_GPU;
 
 	e->run = 1;
 
-	ft_bzero(&e->keys, sizeof(t_key));
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m");
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))

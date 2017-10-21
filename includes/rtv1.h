@@ -43,6 +43,13 @@
 # define HEIGHT					1080
 # define DEPTH					2000
 
+# define NCAM					e->n_cams
+# define NCON					e->n_cones
+# define NCYL					e->n_cylinders
+# define NLIG					e->n_lights
+# define NPLA					e->n_planes
+# define NSPH					e->n_spheres
+
 //////////////////////////////
 // USELESS??
 typedef struct			s_p2i
@@ -109,21 +116,9 @@ typedef struct			s_sphere
 {
 	cl_float			radius;
 	cl_float3			pos;
-//	cl_float3			dir;
+	cl_float3			dir;
 	cl_int				color;
 }						t_sphere;
-
-typedef struct			s_object
-{
-	cl_char				type;
-	cl_char				id;
-	t_cam				cam;
-	t_cone				cone;
-	t_cylinder			cylinder;
-	t_light				light;
-	t_plane				plane;
-	t_sphere			sphere;
-}						t_object;
 
 typedef struct			s_frame
 {
@@ -165,10 +160,26 @@ typedef	struct			s_env
 	size_t				local;
 	size_t				dif;
 	unsigned int		count;
-	t_object			*scene;
-	cl_mem				scene_mem;
+	t_cam				*cameras;
+	cl_mem				cameras_mem;
+	unsigned int		n_cams;
+	t_cone				*cones;
+	cl_mem				cones_mem;
+	unsigned int		n_cones;
+	t_cylinder			*cylinders;
+	cl_mem				cylinders_mem;
+	unsigned int		n_cylinders;
+	t_light				*lights;
+	cl_mem				lights_mem;
+	unsigned int		n_lights;
+	t_plane				*planes;
+	cl_mem				planes_mem;
+	unsigned int		n_planes;
+	t_sphere			*spheres;
+	cl_mem				spheres_mem;
+	unsigned int		n_spheres;
 	cl_float3			mvt;
-//	next data can be deleted after testing etc
+//	next data may be deleted after testing etc
 	char				run;
 }						t_env;
 
