@@ -58,6 +58,7 @@ float3			get_ray(float3 n, float3 v, float3 h, int x, int y)
 
 __kernel void	ray_trace(__global char *output,
 							float3 mvt,
+							t_scene scene,
 							__constant t_cam *cameras,
 							__constant t_cone *cones,
 							__constant t_cylinder *cylinders,
@@ -68,6 +69,10 @@ __kernel void	ray_trace(__global char *output,
 	int		id = get_global_id(0);
 	int		x = id % WINX;
 	int		y = id / WINX;
+
+//	transmission test
+//	if (id < 5)
+//		printf("%d\n", scene.n_spheres);
 
 	// CAM
 	float3	cam_origin;

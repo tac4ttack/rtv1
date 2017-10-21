@@ -43,12 +43,12 @@
 # define HEIGHT					1080
 # define DEPTH					2000
 
-# define NCAM					e->n_cams
-# define NCON					e->n_cones
-# define NCYL					e->n_cylinders
-# define NLIG					e->n_lights
-# define NPLA					e->n_planes
-# define NSPH					e->n_spheres
+# define NCAM					e->scene.n_cams
+# define NCON					e->scene.n_cones
+# define NCYL					e->scene.n_cylinders
+# define NLIG					e->scene.n_lights
+# define NPLA					e->scene.n_planes
+# define NSPH					e->scene.n_spheres
 
 //////////////////////////////
 // USELESS??
@@ -120,6 +120,17 @@ typedef struct			s_sphere
 	cl_int				color;
 }						t_sphere;
 
+typedef struct			s_scene
+{
+	unsigned int		n_cams;
+	unsigned int		n_cones;
+	unsigned int		n_cylinders;
+	unsigned int		n_lights;
+	unsigned int		n_planes;
+	unsigned int		n_spheres;
+	unsigned int		active_cam;
+}						t_scene;
+
 typedef struct			s_frame
 {
 	void				*ptr;
@@ -160,24 +171,19 @@ typedef	struct			s_env
 	size_t				local;
 	size_t				dif;
 	unsigned int		count;
+	t_scene				scene;
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
-	unsigned int		n_cams;
 	t_cone				*cones;
 	cl_mem				cones_mem;
-	unsigned int		n_cones;
 	t_cylinder			*cylinders;
 	cl_mem				cylinders_mem;
-	unsigned int		n_cylinders;
 	t_light				*lights;
 	cl_mem				lights_mem;
-	unsigned int		n_lights;
 	t_plane				*planes;
 	cl_mem				planes_mem;
-	unsigned int		n_planes;
 	t_sphere			*spheres;
 	cl_mem				spheres_mem;
-	unsigned int		n_spheres;
 	cl_float3			mvt;
 //	next data may be deleted after testing etc
 	char				run;
