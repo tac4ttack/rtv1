@@ -22,7 +22,7 @@ t_object	*load_scene(void)
 	res[0].id = 0;
 	res[0].cam.pos.x = 0;
 	res[0].cam.pos.y = 0;
-	res[0].cam.pos.z = -10;
+	res[0].cam.pos.z = 0;
 	res[0].cam.dir.x = 0;
 	res[0].cam.dir.y = 0;
 	res[0].cam.dir.z = 1;
@@ -104,9 +104,9 @@ void		init(t_env *e)
 	e->cen_y = e->win_h / 2;
 	e->mou_x = 0;
 	e->mou_y = 0;
-	e->mvt.x = 0;
-	e->mvt.y = 0;
-	e->mvt.z = 0;
+	e->mvt.x = 0.0;
+	e->mvt.y = 0.0;
+	e->mvt.z = 0.0;
 	e->gpu = IS_GPU;
 
 	e->run = 1;
