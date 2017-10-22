@@ -10,15 +10,15 @@ float3			get_abc(float radius, float3 ray, float3 origin)
 	return (abc);
 }
 
-float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_origin)
+float			inter_sphere(t_sphere sphere, float3 ray, float3 origin)
 {
 	float3		abc;
 	float		d;
 	float		res1;
 	float		res2;
 
-	cam_origin -= sphere_origin;
-	abc = get_abc(radius, ray, cam_origin);
+	origin -= sphere.pos;
+	abc = get_abc(sphere.radius, ray, origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (1000000000);
@@ -31,26 +31,23 @@ float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_
 	return(res2);
 }
 
-float			inter_plan(float3 plan_origin, float3 plan_normale, float3 ray, float3 cam_origin)
+float			inter_plan(t_plane plane, float3 ray, float3 origin)
 {
 	float		t;
 
-	t = dot_vect(ray, plan_normale);
-	t = dot_vect(sub_vect(plan_origin, cam_origin), plan_normale) / t;
+	t = dot_vect(ray, plane.normale);
+	t = dot_vect(sub_vect(plane.pos, origin), plane.normale) / t;
 	if (t < 0.00001)
 		return (1000000000);
 	return (t);
 }
 
-float3			get_ray(float3 dir, float3 v, float3 h, int x, int y)
+void			get_ray_cam(t_cam cam, int x, int y)
 {
-	float3		res;
-
-	h = mult_fvect(modh_vect(x), h);
-	v = mult_fvect(modv_vect(y), v);
-	res = add_vect(dir, v);
-	res = add_vect(res, h);
-	return (res);
+	float3		h = mult_fvect(modh_vect(x), cam.hor);
+	float3		v = mult_fvect(modv_vect(y), cam.ver);
+	cam.ray = add_vect(cam.dir, v);
+	cam.ray = add_vect(cam.ray, h);
 }
 
 unsigned int			light_angle(float angle)
@@ -76,34 +73,36 @@ unsigned int			light_angle(float angle)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			light_sphere(char obj, float3 p, float3 boule_origin, float radius, float3 light_origin, float3 plan_origin, float3 plan_normale)
+unsigned int			light(t_hit hit, t_scene scene)
 {
-	float3		normale = p - boule_origin;
-	float3		lightray = light_origin - p;
-	float		lightdist = norme_vect(lightray);
-	float3		lightdir = normalize_vect(lightray);
-	float cos_angle;
-	float plan;
-	float sphere;
-	if ((plan = inter_plan(plan_origin, plan_normale, lightray, p)) <= 0)
-		plan = 1000000000;
-	if ((sphere = inter_sphere(radius, lightdir, p, boule_origin)) <= 0)
-		sphere = 1000000000;
-	if (plan < lightdist || sphere < lightdist)
+	int					i = -1;
+	float				cos_angle = 0;
+
+	while (++i < PARAM->n_lights)
 	{
-	//	printf("coucou");
-		return (BACKCOLOR);
+		float3		lightray = LIGHT - hit.pos;
+		float		lightdist = norme_vect(lightray);
+		float3		lightdir = normalize_vect(lightray);
+		if ((plan = inter_plan(plan_origin, plan_normale, lightray, p)) <= 0)
+			plan = 1000000000;
+		if ((sphere = inter_sphere(radius, lightdir, p, boule_origin)) <= 0)
+			sphere = 1000000000;
+		if (plan < lightdist || sphere < lightdist)
+		{
+		//	printf("coucou");
+			return (BACKCOLOR);
+		}
+		if (obj == 5)
+			cos_angle = dot_vect(lightray, normale) / (norme_vect(lightray) * norme_vect(normale));
+		else
+			cos_angle = dot_vect(lightray, plan_normale) / (norme_vect(lightray) * norme_vect(plan_normale));
+		/*if (cos_angle < 0)
+			return (0x00000000);*/
+		float angle = acos(cos_angle) * RAD2DEG;
+		//printf("%f\n", cos_angle);
+		/*if (angle > 90)
+			return (BACKCOLOR);*/
 	}
-	if (obj == 5)
-		cos_angle = dot_vect(lightray, normale) / (norme_vect(lightray) * norme_vect(normale));
-	else
-		cos_angle = dot_vect(lightray, plan_normale) / (norme_vect(lightray) * norme_vect(plan_normale));
-	/*if (cos_angle < 0)
-		return (0x00000000);*/
-	float angle = acos(cos_angle) * RAD2DEG;
-	//printf("%f\n", cos_angle);
-	/*if (angle > 90)
-		return (BACKCOLOR);*/
 	return (light_angle(angle));
 }
 
@@ -127,6 +126,78 @@ t_scene			grab_data(__constant t_cam *cameras, \
 	return (result);
 }
 
+int				get_max_obj(t_param *param)
+{
+	int			res = n_cones;
+	if (param->n_cylinders > res)
+		res = param->n_cylinders;
+	if (param->n_planes > res)
+		res = param->n_planes;
+	if (param->n_spheres > res)
+		res = param->n_spheres;
+	return (res);
+}
+
+t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
+{
+	int			i = -1;
+	int			max = get_max_obj(PARAM);
+	t_hit		hit;
+	float		dist = 0;
+
+	hit.dist = 0;
+	hit.type = 0;
+	hit.id = 0;
+	hit.pos = {.x = 0, .y = 0, .z = 0};
+	hit.normale = {.x = 0, .y = 0, .z = 0};
+	while (++i < max)
+	{
+		/*if (i < PARAM.n_cones)
+			;
+		if (i < PARAM.n_cylinders)
+			;*/
+		if (i < PARAM.n_planes)
+			if ((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0)
+			{
+				hit.dist = dist;
+				hit.type = 4;
+				hit.id = i;
+			}
+		if (i < PARAM.n_spheres)
+			if ((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0)
+			{
+				hit.dist = dist;
+				hit.type = 4;
+				hit.id = i;
+			}
+	}
+	return (hit);
+}
+
+float3			get_hit_normale(t_scene scene, t_hit hit)
+{
+	float3		res;
+
+	/*if (hit.type == 1) CONES
+		;
+	if (hit.type == 2) CYLINDRES
+		;*/
+	if (hit.type == 4)
+		res = PLANE[hit.id]->normale;
+	else if (hit.type == 5)
+		res = hit.pos - SPHERE[hit.id]->pos;
+	return (res);
+}
+
+unsigned int	get_pixel_color(t_scene scene)
+{
+	t_hit		hit = ray_hit(ACTIVECAM.pos, ACTIVECAM.ray, scene);
+
+	hit.pos = mult_fvect(hit.dist, ACTIVECAM.ray) + ACTIVECAM.pos;
+	hit.normale = get_hit_normale(scene, hit);
+	
+}
+
 __kernel void	ray_trace(__global char *output,
 						  float3 mvt,
 						  t_param param,
@@ -140,48 +211,18 @@ __kernel void	ray_trace(__global char *output,
 	int		id = get_global_id(0);
 	int		x = id % WINX;
 	int		y = id / WINX;
-	
+
 	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 
-//	transmission test
-	if (id < 5)
-		printf("%d\n", scene.param->n_spheres);
+//	normalize_vect(plan_normale);
 
-	// CAM
-	float3	cam_origin = cameras[0].pos + mvt;
-	float3	hor = cameras[0].hor;
-	float3	vert = cameras[0].ver;
-	float3	cam_dir = cameras[0].dir;
+	get_ray_cam(ACTIVECAM, x ,y);
+	OUTPUTE = get_pixel_color(scene);
+}
 
-	// SPHERE
-	float3	boule_origin = spheres[0].pos;
-	float	radius = spheres[0].radius;
-
-	// SPHERE2
-	float3	boule_origin2 = spheres[1].pos;
-	float	radius2 = spheres[1].radius;
-
-	// LIGHT
-	float3	light_origin;
-	light_origin.x = 0;
-	light_origin.y = -20;
-	light_origin.z = 20;
-	float	radiusl = 1;
-
-	// PLANE
-	float3	plan_origin = planes[0].pos;
-	float3	plan_normale = planes[0].normale;
-
-	normalize_vect(plan_normale);
-
-	float plan;
-	float sphere;
-	float light;
-
-	float3 ray = get_ray(cam_dir, vert, hor, x ,y);
-	if (( plan = inter_plan(plan_origin, plan_normale, ray, cam_origin)) < 0)
+	if ((plan = inter_plan(plan_origin, plan_normale, ray, cam_origin)) < 0)
 		plan = 1000000000;
-	if (( sphere = inter_sphere(radius, ray, cam_origin, boule_origin)) < 0)
+	if ((sphere = inter_sphere(radius, ray, cam_origin, boule_origin)) < 0)
 		sphere = 1000000000;
 	if ((light = inter_sphere(radiusl, ray, cam_origin, light_origin)) < 0)
 		light = 1000000000;
@@ -194,4 +235,4 @@ __kernel void	ray_trace(__global char *output,
 		OUTPUTE = LCOLOR;
 	else
 		OUTPUTE = light_sphere(0, (mult_fvect(plan, ray) + cam_origin), boule_origin, radius, light_origin, plan_origin, plan_normale);
-}
+

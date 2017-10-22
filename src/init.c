@@ -78,7 +78,7 @@ void	load_scene(t_env *e)
 	//plane
 	ft_bzero(&e->planes[0], sizeof(t_plane));
 	e->planes[0].pos.x = 0;
-	e->planes[0].pos.y = 0;
+	e->planes[0].pos.y = 10;
 	e->planes[0].pos.z = 0;
 	e->planes[0].normale.x = 0;
 	e->planes[0].normale.y = 1;

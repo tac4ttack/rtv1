@@ -7,7 +7,29 @@
 #define LCOLOR 0x00FFFFFF
 #define DEG2RAD (M_PI / 180)
 #define RAD2DEG (180 / M_PI)
+#define CAM scene.cameras
+#define CONES scene.cones
+#define CYLIND scene.cylinders
+#define LIGHT scene.lights
+#define PLANE scene.planes
+#define SPHERE scene.spheres
+#define PARAM scene.param
+#define ACTIVECAM scene.cameras[scene.param->active_cam]
 #define OUTPUTE ((__global unsigned int *)output)[id]
+
+tupedef struct			s_light_ray
+{
+	float3
+}						t_light_ray;
+
+typedef struct			s_hit
+{
+	float				dist;
+	char				type;
+	char				id;
+	float3				pos;
+	float3				normale;
+}						t_hit;
 
 typedef struct			s_cam
 {
@@ -15,6 +37,7 @@ typedef struct			s_cam
 	float3				ver;
 	float3				dir;
 	float3				pos;
+	float3				ray;
 }						t_cam;
 
 typedef struct			s_cone

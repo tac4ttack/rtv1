@@ -79,6 +79,7 @@ typedef struct			s_cam
 	cl_float3			ver;
 	cl_float3			dir;
 	cl_float3			pos;
+	cl_float3			ray;
 }						t_cam;
 
 typedef struct			s_cone
