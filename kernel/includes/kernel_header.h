@@ -21,9 +21,10 @@
 
 #define OUTPUTE ((__global unsigned int *)output)[id]
 
-tupedef struct			s_light_ray
+typedef struct			s_light_ray
 {
-	float3
+	float3				ray;
+	float				dist;
 }						t_light_ray;
 
 typedef struct			s_hit

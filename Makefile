@@ -57,9 +57,7 @@ SRC_NAME =  			init.c \
 						mlx_mouse.c \
 						opencl_compute.c \
 						opencl_init.c \
-						tools.c \
-						vector_3d_maths.c \
-						vector_basic_maths.c
+						tools.c
 
 default: gpu
 

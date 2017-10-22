@@ -1,4 +1,6 @@
 #include "kernel_header.h"
+#include "kernel_data.h"
+#include "kernel_vector.h"
 
 float3			get_abc(float radius, float3 ray, float3 origin)
 {
@@ -50,11 +52,11 @@ void			get_ray_cam(t_cam cam, int x, int y)
 	cam.ray = add_vect(cam.ray, h);
 }
 
-unsigned int			light_angle(float angle)
+unsigned int			light_angle(float angle, unsigned int robert_hue)
 {
-	unsigned char		r = (SCOLOR & 0x00FF0000) >> 16;
-	unsigned char		g = (SCOLOR & 0x0000FF00) >> 8;
-	unsigned char		b = (SCOLOR & 0x000000FF);
+	unsigned char		r = (robert_hue & 0x00FF0000) >> 16;
+	unsigned char		g = (robert_hue & 0x0000FF00) >> 8;
+	unsigned char		b = (robert_hue & 0x000000FF);
 	float				mult =  1.40 * angle;
 	if (angle == 0)
 		return (SCOLOR);
@@ -73,58 +75,30 @@ unsigned int			light_angle(float angle)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			light(t_hit hit, t_scene scene)
+unsigned int			get_obj_hue(t_scene scene, t_hit hit)
 {
-	int					i = -1;
-	float				cos_angle = 0;
+	unsigned int		color = 0;
 
-	while (++i < PARAM->n_lights)
-	{
-		float3			lightray = LIGHT[i] - hit.pos;
-		float3			lightdir = normalize_vect(lightray);
-		float			lightdist = norme_vect(lightray);
-		float			dist = 0;												// F
-
-	//	CONES
-	//	if (hit.type == 1)
-	//	CYLINDERS
-	//	else if (hit.type == 2)
-	//	PLANES
-		else if (hit.type == 4)													// F
-			if ((dist = inter_plan(PLANE[hit.id], ?,hit.pos)) <= 0)				// F
-				dist = 1000000000;												// F
-	//	SPHERES
-		else if (hit.type == 5)													// F
-			if ((dist = inter_sphere(SPHERE[hit.id], ?,hit.pos)) <= 0)			// F
-				dist = 1000000000;												// F
-
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-
-		if ((plan = inter_plan(plan_origin, plan_normale, lightray, p)) <= 0)
-			plan = 1000000000;
-		if ((sphere = inter_sphere(radius, lightdir, p, boule_origin)) <= 0)
-			sphere = 1000000000;
-		if (plan < lightdist || sphere < lightdist)
-		{
-		//	printf("coucou");
-			return (BACKCOLOR);
-		}
-		if (obj == 5)
-			cos_angle = dot_vect(lightray, normale) / (norme_vect(lightray) * norme_vect(normale));
-		else
-			cos_angle = dot_vect(lightray, plan_normale) / (norme_vect(lightray) * norme_vect(plan_normale));
-		/*if (cos_angle < 0)
-			return (0x00000000);*/
-		float angle = acos(cos_angle) * RAD2DEG;
-		//printf("%f\n", cos_angle);
-		/*if (angle > 90)
-			return (BACKCOLOR);*/
-	}
-	return (light_angle(angle));
+//	CONES
+//	if (i < PARAM.n_cones)
+//	CYLINDERS
+//	if (i < PARAM.n_cylinders)
+	if (hit.type == 4)
+		color = PLANE[hit.id].color;
+	else if (hit.type == 5)
+		color = SPHERE[hit.id].color;
+	return (color);
 }
 
+float					light_angelamerkel(t_hit hit, t_light_ray light_ray)
+{
+	float				cos_angela;
+	float				angela;
 
+	cos_angela = dot_vect(light_ray.ray, hit.normale) / (norme_vect(light_ray.ray) * norme_vect(hit.normale));
+	angela = acos(cos_angela) * RAD2DEG;
+	return (angela);
+}
 
 t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 {
@@ -136,24 +110,24 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 	hit.dist = 0;
 	hit.type = 0;
 	hit.id = 0;
-	hit.pos = {.x = 0, .y = 0, .z = 0};
-	hit.normale = {.x = 0, .y = 0, .z = 0};
+	hit.pos = (0, 0, 0);
+	hit.normale = (0, 0, 0);
 	while (++i < max)
 	{
 //		CONES
-//		if (i < PARAM.n_cones)
+//		if (i < PARAM->n_cones)
 //		CYLINDERS
-//		if (i < PARAM.n_cylinders)
+//		if (i < PARAM->n_cylinders)
 
-		if (i < PARAM.n_planes)
-			if ((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0)
+		if (i < PARAM->n_planes)
+			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 4;
 				hit.id = i;
 			}
-		if (i < PARAM.n_spheres)
-			if ((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0)
+		if (i < PARAM->n_spheres)
+			if (((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 4;
@@ -161,6 +135,31 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 			}
 	}
 	return (hit);
+}
+
+unsigned int			light(t_hit hit, t_scene scene)
+{
+	int					i = -1;
+	float				angle = 0;
+	t_light_ray			light_ray;
+	t_hit				light_hit;
+	unsigned int		obj_color = get_obj_hue(scene, hit);
+	unsigned int		res_color = BACKCOLOR;
+
+	while (++i < PARAM->n_lights)
+	{
+		light_ray.ray = LIGHT[i].pos - hit.pos;
+		light_ray.dist = norme_vect(light_ray.ray);
+		light_hit = ray_hit(hit.pos, light_ray.ray, scene);
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
+			;
+		else
+		{
+			angle = light_angelamerkel(hit, light_ray);
+			res_color = light_angle(angle, obj_color);
+		}
+	}
+	return (res_color);
 }
 
 float3			get_hit_normale(t_scene scene, t_hit hit)
@@ -173,19 +172,20 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 //	if (hit.type == 2)
 
 	if (hit.type == 4)
-		res = PLANE[hit.id]->normale;
+		res = PLANE[hit.id].normale;
 	else if (hit.type == 5)
-		res = hit.pos - SPHERE[hit.id]->pos;
+		res = hit.pos - SPHERE[hit.id].pos;
 	return (res);
 }
 
 unsigned int	get_pixel_color(t_scene scene)
 {
-	t_hit		hit = ray_hit(ACTIVECAM.pos, ACTIVECAM.ray, scene);
+	t_hit		hit;
+	hit = ray_hit(ACTIVECAM.pos, ACTIVECAM.ray, scene);
 
 	hit.pos = mult_fvect(hit.dist, ACTIVECAM.ray) + ACTIVECAM.pos;
 	hit.normale = get_hit_normale(scene, hit);
-	
+	return (light(hit, scene));
 }
 
 __kernel void	ray_trace(__global char *output,
@@ -209,20 +209,3 @@ __kernel void	ray_trace(__global char *output,
 	get_ray_cam(ACTIVECAM, x ,y);
 	OUTPUTE = get_pixel_color(scene);
 }
-
-	if ((plan = inter_plan(plan_origin, plan_normale, ray, cam_origin)) < 0)
-		plan = 1000000000;
-	if ((sphere = inter_sphere(radius, ray, cam_origin, boule_origin)) < 0)
-		sphere = 1000000000;
-	if ((light = inter_sphere(radiusl, ray, cam_origin, light_origin)) < 0)
-		light = 1000000000;
-	if (sphere == 1000000000 && plan == 1000000000)
-		OUTPUTE = BACKCOLOR;
-	else if (sphere < plan && sphere < light)
-		OUTPUTE = light_sphere(5, (mult_fvect(sphere, ray) + cam_origin), boule_origin, radius, light_origin, plan_origin, plan_normale);
-//OUTPUTE = SCOLOR;
-	else if (light < sphere && light < plan)
-		OUTPUTE = LCOLOR;
-	else
-		OUTPUTE = light_sphere(0, (mult_fvect(plan, ray) + cam_origin), boule_origin, radius, light_origin, plan_origin, plan_normale);
-
