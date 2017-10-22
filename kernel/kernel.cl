@@ -55,7 +55,7 @@ unsigned int			light_angle(float angle)
 	unsigned char		r = (SCOLOR & 0x00FF0000) >> 16;
 	unsigned char		g = (SCOLOR & 0x0000FF00) >> 8;
 	unsigned char		b = (SCOLOR & 0x000000FF);
-	float		mult =  1.40 * angle;
+	float				mult =  1.40 * angle;
 	if (angle == 0)
 		return (SCOLOR);
 	if (mult > r)
@@ -80,9 +80,27 @@ unsigned int			light(t_hit hit, t_scene scene)
 
 	while (++i < PARAM->n_lights)
 	{
-		float3		lightray = LIGHT - hit.pos;
-		float		lightdist = norme_vect(lightray);
-		float3		lightdir = normalize_vect(lightray);
+		float3			lightray = LIGHT[i] - hit.pos;
+		float3			lightdir = normalize_vect(lightray);
+		float			lightdist = norme_vect(lightray);
+		float			dist = 0;												// F
+
+	//	CONES
+	//	if (hit.type == 1)
+	//	CYLINDERS
+	//	else if (hit.type == 2)
+	//	PLANES
+		else if (hit.type == 4)													// F
+			if ((dist = inter_plan(PLANE[hit.id], ?,hit.pos)) <= 0)				// F
+				dist = 1000000000;												// F
+	//	SPHERES
+		else if (hit.type == 5)													// F
+			if ((dist = inter_sphere(SPHERE[hit.id], ?,hit.pos)) <= 0)			// F
+				dist = 1000000000;												// F
+
+	/////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////
+
 		if ((plan = inter_plan(plan_origin, plan_normale, lightray, p)) <= 0)
 			plan = 1000000000;
 		if ((sphere = inter_sphere(radius, lightdir, p, boule_origin)) <= 0)
@@ -106,37 +124,7 @@ unsigned int			light(t_hit hit, t_scene scene)
 	return (light_angle(angle));
 }
 
-t_scene			grab_data(__constant t_cam *cameras, \
-						  __constant t_cone *cones, \
-						  __constant t_cylinder *cylinders, \
-						  __constant t_light *lights, \
-						  __constant t_plane *planes, \
-						  __constant t_sphere *spheres, \
-						  t_param param)
-{
-	t_scene	result;
 
-	result.cameras = &cameras;
-	result.cones = &cones;
-	result.cylinders = &cylinders;
-	result.lights = &lights;
-	result.planes = &planes;
-	result.spheres = &spheres;
-	result.param = &param;
-	return (result);
-}
-
-int				get_max_obj(t_param *param)
-{
-	int			res = n_cones;
-	if (param->n_cylinders > res)
-		res = param->n_cylinders;
-	if (param->n_planes > res)
-		res = param->n_planes;
-	if (param->n_spheres > res)
-		res = param->n_spheres;
-	return (res);
-}
 
 t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 {
@@ -152,10 +140,11 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 	hit.normale = {.x = 0, .y = 0, .z = 0};
 	while (++i < max)
 	{
-		/*if (i < PARAM.n_cones)
-			;
-		if (i < PARAM.n_cylinders)
-			;*/
+//		CONES
+//		if (i < PARAM.n_cones)
+//		CYLINDERS
+//		if (i < PARAM.n_cylinders)
+
 		if (i < PARAM.n_planes)
 			if ((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0)
 			{
@@ -178,10 +167,11 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 {
 	float3		res;
 
-	/*if (hit.type == 1) CONES
-		;
-	if (hit.type == 2) CYLINDRES
-		;*/
+//	CONES
+//	if (hit.type == 1)
+//	CYLINDERS
+//	if (hit.type == 2)
+
 	if (hit.type == 4)
 		res = PLANE[hit.id]->normale;
 	else if (hit.type == 5)

@@ -50,28 +50,11 @@
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
 
-//////////////////////////////
-// USELESS??
 typedef struct			s_p2i
 {
 	int					x;
 	int					y;
 }						t_p2i;
-// USELESS??
-typedef struct			s_v3f
-{
-	float				x;
-	float				y;
-	float				z;
-}						t_v3f;
-// USELESS??
-typedef struct			s_ray
-{
-	t_v3f				ori;
-	t_v3f				dir;
-	float				t;
-}						t_ray;
-//////////////////////////////
 
 typedef struct			s_cam
 {
@@ -213,12 +196,4 @@ int						opencl_init(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
 
-// USELESS??
-//t_v3f					v3f_add(t_v3f v1, t_v3f v2);
-//t_v3f					v3f_sub(t_v3f v1, t_v3f v2);
-//t_v3f					v3f_mul(float a, t_v3f vec);
-//float					v3f_norm(t_v3f vec);
-//t_v3f					v3f_c_prod(t_v3f v1, t_v3f v2);
-//float					v3f_d_prod(t_v3f v1, t_v3f v2);
-///////////////////////////////////////////////////////
 #endif
