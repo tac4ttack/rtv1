@@ -17,9 +17,7 @@ float			inter_sphere(float radius, float3 ray, float3 cam_origin, float3 sphere_
 	float		res1;
 	float		res2;
 
-	cam_origin.x -= sphere_origin.x;
-	cam_origin.y -= sphere_origin.y;
-	cam_origin.z -= sphere_origin.z;
+	cam_origin -= sphere_origin;
 	abc = get_abc(radius, ray, cam_origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
@@ -109,57 +107,59 @@ unsigned int			light_sphere(char obj, float3 p, float3 boule_origin, float radiu
 	return (light_angle(angle));
 }
 
+t_scene			grab_data(__constant t_cam *cameras, \
+						  __constant t_cone *cones, \
+						  __constant t_cylinder *cylinders, \
+						  __constant t_light *lights, \
+						  __constant t_plane *planes, \
+						  __constant t_sphere *spheres, \
+						  t_param param)
+{
+	t_scene	result;
 
+	result.cameras = &cameras;
+	result.cones = &cones;
+	result.cylinders = &cylinders;
+	result.lights = &lights;
+	result.planes = &planes;
+	result.spheres = &spheres;
+	result.param = &param;
+	return (result);
+}
 
 __kernel void	ray_trace(__global char *output,
-							float3 mvt,
-							t_scene scene,
-							__constant t_cam *cameras,
-							__constant t_cone *cones,
-							__constant t_cylinder *cylinders,
-							__constant t_light *lights,
-							__constant t_plane *planes,
-							__constant t_sphere *spheres)
+						  float3 mvt,
+						  t_param param,
+						  __constant t_cam *cameras,
+						  __constant t_cone *cones,
+						  __constant t_cylinder *cylinders,
+						  __constant t_light *lights,
+						  __constant t_plane *planes,
+						  __constant t_sphere *spheres)
 {
 	int		id = get_global_id(0);
 	int		x = id % WINX;
 	int		y = id / WINX;
+	
+	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 
 //	transmission test
-//	if (id < 5)
-//		printf("%d\n", scene.n_spheres);
+	if (id < 5)
+		printf("%d\n", scene.param->n_spheres);
 
 	// CAM
-	float3	cam_origin;
-	cam_origin.x = 0 + mvt.x;
-	cam_origin.y = 0 + mvt.y;
-	cam_origin.z = 0 + mvt.z;
-	float3	hor;
-	hor.x = 0.6;
-	hor.y = 0;
-	hor.z = 0;
-	float3	vert;
-	vert.x = 0;
-	vert.y = 0.6;
-	vert.z = 0;
-	float3	cam_dir;
-	cam_dir.x = 0;
-	cam_dir.y = 0;
-	cam_dir.z = 1;
+	float3	cam_origin = cameras[0].pos + mvt;
+	float3	hor = cameras[0].hor;
+	float3	vert = cameras[0].ver;
+	float3	cam_dir = cameras[0].dir;
 
 	// SPHERE
-	float3	boule_origin;
-	boule_origin.x = 0;
-	boule_origin.y = 0;
-	boule_origin.z = 20;
-	float	radius = 2;
+	float3	boule_origin = spheres[0].pos;
+	float	radius = spheres[0].radius;
 
 	// SPHERE2
-	float3	boule_origin2;
-	boule_origin2.x = 0;
-	boule_origin2.y = -10;
-	boule_origin2.z = 50;
-	float	radius2 = 10;
+	float3	boule_origin2 = spheres[1].pos;
+	float	radius2 = spheres[1].radius;
 
 	// LIGHT
 	float3	light_origin;
@@ -169,14 +169,8 @@ __kernel void	ray_trace(__global char *output,
 	float	radiusl = 1;
 
 	// PLANE
-	float3	plan_origin;
-	plan_origin.x = 0;
-	plan_origin.y = 10;
-	plan_origin.z = 0;
-	float3	plan_normale;
-	plan_normale.x = 0;
-	plan_normale.y = 1;
-	plan_normale.z = 0;
+	float3	plan_origin = planes[0].pos;
+	float3	plan_normale = planes[0].normale;
 
 	normalize_vect(plan_normale);
 

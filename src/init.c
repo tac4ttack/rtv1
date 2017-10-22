@@ -64,7 +64,7 @@ void	load_scene(t_env *e)
 	ft_bzero(&e->cameras[0], sizeof(t_cam));
 	e->cameras[0].pos.x = 0;
 	e->cameras[0].pos.y = 0;
-	e->cameras[0].pos.z = -10;
+	e->cameras[0].pos.z = 0;
 	e->cameras[0].dir.x = 0;
 	e->cameras[0].dir.y = 0;
 	e->cameras[0].dir.z = 1;
@@ -89,18 +89,18 @@ void	load_scene(t_env *e)
 	ft_bzero(&e->spheres[0], sizeof(t_sphere));
 	e->spheres[0].pos.x = 0;
 	e->spheres[0].pos.y = 0;
-	e->spheres[0].pos.x = 0;
+	e->spheres[0].pos.z = 20;
 	e->spheres[0].dir.x = 0;
 	e->spheres[0].dir.y = 0;
 	e->spheres[0].dir.z = 0;
-	e->spheres[0].radius = 5;
+	e->spheres[0].radius = 2;
 	e->spheres[0].color = 0x0000ff00;
 
 	//sphere 2
 	ft_bzero(&e->spheres[1], sizeof(t_sphere));
 	e->spheres[1].pos.x = 0;
-	e->spheres[1].pos.y = 0;
-	e->spheres[1].pos.x = 0;
+	e->spheres[1].pos.y = -10;
+	e->spheres[1].pos.z = 50;
 	e->spheres[1].dir.x = 0;
 	e->spheres[1].dir.y = 0;
 	e->spheres[1].dir.z = 0;

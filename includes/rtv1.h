@@ -43,12 +43,12 @@
 # define HEIGHT					1080
 # define DEPTH					2000
 
-# define NCAM					e->scene.n_cams
-# define NCON					e->scene.n_cones
-# define NCYL					e->scene.n_cylinders
-# define NLIG					e->scene.n_lights
-# define NPLA					e->scene.n_planes
-# define NSPH					e->scene.n_spheres
+# define NCAM					e->param.n_cams
+# define NCON					e->param.n_cones
+# define NCYL					e->param.n_cylinders
+# define NLIG					e->param.n_lights
+# define NPLA					e->param.n_planes
+# define NSPH					e->param.n_spheres
 
 //////////////////////////////
 // USELESS??
@@ -120,7 +120,7 @@ typedef struct			s_sphere
 	cl_int				color;
 }						t_sphere;
 
-typedef struct			s_scene
+typedef struct			s_param
 {
 	unsigned int		n_cams;
 	unsigned int		n_cones;
@@ -129,7 +129,7 @@ typedef struct			s_scene
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
-}						t_scene;
+}						t_param;
 
 typedef struct			s_frame
 {
@@ -171,7 +171,7 @@ typedef	struct			s_env
 	size_t				local;
 	size_t				dif;
 	unsigned int		count;
-	t_scene				scene;
+	t_param				param;
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;
