@@ -39,7 +39,7 @@ float			inter_plan(float3 plan_origin, float3 plan_normale, float3 ray, float3 c
 
 	t = dot_vect(ray, plan_normale);
 	t = dot_vect(sub_vect(plan_origin, cam_origin), plan_normale) / t;
-	if (t < 0.0000001)
+	if (t < 0.00001)
 		return (1000000000);
 	return (t);
 }
@@ -60,7 +60,7 @@ unsigned int			light_angle(float angle)
 	unsigned char		r = (SCOLOR & 0x00FF0000) >> 16;
 	unsigned char		g = (SCOLOR & 0x0000FF00) >> 8;
 	unsigned char		b = (SCOLOR & 0x000000FF);
-	unsigned char		mult = 2 * (int)angle;
+	float		mult =  1.40 * angle;
 	if (angle == 0)
 		return (SCOLOR);
 	if (mult > r)
@@ -78,7 +78,7 @@ unsigned int			light_angle(float angle)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			light_sphere(float3 p, float3 boule_origin, float radius, float3 light_origin, float3 plan_origin, float3 plan_normale)
+unsigned int			light_sphere(char obj, float3 p, float3 boule_origin, float radius, float3 light_origin, float3 plan_origin, float3 plan_normale)
 {
 	float3		normale = p - boule_origin;
 	float3		lightray = light_origin - p;
@@ -87,21 +87,29 @@ unsigned int			light_sphere(float3 p, float3 boule_origin, float radius, float3 
 	float cos_angle;
 	float plan;
 	float sphere;
-	if ((plan = inter_plan(plan_origin, plan_normale, lightdir, p)) <= 0)
+	if ((plan = inter_plan(plan_origin, plan_normale, lightray, p)) <= 0)
 		plan = 1000000000;
 	if ((sphere = inter_sphere(radius, lightdir, p, boule_origin)) <= 0)
 		sphere = 1000000000;
 	if (plan < lightdist || sphere < lightdist)
+	{
+	//	printf("coucou");
 		return (BACKCOLOR);
-	cos_angle = dot_vect(lightray, normale) / (norme_vect(lightray) * norme_vect(normale));
-	if (cos_angle < 0)
-		return (0x00000001);
+	}
+	if (obj == 5)
+		cos_angle = dot_vect(lightray, normale) / (norme_vect(lightray) * norme_vect(normale));
+	else
+		cos_angle = dot_vect(lightray, plan_normale) / (norme_vect(lightray) * norme_vect(plan_normale));
+	/*if (cos_angle < 0)
+		return (0x00000000);*/
 	float angle = acos(cos_angle) * RAD2DEG;
 	//printf("%f\n", cos_angle);
-	if (angle > 90)
-		return (BACKCOLOR);
+	/*if (angle > 90)
+		return (BACKCOLOR);*/
 	return (light_angle(angle));
 }
+
+
 
 __kernel void	ray_trace(__global char *output,
 							float3 mvt,
@@ -156,18 +164,18 @@ __kernel void	ray_trace(__global char *output,
 	// LIGHT
 	float3	light_origin;
 	light_origin.x = 0;
-	light_origin.y = 0;
-	light_origin.z = -20;
+	light_origin.y = -20;
+	light_origin.z = 20;
 	float	radiusl = 1;
 
 	// PLANE
 	float3	plan_origin;
-	plan_origin.x = 10;
+	plan_origin.x = 0;
 	plan_origin.y = 10;
 	plan_origin.z = 0;
 	float3	plan_normale;
-	plan_normale.x = 0.5;
-	plan_normale.y = 0.5;
+	plan_normale.x = 0;
+	plan_normale.y = 1;
 	plan_normale.z = 0;
 
 	normalize_vect(plan_normale);
@@ -186,10 +194,10 @@ __kernel void	ray_trace(__global char *output,
 	if (sphere == 1000000000 && plan == 1000000000)
 		OUTPUTE = BACKCOLOR;
 	else if (sphere < plan && sphere < light)
-		OUTPUTE = light_sphere((mult_fvect(sphere, ray) + cam_origin), boule_origin, radius, light_origin, plan_origin, plan_normale);
+		OUTPUTE = light_sphere(5, (mult_fvect(sphere, ray) + cam_origin), boule_origin, radius, light_origin, plan_origin, plan_normale);
 //OUTPUTE = SCOLOR;
 	else if (light < sphere && light < plan)
 		OUTPUTE = LCOLOR;
 	else
-		OUTPUTE = PCOLOR;
+		OUTPUTE = light_sphere(0, (mult_fvect(plan, ray) + cam_origin), boule_origin, radius, light_origin, plan_origin, plan_normale);
 }
