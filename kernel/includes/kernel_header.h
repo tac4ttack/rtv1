@@ -56,7 +56,7 @@ typedef struct			s_sphere
 	int					color;
 }						t_sphere;
 
-typedef struct			s_scene
+typedef struct			s_param
 {
 	unsigned int		n_cams;
 	unsigned int		n_cones;
@@ -65,6 +65,22 @@ typedef struct			s_scene
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
+}						t_param;
+
+typedef struct			s_scene
+{
+	t_param				*param;
+	t_cam				*cameras;
+	t_cone				*cones;
+	float				*cones_dst;
+	t_cylinder			*cylinders;
+	float				*cylinders_dst;
+	t_light				*lights;
+	float				*lights_dst;
+	t_plane				*planes;
+	float				*planes_dst;
+	t_sphere			*spheres;
+	float				*spheres_dst;
 }						t_scene;
 
 float3			sub_vect(float3 v1, float3 v2)
