@@ -42,7 +42,6 @@ typedef struct			s_cam
 	float3				ver;
 	float3				dir;
 	float3				pos;
-	float3				ray;
 }						t_cam;
 
 typedef struct			s_cone
@@ -98,15 +97,16 @@ typedef struct			s_param
 typedef struct			s_scene
 {
 	t_param				*param;
-	t_cam				*cameras;
-	t_cone				*cones;
+	t_cam				__constant *cameras;
+	t_cone				__constant *cones;
 	float				*cones_dst;
-	t_cylinder			*cylinders;
+	t_cylinder			__constant *cylinders;
 	float				*cylinders_dst;
-	t_light				*lights;
+	t_light				__constant *lights;
 	float				*lights_dst;
-	t_plane				*planes;
+	t_plane				__constant *planes;
 	float				*planes_dst;
-	t_sphere			*spheres;
+	t_sphere			__constant *spheres;
 	float				*spheres_dst;
+	float3				ray;
 }						t_scene;

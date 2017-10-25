@@ -8,12 +8,12 @@ t_scene			grab_data(__constant t_cam *cameras, \
 {
 t_scene	result;
 
-result.cameras = &cameras;
-result.cones = &cones;
-result.cylinders = &cylinders;
-result.lights = &lights;
-result.planes = &planes;
-result.spheres = &spheres;
+result.cameras = cameras;
+result.cones = cones;
+result.cylinders = cylinders;
+result.lights = lights;
+result.planes = planes;
+result.spheres = spheres;
 result.param = &param;
 return (result);
 }
