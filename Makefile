@@ -124,7 +124,7 @@ cleanmlx:
 	@make -C ./mlx/mlx_sierra/ clean
 	@make -C ./mlx/mlx_x11/ clean
 
-re: fclean cpu
+re: fclean default
 
 norme:
 	norminette $(SRC_PATH)
