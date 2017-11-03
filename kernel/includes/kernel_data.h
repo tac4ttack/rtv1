@@ -20,7 +20,7 @@ return (result);
 
 int				get_max_obj(t_param *param)
 {
-	int			res = param->n_cones;
+	unsigned int			res = param->n_cones;
 	if (param->n_cylinders > res)
 		res = param->n_cylinders;
 	if (param->n_planes > res)

@@ -48,6 +48,7 @@ typedef struct			s_cone
 {
 	float3				pos;
 	float3				dir;
+	float				angle;
 	int					color;
 }						t_cone;
 

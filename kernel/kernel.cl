@@ -2,7 +2,7 @@
 #include "kernel_data.h"
 #include "kernel_vector.h"
 
-float3					get_abc(float radius, float3 ray, float3 origin)
+float3					get_sphere_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc;
 
@@ -20,7 +20,81 @@ float					inter_sphere(t_sphere sphere, float3 ray, float3 origin)
 	float				res2;
 
 	origin -= sphere.pos;
-	abc = get_abc(sphere.radius, ray, origin);
+	abc = get_sphere_abc(sphere.radius, ray, origin);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return ((-abc[1]) / (2 * abc[0]));
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return(res1);
+	return(res2);
+}
+
+float3					get_cylinder_abc(t_cylinder cylind, float3 ray, float3 origin)
+{
+	float3		abc;
+
+	abc.x = (ray.x * ray.x) + (ray.y * ray.y);
+	abc.y = 2 * ((origin.x * ray.x) + (origin.y * ray.y) \
+			- (ray.x * cylind.pos.x) - (ray.y * cylind.pos.y));
+	abc.z = (origin.x * origin.x) + (origin.y * origin.y) \
+			+ (cylind.pos.x * cylind.pos.x) + (cylind.pos.y * cylind.pos.y) \
+			- (cylind.radius * cylind.radius) \
+			- 2 * ((origin.x * cylind.pos.x) + (origin.y * cylind.pos.y));
+	return (abc);
+}
+
+float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
+{
+	float3				abc;
+	float				d;
+	float				res1;
+	float				res2;
+
+	origin -= cylind.pos;
+	abc = get_cylinder_abc(cylind, ray, origin);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return ((-abc[1]) / (2 * abc[0]));
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return(res1);
+	return(res2);
+}
+
+float3					get_cone_abc(t_cone cone, float3 ray, float3 origin)
+{
+	float3		abc;
+	float		tan_alpha;
+
+	tan_alpha = tan(cone.angle * DEG2RAD);
+	abc.x = (ray.x * ray.x) + (ray.y * ray.y) - (ray.z * ray.z) * (tan_alpha * tan_alpha);
+	abc.y = 2 * ((ray.x * origin.x) + (ray.y * origin.y) \
+			- (ray.x * cone.pos.x) - (ray.y * cone.pos.y) \
+			+ (ray.z * (cone.pos.z - origin.z)) * (tan_alpha * tan_alpha));
+	abc.z = (origin.x * origin.x) + (origin.y * origin.y) \
+			+ (cone.pos.x * cone.pos.x) + (cone.pos.y * cone.pos.y) \
+			- 2 * ((origin.x * cone.pos.x) + (origin.y * cone.pos.y)) \
+			- ((origin.z *origin.z) - 2 * (origin.z * cone.pos.z) \
+			+ (cone.pos.z * cone.pos.z)) * (tan_alpha * tan_alpha);
+	return (abc);
+}
+
+float					inter_cone(t_cone cone, float3 ray, float3 origin)
+{
+	float3				abc;
+	float				d;
+	float				res1;
+	float				res2;
+
+	origin -= cone.pos;
+	abc = get_cone_abc(cone, ray, origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);
@@ -83,10 +157,10 @@ unsigned int			get_obj_hue(t_scene scene, t_hit hit)
 {
 	unsigned int		color = 0;
 
-//	CONES
-//	if (i < PARAM.n_cones)
-//	CYLINDERS
-//	if (i < PARAM.n_cylinders)
+	if (hit.type == 1)
+		color = CONES[hit.id].color;
+	if (hit.type == 2)
+		color = CYLIND[hit.id].color;
 	if (hit.type == 4)
 		color = PLANE[hit.id].color;
 	else if (hit.type == 5)
@@ -119,11 +193,22 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 	hit.normale = (0, 0, 0);
 	while (++i < max)
 	{
-//		CONES
-//		if (i < PARAM->n_cones)
-//		CYLINDERS
-//		if (i < PARAM->n_cylinders)
-
+		if (i < PARAM->n_cones)
+			if (((dist = inter_cone(CONES[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				//printf("%f\n", dist);
+				hit.dist = dist;
+				hit.type = 1;
+				hit.id = i;
+			}
+		if (i < PARAM->n_cylinders)
+			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				//printf("%f\n", dist);
+				hit.dist = dist;
+				hit.type = 2;
+				hit.id = i;
+			}
 		if (i < PARAM->n_planes)
 			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
@@ -176,11 +261,10 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 {
 	float3		res;
 
-//	CONES
-//	if (hit.type == 1)
-//	CYLINDERS
-//	if (hit.type == 2)
-
+	if (hit.type == 1)
+		res = hit.pos - CONES[hit.id].pos;
+	if (hit.type == 2)
+		res = hit.pos - CYLIND[hit.id].pos;
 	if (hit.type == 4)
 		res = PLANE[hit.id].normale;
 	else if (hit.type == 5)

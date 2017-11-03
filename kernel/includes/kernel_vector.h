@@ -34,9 +34,7 @@ float3			normalize_vect(float3 v)
 	return (res);
 }
 
-float	
-
-dot_vect(float3 v1, float3 v2)
+float			dot_vect(float3 v1, float3 v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
