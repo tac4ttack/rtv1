@@ -5,13 +5,16 @@ void	display_hud(t_env *e)
 	char *mvtx;
 	char *mvty;
 	char *mvtz;
+	char *bloom;
 
-	mvtx = ft_ftoa(e->mvt.x);
-	mvty = ft_ftoa(e->mvt.y);
-	mvtz = ft_ftoa(e->mvt.z);
+	mvtx = ft_ftoa(e->cameras[0].pos.x + e->mvt.x);
+	mvty = ft_ftoa(e->cameras[0].pos.y + e->mvt.y);
+	mvtz = ft_ftoa(e->cameras[0].pos.z + e->mvt.z);
+	bloom = ft_ftoa(e->param.bloom);
 	mlx_string_put(e->mlx, e->win, 10, 10, 0x00ffffff, mvtx);
 	mlx_string_put(e->mlx, e->win, 10, 25, 0x00ffffff, mvty);
 	mlx_string_put(e->mlx, e->win, 10, 40, 0x00ffffff, mvtz);
+	mlx_string_put(e->mlx, e->win, 10, 55, 0x00ffffff, bloom);
 	free(mvtx);
 	free(mvty);
 	free(mvtz);

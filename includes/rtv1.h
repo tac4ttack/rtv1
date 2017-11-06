@@ -114,6 +114,7 @@ typedef struct			s_param
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
+	cl_float			bloom;
 }						t_param;
 
 typedef struct			s_frame
@@ -194,6 +195,7 @@ int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
 
 int						opencl_init(t_env *e);
+int						opencl_allocate_scene_memory(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
 

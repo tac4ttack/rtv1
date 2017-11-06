@@ -1,11 +1,7 @@
 #define WINX 1920
 #define WINY 1080
 
-#define BACKCOLOR 0x00000000
-#define SCOLOR 0x000000FF
-#define PCOLOR 0x00FF0000
-#define SSCOLOR 0x0000FF00
-#define LCOLOR 0x00FFFFFF
+#define BACKCOLOR 0x00333333
 
 #define DEG2RAD (M_PI / 180)
 #define RAD2DEG (180 / M_PI)
@@ -93,6 +89,7 @@ typedef struct			s_param
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
+	float				bloom;
 }						t_param;
 
 typedef struct			s_scene

@@ -113,7 +113,7 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 
 	t = dot_vect(ray, plane.normale);
 	t = dot_vect(sub_vect(plane.pos, origin), plane.normale) / t;
-	if (t < 0.00001)
+	if (t < 0.0001)
 		return (0);
 	return (t);
 }
@@ -129,12 +129,12 @@ float3					get_ray_cam(t_cam cam, int x, int y)
 	return (ray);
 }
 
-unsigned int			light_angle(float angle, unsigned int robert_hue)
+unsigned int			light_angle(float angle, unsigned int robert_hue, t_scene scene)
 {
 	unsigned char		r = (robert_hue & 0x00FF0000) >> 16;
 	unsigned char		g = (robert_hue & 0x0000FF00) >> 8;
 	unsigned char		b = (robert_hue & 0x000000FF);
-	float				mult =  1.80 * angle;
+	float				mult = scene.param->bloom * angle;
 
 	if (angle == 0)
 		return (robert_hue);
@@ -196,7 +196,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 		if (i < PARAM->n_cones)
 			if (((dist = inter_cone(CONES[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
-				//printf("%f\n", dist);
 				hit.dist = dist;
 				hit.type = 1;
 				hit.id = i;
@@ -204,7 +203,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 		if (i < PARAM->n_cylinders)
 			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
-				//printf("%f\n", dist);
 				hit.dist = dist;
 				hit.type = 2;
 				hit.id = i;
@@ -212,7 +210,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 		if (i < PARAM->n_planes)
 			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
-				//printf("%f\n", dist);
 				hit.dist = dist;
 				hit.type = 4;
 				hit.id = i;
@@ -235,7 +232,7 @@ unsigned int			light(t_hit hit, t_scene scene)
 	t_light_ray			light_ray;
 	t_hit				light_hit;
 	unsigned int		obj_color = get_obj_hue(scene, hit);
-	unsigned int		res_color = BACKCOLOR;
+	unsigned int		res_color = light_angle(90, obj_color, scene);
 	unsigned int		tmp_color = 0;
 
 	while (++i < PARAM->n_lights)
@@ -249,7 +246,7 @@ unsigned int			light(t_hit hit, t_scene scene)
 		else
 		{
 			angle = light_angelamerkel(hit, light_ray);
-			if ((tmp_color = light_angle(angle, obj_color)) > res_color)
+			if ((tmp_color = light_angle(angle, obj_color, scene)) != res_color)
 				res_color = tmp_color;
 			//res_color = obj_color;
 		}
@@ -261,13 +258,14 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 {
 	float3		res;
 
+
 	if (hit.type == 1)
 		res = hit.pos - CONES[hit.id].pos;
-	if (hit.type == 2)
+	else if (hit.type == 2)
 		res = hit.pos - CYLIND[hit.id].pos;
-	if (hit.type == 4)
+	else if (hit.type == 4)
 		res = PLANE[hit.id].normale;
-	else if (hit.type == 5)
+	else
 		res = hit.pos - SPHERE[hit.id].pos;
 	return (res);
 }
