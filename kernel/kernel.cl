@@ -116,6 +116,7 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 	if (t < 0.0001)
 		return (0);
 	return (t);
+
 }
 
 float3					get_ray_cam(t_cam cam, int x, int y)

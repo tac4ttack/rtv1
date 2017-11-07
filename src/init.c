@@ -78,20 +78,31 @@ void	load_scene(t_env *e)
 	e->cameras[0].ver.y = 0.6;
 	e->cameras[0].ver.z = 0;
 
-	//plane
+	//plane 1
 	ft_bzero(&e->planes[0], sizeof(t_plane));
 	e->planes[0].pos.x = 0;
 	e->planes[0].pos.y = 1;
 	e->planes[0].pos.z = 0;
 	e->planes[0].normale.x = 0;
-	e->planes[0].normale.y = 1;
+	e->planes[0].normale.y = -0.1;
 	e->planes[0].normale.z = 0;
 	e->planes[0].color = 0x00ff0000;
+
+	//plane 2
+/*	ft_bzero(&e->planes[1], sizeof(t_plane));
+	e->planes[1].pos.x = -5;
+	e->planes[1].pos.y = 0;
+	e->planes[1].pos.z = 0;
+	e->planes[1].normale.x = 1;
+	e->planes[1].normale.y = 0;
+	e->planes[1].normale.z = 0;
+	e->planes[1].color = 0x000000ff;
+*/	
 
 	//sphere 1
 	ft_bzero(&e->spheres[0], sizeof(t_sphere));
 	e->spheres[0].pos.x = 0;
-	e->spheres[0].pos.y = 0;
+	e->spheres[0].pos.y = -10;
 	e->spheres[0].pos.z = 0;
 	e->spheres[0].dir.x = 0;
 	e->spheres[0].dir.y = 0;
@@ -108,7 +119,7 @@ void	load_scene(t_env *e)
 	e->spheres[1].dir.y = 0;
 	e->spheres[1].dir.z = 0;
 	e->spheres[1].radius = 3;
-	e->spheres[1].color = 0x00660033;
+	e->spheres[1].color = 0x00660066;
 
 	//lights
 	ft_bzero(&e->lights[0], sizeof(t_light));
