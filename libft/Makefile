@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2017/09/29 17:53:27 by fmessina         ###   ########.fr        #
+#    Updated: 2017/11/11 17:31:12 by fmessina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,8 @@ SRC =		ft_abs.c \
 			ft_intlen.c \
 			ft_isalnum.c \
 			ft_isalpha.c \
+			ft_isalphalowercase.c \
+			ft_isalphauppercase.c \
 			ft_isascii.c \
 			ft_isdigit.c \
 			ft_isprint.c \

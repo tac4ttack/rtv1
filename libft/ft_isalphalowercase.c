@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_facti.c                                         :+:      :+:    :+:   */
+/*   ft_isalphalowercase.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/17 13:55:35 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/07 17:41:43 by fmessina         ###   ########.fr       */
+/*   Created: 2017/11/11 17:30:11 by fmessina          #+#    #+#             */
+/*   Updated: 2017/11/11 17:30:46 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <limits.h>
-
-int	ft_int_fact(int n)
+int	ft_isalphalowercase(int c)
 {
-	int	i;
-	int	res;
-
-	res = 1;
-	i = 1;
-	if (n > 16)
-	{
-		ft_putendl("ERROR: Result is over the INT_MAX limit");
-		return (-1);
-	}
-	while (i <= n)
-		res *= i++;
-	return (res);
+	if (c >= 97 && c <= 122)
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:26:13 by fmessina          #+#    #+#             */
-/*   Updated: 2017/09/29 18:01:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/11 17:31:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ int					ft_longlen(long n);
 
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
+int					ft_isalphalowercase(int c);
+int					ft_isalphauppercase(int c);
 int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
