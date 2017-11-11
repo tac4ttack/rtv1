@@ -84,17 +84,17 @@ void		load_kernel(t_env *e)
 
 	if ((e->kernel_src = ft_strdup("#define FROM_KERNEL\n")) == NULL)
 	{
-		s_error("Error during allocating memory for kernel source code");
+		s_error("Error during allocating memory for kernel source code", e);
 		exit(1);
 	}
-	if ((fd = open("./kernel/kernel.cl", O_RDONLY)) == -1)
-		s_error("Error opening kernel");
+	if ((fd = open("./kernel/kernel.cl", O_RDONLY)) < 0)
+		s_error("Error opening kernel", e);
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
 		e->kernel_src = ft_strjoin_frs1(e->kernel_src, "\n");
 		e->kernel_src = ft_strjoin_free(e->kernel_src, line);
 	}
-	(ret == -1 ? s_error("GNL read error") : 0);
+	(ret == -1 ? s_error("GNL read error", e) : 0);
 	e->kernel_src = ft_strjoin_frs1(e->kernel_src, "\n");
 	close(fd);
 }
