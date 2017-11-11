@@ -1,4 +1,5 @@
 #include "kernel_header.h"
+#include "kernel_color.h"
 #include "kernel_data.h"
 #include "kernel_vector.h"
 
@@ -111,34 +112,27 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 {
 	float				t;
 
+//	printf("x = %f | y = %f | z = %f\n", plane.normale.x, plane.normale.y, plane.normale.z);
+//	printf("rx = %f | ry = %f | rz = %f\n", ray.x, ray.y, ray.z);
 	t = dot_vect(ray, plane.normale);
+//	printf("t1 = %f\n", t);
 	t = dot_vect(sub_vect(plane.pos, origin), plane.normale) / t;
+//	printf("t2 = %f\n", t);
 	if (t < 0.0001)
 		return (0);
 	return (t);
 
 }
 
-float3					get_ray_cam(t_cam cam, int x, int y)
+unsigned int			light_angle(float angle, unsigned int obj_color, t_scene scene)
 {
-	float3				ray;
-	float3				h = mult_fvect(modh_vect(x), cam.hor);
-	float3				v = mult_fvect(modv_vect(y), cam.ver);
-
-	ray = add_vect(cam.dir, v);
-	ray = add_vect(ray, h);
-	return (ray);
-}
-
-unsigned int			light_angle(float angle, unsigned int robert_hue, t_scene scene)
-{
-	unsigned char		r = (robert_hue & 0x00FF0000) >> 16;
-	unsigned char		g = (robert_hue & 0x0000FF00) >> 8;
-	unsigned char		b = (robert_hue & 0x000000FF);
+	unsigned char		r = (obj_color & 0x00FF0000) >> 16;
+	unsigned char		g = (obj_color & 0x0000FF00) >> 8;
+	unsigned char		b = (obj_color & 0x000000FF);
 	float				mult = scene.param->bloom * angle;
 
-	if (angle == 0)
-		return (robert_hue);
+	if (angle <= 0)
+		return (obj_color);
 	if (mult > r)
 		r = 0;
 	else
@@ -174,7 +168,7 @@ float					light_angelamerkel(t_hit hit, t_light_ray light_ray)
 	float				cos_angela;
 	float				angela;
 
-	cos_angela = dot_vect(light_ray.ray, hit.normale) / (norme_vect(light_ray.ray) * norme_vect(hit.normale));
+	cos_angela = dot_vect(light_ray.dir, hit.normale) / (norme_vect(light_ray.dir) * norme_vect(hit.normale));
 	angela = acos(cos_angela) * RAD2DEG;
 	//printf("%f\n", angela);
 	return (angela);
@@ -226,35 +220,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 	return (hit);
 }
 
-unsigned int			light(t_hit hit, t_scene scene)
-{
-	int					i = -1;
-	float				angle = 0;
-	t_light_ray			light_ray;
-	t_hit				light_hit;
-	unsigned int		obj_color = get_obj_hue(scene, hit);
-	unsigned int		res_color = light_angle(90, obj_color, scene);
-	unsigned int		tmp_color = 0;
-
-	while (++i < PARAM->n_lights)
-	{
-		//printf("%f\n", hit.pos.y);
-		light_ray.ray = LIGHT[i].pos - hit.pos;
-		light_ray.dist = norme_vect(light_ray.ray);
-		light_hit = ray_hit(hit.pos, light_ray.ray, scene);
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-			;//printf("%f\n", light_hit.dist);
-		else
-		{
-			angle = light_angelamerkel(hit, light_ray);
-			if ((tmp_color = light_angle(angle, obj_color, scene)) != res_color)
-				res_color = tmp_color;
-			//res_color = obj_color;
-		}
-	}
-	return (res_color);
-}
-
 float3			get_hit_normale(t_scene scene, t_hit hit)
 {
 	float3		res;
@@ -271,15 +236,43 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	return (res);
 }
 
+unsigned int			light(t_hit hit, t_scene scene)
+{
+	int					i = -1;
+	float				angle = 0;
+	t_light_ray			light_ray;
+	t_hit				light_hit;
+	unsigned int		obj_color = get_obj_hue(scene, hit);
+	unsigned int		res_color = light_angle(90, obj_color, scene);
+	unsigned int		tmp_color = 0;
+
+	while (++i < PARAM->n_lights)
+	{
+		light_ray.dir = LIGHT[i].pos - hit.pos;
+		light_ray.dist = norme_vect(light_ray.dir);
+		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
+			break;
+		else
+		{
+			angle = light_angelamerkel(hit, light_ray);
+			if ((tmp_color = light_angle(angle, obj_color, scene)) != res_color)
+				res_color = tmp_color;
+//			res_color = obj_color;
+		}
+	}
+	return (res_color);
+}
+
 unsigned int	get_pixel_color(t_scene scene, float3 mvt)
 {
 	t_hit		hit;
 	float		bias = 0.0001;
 
-	hit = ray_hit((ACTIVECAM.pos + mvt), scene.ray, scene);
+	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
 	if (hit.dist > 0)
 	{
-		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + mvt);
+		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
 		hit.pos = hit.pos + mult_fvect((bias + (hit.dist / 10000)), hit.normale);
 		return (light(hit, scene));
@@ -287,8 +280,18 @@ unsigned int	get_pixel_color(t_scene scene, float3 mvt)
 	return (BACKCOLOR);
 }
 
+float3					get_ray_cam(t_cam cam, int x, int y)
+{
+	float3				ray;
+	float3				h = mult_fvect(modh_vect(x), cam.hor);
+	float3				v = mult_fvect(modv_vect(y), cam.ver);
+
+	ray = add_vect(cam.dir, v);
+	ray = add_vect(ray, h);
+	return (ray);
+}
+
 __kernel void	ray_trace(__global char *output,
-						  float3 mvt,
 						  t_param param,
 						  __constant t_cam *cameras,
 						  __constant t_cone *cones,
@@ -305,5 +308,5 @@ __kernel void	ray_trace(__global char *output,
 //	normalize_vect(plan_normale);
 
 	scene.ray = get_ray_cam(ACTIVECAM, x ,y);
-	OUTPUTE = get_pixel_color(scene, mvt);
+	OUTPUTE = get_pixel_color(scene, PARAM->mvt);
 }

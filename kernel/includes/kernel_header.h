@@ -19,7 +19,7 @@
 
 typedef struct			s_light_ray
 {
-	float3				ray;
+	float3				dir;
 	float				dist;
 }						t_light_ray;
 
@@ -90,6 +90,7 @@ typedef struct			s_param
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
 	float				bloom;
+	float3				mvt;
 }						t_param;
 
 typedef struct			s_scene
