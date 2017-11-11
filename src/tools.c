@@ -25,15 +25,16 @@ void	s_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[2;31mOh no I just crashed!\x1b[0m");
 	ft_putendl(str);
-	perror(NULL);
 	flush(e);
 	exit(EXIT_FAILURE);
 }
 
-void	error(void)
+void	p_error(char *str, t_env *e)
 {
 	ft_putendl("\n\x1b[2;31mOh no I just crashed!\x1b[0m");
+	ft_putendl(str);
 	perror(NULL);
+	flush(e);
 	exit(EXIT_FAILURE);
 }
 

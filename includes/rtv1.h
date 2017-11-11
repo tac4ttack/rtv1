@@ -118,6 +118,15 @@ typedef struct			s_param
 	cl_float3			mvt;
 }						t_param;
 
+typedef	struct			s_xml
+{
+	unsigned int		lbra;
+	unsigned int		rbra;
+	unsigned int		slas;
+	unsigned int		dquo;
+	unsigned int		excl;
+}						t_xml;
+
 typedef struct			s_frame
 {
 	void				*ptr;
@@ -187,6 +196,7 @@ void					init(t_env *e);
 int						quit(t_env *e);
 void					error(void);
 void					s_error(char *str, t_env *e);
+void					p_error(char *str, t_env *e);
 void					print_usage();
 
 int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
