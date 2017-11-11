@@ -57,7 +57,8 @@ SRC_NAME =  			init.c \
 						mlx_mouse.c \
 						opencl_compute.c \
 						opencl_init.c \
-						tools.c
+						tools.c \
+						xml_file.c
 
 default: gpu
 
