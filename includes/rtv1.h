@@ -115,6 +115,7 @@ typedef struct			s_param
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
 	cl_float			bloom;
+	cl_float3			mvt;
 }						t_param;
 
 typedef struct			s_frame
@@ -135,7 +136,7 @@ typedef	struct			s_env
 	void				*mlx;
 	void				*win;
 	t_frame				*frame;
-	t_key				keys; 
+	t_key				keys;
 	int					win_w;
 	int					win_h;
 	int					sce_w;
@@ -145,6 +146,8 @@ typedef	struct			s_env
 	int					mou_x;
 	int					mou_y;
 	int					debug;
+	char				*scene;
+	int					scene_fd;
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
@@ -183,7 +186,8 @@ void					init(t_env *e);
 
 int						quit(t_env *e);
 void					error(void);
-void					s_error(char *str);
+void					s_error(char *str, t_env *e);
+void					print_usage();
 
 int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
 void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
@@ -193,6 +197,8 @@ void					mlx_keyboard_repeated(t_env *e);
 int						mlx_key_release(int key, t_env *e);
 int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
+
+void					get_file(t_env *e, int ac, char *av);
 
 int						opencl_init(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);

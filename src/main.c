@@ -1,11 +1,13 @@
 #include "rtv1.h"
 
-int	main(void)
+int			main(int ac, char **av)
 {
-	t_env *e;
+	t_env	*e;
 
+	(ac > 2 ? print_usage() : 0);
 	if (!(e = malloc(sizeof(t_env))))
-		s_error("\x1b[2;31mCan't initialize RTv1 environment\x1b[0m");
+		s_error("\x1b[2;31mCan't initialize RTv1 environment\x1b[0m", NULL);
+	get_file(e, ac, av[1]);
 	init(e);
 	return (0);
 }
