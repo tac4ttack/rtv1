@@ -13,11 +13,11 @@ void		set_hooks(t_env *e)
 void	load_scene(t_env *e)
 {
 	NCAM = 1;
-	NCON = 0;
-	NCYL = 0;
-	NLIG = 1;
+	NCON = 1;
+	NCYL = 1;
+	NLIG = 2;
 	NPLA = 1;
-	NSPH = 1;
+	NSPH = 2;
 
 	if (NCAM > 0)
 	{
@@ -68,7 +68,7 @@ void	load_scene(t_env *e)
 	e->cameras[0].pos.x = 0;
 	e->cameras[0].pos.y = -5;
 	e->cameras[0].pos.z = -10;
-	e->cameras[0].dir.x = 0;
+	e->cameras[0].dir.x = 2;
 	e->cameras[0].dir.y = 0;
 	e->cameras[0].dir.z = 1;
 	e->cameras[0].hor.x = 0.6;
@@ -108,7 +108,7 @@ void	load_scene(t_env *e)
 	e->spheres[0].dir.z = 0;
 	e->spheres[0].radius = 2;
 	e->spheres[0].color = 0x0000ff00;
-/*
+
 	//sphere 2
 	ft_bzero(&e->spheres[1], sizeof(t_sphere));
 	e->spheres[1].pos.x = 0;
@@ -119,7 +119,7 @@ void	load_scene(t_env *e)
 	e->spheres[1].dir.z = 0;
 	e->spheres[1].radius = 3;
 	e->spheres[1].color = 0x00660066;
-*/
+
 	//lights
 	ft_bzero(&e->lights[0], sizeof(t_light));
 	e->lights[0].pos.x = 12;
@@ -131,7 +131,7 @@ void	load_scene(t_env *e)
 	e->lights[0].color = 0x0000ff00;
 
 	//lights 2
-/*	ft_bzero(&e->lights[1], sizeof(t_light));
+	ft_bzero(&e->lights[1], sizeof(t_light));
 	e->lights[1].pos.x = -10;
 	e->lights[1].pos.y = -5;
 	e->lights[1].pos.z = 0;
@@ -139,8 +139,8 @@ void	load_scene(t_env *e)
 	e->lights[1].dir.y = 0;
 	e->lights[1].dir.z = 0;
 	e->lights[1].color = 0x00ffffff;
-*/
-/*
+
+
 	//cone 1
 	ft_bzero(&e->cones[0], sizeof(t_cone));
 	e->cones[0].pos.x = 25;
@@ -151,9 +151,9 @@ void	load_scene(t_env *e)
 	e->cones[0].dir.z = 0;
 	e->cones[0].angle = 2;
 	e->cones[0].color = 0x0000ff33;	
-*/
+
 	//cylinder 1
-/*	ft_bzero(&e->cylinders[0], sizeof(t_cylinder));
+	ft_bzero(&e->cylinders[0], sizeof(t_cylinder));
 	e->cylinders[0].pos.x = -20;
 	e->cylinders[0].pos.y = 0;
 	e->cylinders[0].pos.z = 10;
@@ -162,7 +162,7 @@ void	load_scene(t_env *e)
 	e->cylinders[0].dir.z = 0;
 	e->cylinders[0].radius = 3.0;
 	e->cylinders[0].color = 0x000033ff;	
-*/
+
 }
 
 void		frame_init(t_env *e)
