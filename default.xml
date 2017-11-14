@@ -1,4 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- cul -->
 <!--
+
+	Comments cannot appear before XML declaration. -> semble ok car verif header
+	Comments may appear anywhere in a document. -> semble ok
+	Comments must not appear within attribute values. -> à faire
+	Comments cannot be nested inside the other comments. -> semble OK
 
 <cam id="0"
 		pos="0, 0, 0"
@@ -28,7 +35,7 @@
 		color="0x00ffffff"
 		/>
 
-<plane id="0"
+<plane id="0" 
 		pos="0, 0, 0"
 		normale="0, 0, 1"
 		color="0x00ff0000"
@@ -39,8 +46,8 @@
 		dir="0, 0, 0"
 		color="0x00ff0000"
 		/>
-		
 -->
+<!-- bite -->
 <scene>
 	<cam id="0"
 			pos="-20, 0, 50"

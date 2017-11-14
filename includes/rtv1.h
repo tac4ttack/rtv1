@@ -120,6 +120,9 @@ typedef struct			s_param
 
 typedef	struct			s_xml
 {
+	char				*scene;
+	int					scene_fd;
+	char				comment;
 	unsigned int		lbra;
 	unsigned int		rbra;
 	unsigned int		slas;
@@ -155,8 +158,7 @@ typedef	struct			s_env
 	int					mou_x;
 	int					mou_y;
 	int					debug;
-	char				*scene;
-	int					scene_fd;
+	t_xml				*xml;
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
@@ -191,7 +193,9 @@ typedef	struct			s_env
 *****		comment template		*****
 */
 
-void					init(t_env *e);
+void					get_file(t_env *e, int ac, char *av);
+void					init(t_env *e, int ac, char *av);
+void					set_hooks(t_env *e);
 
 int						quit(t_env *e);
 void					error(void);
@@ -207,8 +211,6 @@ void					mlx_keyboard_repeated(t_env *e);
 int						mlx_key_release(int key, t_env *e);
 int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
-
-void					get_file(t_env *e, int ac, char *av);
 
 int						opencl_init(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);

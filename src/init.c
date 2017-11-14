@@ -81,10 +81,10 @@ void	load_scene(t_env *e)
 	//plane 1
 	ft_bzero(&e->planes[0], sizeof(t_plane));
 	e->planes[0].pos.x = 0;
-	e->planes[0].pos.y = 0;
+	e->planes[0].pos.y = -10;
 	e->planes[0].pos.z = 0;
 	e->planes[0].normale.x = 0;
-	e->planes[0].normale.y = -1;
+	e->planes[0].normale.y = 1;
 	e->planes[0].normale.z = 0;
 	e->planes[0].color = 0x00ff0000;
 
@@ -186,7 +186,7 @@ void		frame_init(t_env *e)
 	load_scene(e);
 }
 
-void		init(t_env *e)
+void		init(t_env *e, int ac, char *av)
 {
 	ft_bzero(e, sizeof(t_env));
 	e->debug = DBUG;
@@ -199,16 +199,17 @@ void		init(t_env *e)
 	e->gpu = IS_GPU;
 	e->param.bloom = 1.80;
 	e->run = 1;
-
+	if (!(e->xml = malloc(sizeof(t_xml))))
+		s_error("\x1b[2;31mCan't initialize the xml buffer\x1b[0m", e);
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
+	get_file(e, ac, av);
 	if (opencl_init(e) != 0)
 	{
 		e->gpu = 0;
 		opencl_init(e);
 	}
-	set_hooks(e);
 }
