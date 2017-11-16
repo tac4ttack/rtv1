@@ -22,7 +22,6 @@
 # include <math.h>
 # include "libft.h"
 # include "mlx.h"
-# include "get_next_line.h"
 
 # ifdef DEBUG
 #  define DBUG					1
@@ -123,11 +122,11 @@ typedef	struct			s_xml
 	char				*scene;
 	int					scene_fd;
 	char				comment;
-	unsigned int		lbra;
-	unsigned int		rbra;
-	unsigned int		slas;
-	unsigned int		dquo;
-	unsigned int		excl;
+	int					lbra;
+	int					rbra;
+	int					slas;
+	int					dquo;
+	int					excl;
 }						t_xml;
 
 typedef struct			s_frame
@@ -193,9 +192,12 @@ typedef	struct			s_env
 *****		comment template		*****
 */
 
-void					get_file(t_env *e, int ac, char *av);
 void					init(t_env *e, int ac, char *av);
 void					set_hooks(t_env *e);
+
+void					get_file(t_env *e, int ac, char *av);
+void					parse_nodes(t_env *e);
+char					**split_nodes(t_env *e, char *scene);
 
 int						quit(t_env *e);
 void					error(void);

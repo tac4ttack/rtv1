@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- cul -->
+<!-- cul -->
 <!--
 
 	Comments cannot appear before XML declaration. -> semble ok car verif header
 	Comments may appear anywhere in a document. -> semble ok
-	Comments must not appear within attribute values. -> à faire
+	Comments must not appear within attribute values. -> a faire
 	Comments cannot be nested inside the other comments. -> semble OK
 
 <cam id="0"
