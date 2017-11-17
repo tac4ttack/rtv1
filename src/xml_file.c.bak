@@ -74,15 +74,15 @@ void			get_file(t_env *e, int ac, char *av)
 	if (ac > 2)
 		s_error("\x1b[2;31mError, too many arguments\x1b[0m", e);
 	else if (ac == 2)
-		e->xml->scene = ft_strdup(av);
+		XML->scene = ft_strdup(av);
 	else
 	{
 		ft_putendl("\x1b[2;33mNo scene file specified, loading default\x1b[0m");
-		e->xml->scene = ft_strdup("./default.xml");
+		XML->scene = ft_strdup("./default.xml");
 	}
-	if ((e->xml->scene_fd = open(e->scene, O_RDONLY)) < 0)
+	if ((XML->scene_fd = open(e->scene, O_RDONLY)) < 0)
 		p_error("\x1b[2;31mCan't open scene file\x1b[0m", e);
-	ft_bzero((void*)e->xml->scene, ft_strlen(e->xml->scene));
+	ft_bzero((void*)XML->scene, ft_strlen(XML->scene));
 	read_file(e);
 	check_file(e);
 }

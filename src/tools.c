@@ -9,8 +9,8 @@ void	flush(t_env *e)
 {
 	if (e->kernel_src)
 		free(e->kernel_src);
-	if (e->xml)
-		free(e->xml);
+	if (XML)
+		free(XML);
 	if (e->frame && e->frame->ptr)
 		mlx_destroy_image(e->mlx, e->frame->ptr);
 	if (e->frame)

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:26:13 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/11 17:31:41 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/17 16:45:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ char				*ft_strtrim(char const *s);
 char				*ft_strtrim_free(char *s);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				**ft_strsplit(char const *str, char c);
+char				**ft_strsplitcount(char const *str, char c, int *count);
 
 char				*ft_strmap(char const *s, char (*f)(char));
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));

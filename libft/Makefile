@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2017/11/11 17:31:12 by fmessina         ###   ########.fr        #
+#    Updated: 2017/11/17 16:47:46 by fmessina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,6 +95,7 @@ SRC =		ft_abs.c \
 			ft_strnstr.c \
 			ft_strrchr.c \
 			ft_strsplit.c \
+			ft_strsplitcount.c \
 			ft_strstr.c \
 			ft_strsub.c \
 			ft_strtrim.c \

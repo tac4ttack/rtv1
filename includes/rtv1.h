@@ -49,6 +49,8 @@
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
 
+# define XML					e->xml
+
 typedef struct			s_p2i
 {
 	int					x;
@@ -121,7 +123,12 @@ typedef	struct			s_xml
 {
 	char				*scene;
 	int					scene_fd;
-	char				comment;
+	char				**nodes;
+	char				**sub_node;
+	char				is_comm;
+	char				in_scene;
+	int					n_nodes;
+	int					n_sub;
 	int					lbra;
 	int					rbra;
 	int					slas;
@@ -195,9 +202,13 @@ typedef	struct			s_env
 void					init(t_env *e, int ac, char *av);
 void					set_hooks(t_env *e);
 
-void					get_file(t_env *e, int ac, char *av);
-void					parse_nodes(t_env *e);
-char					**split_nodes(t_env *e, char *scene);
+void					xml_init(t_env *e, int ac, char *av);
+void					xml_get_file(t_env *e, int ac, char *av);
+int						xml_check_char(char c);
+char					*xml_check_line(t_env *e, char *buf);
+void					xml_parse_nodes(t_env *e);
+char					**xml_split_nodes(t_env *e, char *scene);
+void					xml_node_clean(char **target, int count);
 
 int						quit(t_env *e);
 void					error(void);
