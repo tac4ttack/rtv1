@@ -6,19 +6,19 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 17:35:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/17 18:26:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/20 16:53:34 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void	xml_node_clean(char **target, int count)
+void	xml_node_clean(char **target)
 {
 	int	i;
 	
 	i = 0;
 	if (target)
-		while (i < count)
+		while (target[i])
 		{
 			free(target[i]);
 			target[i] = NULL;

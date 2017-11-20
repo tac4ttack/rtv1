@@ -59,11 +59,11 @@ typedef struct			s_p2i
 
 typedef struct			s_cam
 {
+	cl_float3			pos;
+	cl_float3			dir;
 	cl_float3			hor;
 	cl_float3			ver;
-	cl_float3			dir;
-	cl_float3			pos;
-	cl_float3			ray;
+//	cl_float3			ray;   DAFUQ IS THIS SHIT?
 }						t_cam;
 
 typedef struct			s_cone
@@ -100,9 +100,9 @@ typedef struct			s_plane
 
 typedef struct			s_sphere
 {
-	cl_float			radius;
 	cl_float3			pos;
 	cl_float3			dir;
+	cl_float			radius;
 	cl_int				color;
 }						t_sphere;
 
@@ -119,12 +119,29 @@ typedef struct			s_param
 	cl_float3			mvt;
 }						t_param;
 
+typedef struct			s_node
+{
+	int					id;
+	char				type;
+	cl_float3			hor;
+	cl_float3			ver;
+	cl_float3			dir;
+	cl_float3			pos;
+	cl_float3			normale;
+	cl_float			radius;
+	cl_float			angle;
+	cl_int				color;
+	cl_float			intensity;
+	struct s_node		*next;
+}						t_node;
+
 typedef	struct			s_xml
 {
 	char				*scene;
 	int					scene_fd;
 	char				**nodes;
 	char				**sub_node;
+	t_node				*node_lst;
 	char				is_comm;
 	char				in_scene;
 	int					n_nodes;
@@ -208,7 +225,15 @@ int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);
 void					xml_parse_nodes(t_env *e);
 char					**xml_split_nodes(t_env *e, char *scene);
-void					xml_node_clean(char **target, int count);
+void					xml_node_clean(char **target);
+t_node					*xml_list_new(char type);
+void					xml_list_add_first(t_node **begin, t_node *node);
+void					xml_node_cam(t_env *e, char *node);
+void					xml_node_cone(t_env *e, char *node);
+void					xml_node_cylinder(t_env *e, char *node);
+void					xml_node_light(t_env *e, char *node);
+void					xml_node_plane(t_env *e, char *node);
+void					xml_node_sphere(t_env *e, char *node);
 
 int						quit(t_env *e);
 void					error(void);

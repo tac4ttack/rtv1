@@ -59,7 +59,14 @@ SRC_NAME =  			init.c \
 						opencl_init.c \
 						tools.c \
 						xml.c \
+						xml_cameras.c \
+						xml_cones.c \
+						xml_cylinders.c \
+						xml_lights.c \
+						xml_list.c \
 						xml_nodes.c \
+						xml_planes.c \
+						xml_spheres.c \
 						xml_tools.c
 
 default: gpu

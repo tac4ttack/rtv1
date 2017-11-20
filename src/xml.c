@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:33:45 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/17 17:36:16 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/20 16:43:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		xml_read_file(t_env *e)
 		}
 	}
 	close(XML->scene_fd);
-	printf("SCENE = \n%s\n\n", XML->scene);
+//	printf("SCENE = \n%s\n\n", XML->scene);
 }
 
 void		xml_get_file(t_env *e, int ac, char *av)
@@ -58,5 +58,6 @@ void		xml_init(t_env *e, int ac, char *av)
 	if (!(XML = malloc(sizeof(t_xml))))
 		s_error("\x1b[2;31mCan't initialize the xml buffer\x1b[0m", e);
 	ft_bzero(XML, sizeof(t_xml));
+	XML->node_lst = NULL;
 	xml_get_file(e, ac, av);
 }
