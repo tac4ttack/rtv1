@@ -28,7 +28,7 @@ void	refresh(t_env *e)
 		mlx_clear_window(e->mlx, e->win);
 		draw(e);
 		mlx_put_image_to_window(e->mlx, e->win, e->frame->ptr, 0, 0);
-	//	display_hud(e);
+		display_hud(e);
 		e->run = 0;
 	}
 }

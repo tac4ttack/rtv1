@@ -26,8 +26,8 @@ typedef struct			s_light_ray
 typedef struct			s_hit
 {
 	float				dist;
-	char				type;
-	char				id;
+	int					type;
+	int					id;
 	float3				pos;
 	float3				normale;
 }						t_hit;
