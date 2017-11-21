@@ -2,6 +2,9 @@
  obj/
 rtv1
 libft/*.o
+log
+.vscode
+docs/exe
 
 # Prerequisites
 *.d
