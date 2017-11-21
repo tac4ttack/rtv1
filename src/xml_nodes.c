@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/20 17:42:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/21 11:08:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ void		print_nodes(t_env *e, char **nodes)
 	}
 }
 
-void				xml_node_scene(t_env *e, char *node, char mode)
+void				xml_node_scene(t_env *e, char *node, char mod)
 {
-	if (mode == 0)
+	if (mod == 0)
 	{
 		if (ft_strlen(node) != 7)
 			s_error("\x1b[2;31mError in XML syntax\x1b[0m", e);
 		XML->in_scene = 1;
 	}
-	else if (mode == 1)
+	else if (mod == 1)
 	{
 		if (ft_strlen(node) != 8)
 			s_error("\x1b[2;31mError in XML syntax\x1b[0m", e);
@@ -48,14 +48,14 @@ void				xml_node_scene(t_env *e, char *node, char mode)
 	}
 }
 
-void				xml_node_generic(t_env *e, char *node, char mode)
+void				xml_node_generic(t_env *e, char *node, char mod)
 {
-	if (mode == 0)
+	if (mod == 0)
 	{
 		if (ft_strcmp(node, "?xml version=\"1.0\" encoding=\"UTF-8\"?> ") != 0)
 			s_error("\x1b[2;31mError XML header is invalid\x1b[0m", e);
 	}
-	else if (mode == 1)
+	else if (mod == 1)
 	{
 		if ((node = ft_strstr(node, "-->")) != NULL)
 		{

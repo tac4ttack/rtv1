@@ -58,7 +58,7 @@ typedef struct			s_cylinder
 
 typedef struct			s_light
 {
-	char				type;
+	int					type;
 	float3				pos;
 	float3				dir;
 	float				intensity;

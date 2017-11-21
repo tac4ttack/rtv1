@@ -62,6 +62,8 @@ SRC_NAME =  			init.c \
 						xml_cameras.c \
 						xml_cones.c \
 						xml_cylinders.c \
+						xml_data_num.c \
+						xml_data_vector.c \
 						xml_lights.c \
 						xml_list.c \
 						xml_nodes.c \
