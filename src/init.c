@@ -68,7 +68,7 @@ void	load_scene(t_env *e)
 	e->cameras[0].pos.x = 0;
 	e->cameras[0].pos.y = -5;
 	e->cameras[0].pos.z = -10;
-	e->cameras[0].dir.x = 2;
+	e->cameras[0].dir.x = 0;
 	e->cameras[0].dir.y = 0;
 	e->cameras[0].dir.z = 1;
 	e->cameras[0].hor.x = 0.6;
@@ -146,11 +146,11 @@ void	load_scene(t_env *e)
 	e->cones[0].pos.x = 25;
 	e->cones[0].pos.y = 0;
 	e->cones[0].pos.z = 10;
-	e->cones[0].dir.x = 0;
+	e->cones[0].dir.x = 1;
 	e->cones[0].dir.y = 0;
 	e->cones[0].dir.z = 0;
-	e->cones[0].angle = 2;
-	e->cones[0].color = 0x0000ff33;	
+	e->cones[0].angle = 10;
+	e->cones[0].color = 0x00ff5000;
 
 	//cylinder 1
 	ft_bzero(&e->cylinders[0], sizeof(t_cylinder));
