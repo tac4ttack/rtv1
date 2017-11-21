@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/21 17:56:01 by fmessina          #+#    #+#             */
-/*   Updated: 2016/11/23 17:24:59 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/12 18:02:43 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <string.h>
 
 char	*ft_strstr(char const *s1, char const *s2)
 {

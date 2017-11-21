@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:26:13 by fmessina          #+#    #+#             */
-/*   Updated: 2017/09/29 18:01:05 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:41:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+int					ft_ahtoi(char const *str);
 int					ft_atoi(char const *str);
 long				ft_atol(const char *str);
+float				ft_atof(char *str);
 
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
@@ -133,6 +135,8 @@ int					ft_longlen(long n);
 
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
+int					ft_isalphalowercase(int c);
+int					ft_isalphauppercase(int c);
 int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
