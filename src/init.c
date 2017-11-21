@@ -13,10 +13,10 @@ void		set_hooks(t_env *e)
 void	load_scene(t_env *e)
 {
 	NCAM = 1;
-	NCON = 1;
+	NCON = 2;
 	NCYL = 1;
 	NLIG = 2;
-	NPLA = 1;
+	NPLA = 5;
 	NSPH = 2;
 
 	if (NCAM > 0)
@@ -66,8 +66,8 @@ void	load_scene(t_env *e)
 	//camera
 	ft_bzero(&e->cameras[0], sizeof(t_cam));
 	e->cameras[0].pos.x = 0;
-	e->cameras[0].pos.y = -5;
-	e->cameras[0].pos.z = -10;
+	e->cameras[0].pos.y = 0;
+	e->cameras[0].pos.z = -15;
 	e->cameras[0].dir.x = 0;
 	e->cameras[0].dir.y = 0;
 	e->cameras[0].dir.z = 1;
@@ -81,23 +81,53 @@ void	load_scene(t_env *e)
 	//plane 1
 	ft_bzero(&e->planes[0], sizeof(t_plane));
 	e->planes[0].pos.x = 0;
-	e->planes[0].pos.y = 0;
+	e->planes[0].pos.y = 10;
 	e->planes[0].pos.z = 0;
 	e->planes[0].normale.x = 0;
 	e->planes[0].normale.y = -1;
 	e->planes[0].normale.z = 0;
-	e->planes[0].color = 0x00ff0000;
+	e->planes[0].color = 0x00900000;
 
-/*	//plane 2
+	//plane 2
 	ft_bzero(&e->planes[1], sizeof(t_plane));
-	e->planes[1].pos.x = -5;
-	e->planes[1].pos.y = 0;
+	e->planes[1].pos.x = 0;
+	e->planes[1].pos.y = -10;
 	e->planes[1].pos.z = 0;
-	e->planes[1].normale.x = 1;
-	e->planes[1].normale.y = 0;
+	e->planes[1].normale.x = 0;
+	e->planes[1].normale.y = 1;
 	e->planes[1].normale.z = 0;
-	e->planes[1].color = 0x000000ff;
-*/	
+	e->planes[1].color = 0x00500090;
+
+	//plane 3
+	ft_bzero(&e->planes[2], sizeof(t_plane));
+	e->planes[2].pos.x = 0;
+	e->planes[2].pos.y = 0;
+	e->planes[2].pos.z = 40;
+	e->planes[2].normale.x = 0;
+	e->planes[2].normale.y = 0;
+	e->planes[2].normale.z = -1;
+	e->planes[2].color = 0x00005090;
+
+	//plane 4
+	ft_bzero(&e->planes[3], sizeof(t_plane));
+	e->planes[3].pos.x = 10;
+	e->planes[3].pos.y = 0;
+	e->planes[3].pos.z = 0;
+	e->planes[3].normale.x = -1;
+	e->planes[3].normale.y = 0;
+	e->planes[3].normale.z = 0;
+	e->planes[3].color = 0x000000ff;
+
+	//plane 5
+	ft_bzero(&e->planes[4], sizeof(t_plane));
+	e->planes[4].pos.x = -10;
+	e->planes[4].pos.y = 0;
+	e->planes[4].pos.z = 0;
+	e->planes[4].normale.x = 1;
+	e->planes[4].normale.y = 0;
+	e->planes[4].normale.z = 0;
+	e->planes[4].color = 0x00900090;
+
 	//sphere 1
 	ft_bzero(&e->spheres[0], sizeof(t_sphere));
 	e->spheres[0].pos.x = 0;
@@ -122,9 +152,9 @@ void	load_scene(t_env *e)
 
 	//lights
 	ft_bzero(&e->lights[0], sizeof(t_light));
-	e->lights[0].pos.x = 12;
-	e->lights[0].pos.y = -5;
-	e->lights[0].pos.z = 10;
+	e->lights[0].pos.x = -5;
+	e->lights[0].pos.y = -8;
+	e->lights[0].pos.z = 9;
 	e->lights[0].dir.x = 0;
 	e->lights[0].dir.y = 0;
 	e->lights[0].dir.z = 0;
@@ -132,9 +162,9 @@ void	load_scene(t_env *e)
 
 	//lights 2
 	ft_bzero(&e->lights[1], sizeof(t_light));
-	e->lights[1].pos.x = -10;
-	e->lights[1].pos.y = -5;
-	e->lights[1].pos.z = 0;
+	e->lights[1].pos.x = 0;
+	e->lights[1].pos.y = 0;
+	e->lights[1].pos.z = -5;
 	e->lights[1].dir.x = 0;
 	e->lights[1].dir.y = 0;
 	e->lights[1].dir.z = 0;
@@ -143,22 +173,33 @@ void	load_scene(t_env *e)
 
 	//cone 1
 	ft_bzero(&e->cones[0], sizeof(t_cone));
-	e->cones[0].pos.x = 25;
+	e->cones[0].pos.x = 5;
 	e->cones[0].pos.y = 0;
-	e->cones[0].pos.z = 10;
-	e->cones[0].dir.x = 1;
-	e->cones[0].dir.y = 0;
+	e->cones[0].pos.z = 0;
+	e->cones[0].dir.x = 0;
+	e->cones[0].dir.y = 1;
 	e->cones[0].dir.z = 0;
 	e->cones[0].angle = 10;
 	e->cones[0].color = 0x00ff5000;
 
+	//cone 2
+	ft_bzero(&e->cones[1], sizeof(t_cone));
+	e->cones[1].pos.x = -5;
+	e->cones[1].pos.y = -5;
+	e->cones[1].pos.z = 2;
+	e->cones[1].dir.x = 1;
+	e->cones[1].dir.y = 0;
+	e->cones[1].dir.z = 0;
+	e->cones[1].angle = 20;
+	e->cones[1].color = 0x00009090;
+
 	//cylinder 1
 	ft_bzero(&e->cylinders[0], sizeof(t_cylinder));
-	e->cylinders[0].pos.x = -20;
+	e->cylinders[0].pos.x = -5;
 	e->cylinders[0].pos.y = 0;
 	e->cylinders[0].pos.z = 10;
 	e->cylinders[0].dir.x = 0;
-	e->cylinders[0].dir.y = 0;
+	e->cylinders[0].dir.y = 1;
 	e->cylinders[0].dir.z = 0;
 	e->cylinders[0].radius = 3.0;
 	e->cylinders[0].color = 0x000033ff;	
