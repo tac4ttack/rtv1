@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 15:59:41 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:43:15 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 		s_error("\x1b[2;31mError in cylinder, COLOR expected in #4\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, cyl_node);
-	printf("color = %d\n", cyl_node->color);
+	printf("color = %xd\n", cyl_node->color);
 }
 
 void		xml_node_cylinder(t_env *e, char *node)

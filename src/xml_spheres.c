@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:06:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:43:01 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
 		s_error("\x1b[2;31mError in sphere, COLOR expected in #4\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, sphere_node);
-	printf("color = %d\n", sphere_node->color);
+	printf("color = %xd\n", sphere_node->color);
 }
 
 void		xml_node_sphere(t_env *e, char *node)

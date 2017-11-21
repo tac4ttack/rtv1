@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:01:22 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:43:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 		s_error("\x1b[2;31mError in light, COLOR expected in #5\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, light_node);
-	printf("color = %d\n", light_node->color);
+	printf("color = %xd\n", light_node->color);
 }
 
 void		xml_node_light(t_env *e, char *node)

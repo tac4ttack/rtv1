@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 14:14:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:44:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
 		s_error("\x1b[2;31mError in cone, COLOR expected in #4\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, cone_node);
-	printf("color = %d\n", cone_node->color);
+	printf("color = %xwd\n", cone_node->color);
 }
 
 void		xml_node_cone(t_env *e, char *node)

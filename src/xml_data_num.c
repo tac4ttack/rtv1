@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 12:32:12 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 15:58:23 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:44:39 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		xml_data_angle(t_env *e, char **attributes, int *i, t_node *node)
 void		xml_data_color(t_env *e, char **attributes, int *i, t_node *node)
 {
 	if (e && attributes && node)
-		node->color = ft_atoi(attributes[(*i)++] + 7);
+		node->color = ft_ahtoi(attributes[(*i)++] + 7);
 	else
 		s_error("\x1b[2;31mError reading COLOR from scene\x1b[0m", e);	
 }

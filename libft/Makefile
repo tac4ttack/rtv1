@@ -6,7 +6,7 @@
 #    By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/05 23:18:40 by fmessina          #+#    #+#              #
-#    Updated: 2017/11/21 11:07:50 by fmessina         ###   ########.fr        #
+#    Updated: 2017/11/21 16:40:55 by fmessina         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ CC =		clang
 CFLAGS +=	-Wall -Wextra -Werror $(ASANFLAGS)
 
 SRC =		ft_abs.c \
+			ft_ahtoi.c \
 			ft_atof.c \
 			ft_atoi.c \
 			ft_atol.c \
