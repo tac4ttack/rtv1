@@ -58,7 +58,8 @@ SRC_NAME =  			init.c \
 						opencl_compute.c \
 						opencl_init.c \
 						tools.c \
-						xml_file.c
+						xml_file.c \
+						xml_load.c
 
 default: gpu
 

@@ -50,6 +50,8 @@
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
 
+# define SCN					e->scene
+
 typedef struct			s_p2i
 {
 	int					x;
@@ -209,8 +211,10 @@ int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
 
 void					get_file(t_env *e, int ac, char *av);
+int						load_file(t_env *e);
 
 int						opencl_init(t_env *e);
+void					opencl_close(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);

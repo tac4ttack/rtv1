@@ -41,7 +41,7 @@ void	load_scene(t_env *e)
 	else
 		e->cylinders = NULL;
 	if (NLIG > 0)
-	{	
+	{
 		if (!(e->lights = malloc(sizeof(t_light) * NLIG)))
 			s_error("\x1b[2;31mCan't create lights array\x1b[0m", e);
 	}
@@ -169,7 +169,6 @@ void	load_scene(t_env *e)
 	e->lights[1].dir.y = 0;
 	e->lights[1].dir.z = 0;
 	e->lights[1].color = 0x00ffffff;
-
 
 	//cone 1
 	ft_bzero(&e->cones[0], sizeof(t_cone));
