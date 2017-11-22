@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:43:15 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/22 21:36:00 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,37 @@ void		xml_node_cylinder(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_cylinder_data(e, tmp, cyl_node, &i);
+	cyl_node->type = 2;
 	if (XML->node_lst == NULL)
 		XML->node_lst = cyl_node;
 	else
 		xml_list_add_first(&XML->node_lst, cyl_node);
 	xml_node_clean(tmp);
 	NCYL++;
+}
+
+void		xml_allocate_cyl(t_env *e)
+{
+	if (NCYL > 0)
+	{
+		if (!(e->cylinders = malloc(sizeof(t_cylinder) * NCYL)))
+			s_error("\x1b[2;31mCan't create cylinders array\x1b[0m", e);
+	}
+	else
+		e->cylinders = NULL;
+}
+
+void		xml_push_cyl(t_env *e, t_node *list)
+{
+//	NCYL--;
+//	e->cylinders[NCYL].pos = list->pos;
+	e->cylinders[list->id].pos.x = list->pos.x;
+	e->cylinders[list->id].pos.y = list->pos.y;
+	e->cylinders[list->id].pos.z = list->pos.z;
+//	e->cylinders[NCYL].dir = list->dir;
+	e->cylinders[list->id].dir.x = list->dir.x;
+	e->cylinders[list->id].dir.y = list->dir.y;
+	e->cylinders[list->id].dir.z = list->dir.z;
+	e->cylinders[list->id].radius = list->radius;
+	e->cylinders[list->id].color = list->color;
 }

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:44:26 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/22 21:35:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,37 @@ void		xml_node_cone(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_cone_data(e, tmp, cone_node, &i);
+	cone_node->type = 1;
 	if (XML->node_lst == NULL)
 		XML->node_lst = cone_node;
 	else
 		xml_list_add_first(&XML->node_lst, cone_node);
 	xml_node_clean(tmp);
 	NCON++;
+}
+
+void		xml_allocate_cone(t_env *e)
+{
+	if (NCON > 0)
+	{
+		if (!(e->cones = malloc(sizeof(t_cone) * NCON)))
+			s_error("\x1b[2;31mCan't create cones array\x1b[0m", e);
+	}
+	else
+		e->cones = NULL;
+}
+
+void		xml_push_cone(t_env *e, t_node *list)
+{
+//	NCON--;
+//	e->cones[NCON].pos = list->pos;
+	e->cones[list->id].pos.x = list->pos.x;
+	e->cones[list->id].pos.y = list->pos.y;
+	e->cones[list->id].pos.z = list->pos.z;
+//	e->cones[NCON].dir = list->dir;
+	e->cones[list->id].dir.x = list->dir.x;
+	e->cones[list->id].dir.y = list->dir.y;
+	e->cones[list->id].dir.z = list->dir.z;
+	e->cones[list->id].angle = list->angle;
+	e->cones[list->id].color = list->color;
 }

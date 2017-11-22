@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:43:10 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/22 21:36:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,38 @@ void		xml_node_light(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_light_data(e, tmp, light_node, &i);	
+	light_node->type = 3;
 	if (XML->node_lst == NULL)
 		XML->node_lst = light_node;
 	else
 		xml_list_add_first(&XML->node_lst, light_node);
 	xml_node_clean(tmp);
 	NLIG++;
+}
+
+void		xml_allocate_light(t_env *e)
+{
+	if (NLIG > 0)
+	{
+		if (!(e->lights = malloc(sizeof(t_light) * NLIG)))
+			s_error("\x1b[2;31mCan't create lights array\x1b[0m", e);
+	}
+	else
+		e->lights = NULL;
+}
+
+void		xml_push_light(t_env *e, t_node *list)
+{
+//	NLIG--;
+	e->lights[list->id].type = list->light;
+//	e->lights[NLIG].pos = list->pos;
+	e->lights[list->id].pos.x = list->pos.x;
+	e->lights[list->id].pos.y = list->pos.y;
+	e->lights[list->id].pos.z = list->pos.z;
+//	e->lights[NLIG].dir = list->dir;
+	e->lights[list->id].dir.x = list->dir.x;
+	e->lights[list->id].dir.y = list->dir.y;
+	e->lights[list->id].dir.z = list->dir.z;
+	e->lights[list->id].intensity = list->intensity;
+	e->lights[list->id].color = list->color;
 }

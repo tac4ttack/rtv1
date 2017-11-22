@@ -19,14 +19,14 @@
 		pos="0, 0, 0"
 		dir="0, 0, 0"
 		angle="4.2"
-		color="00ff0000"
+		color="0, 255, 255, 255"
 		/>
 
 <cylinder id="0"
 		pos="0, 0, 0"
 		dir="0, 0, 0"
 		radius="42"
-		color="00ff0000"
+		color="0, 255, 255, 255"
 		/>
 
 <light id="0"
@@ -34,45 +34,45 @@
 		pos="0, 0, 0"
 		dir="0, 0, 0"
 		intensity="42"
-		color="00ffffff"
+		color="0, 255, 255, 255"
 		/>
 
 <plane id="0" 
 		pos="0, 0, 0"
 		normale="0, 0, 1"
-		color="00ff0000"
+		color="0, 255, 255, 255"
 		/>
 
 <sphere id="0"
 		pos="0, 0, 0"
 		dir="0, 0, 0"
 		radius="4.2"
-		color="00ff0000"
+		color="0, 255, 255, 255"
 		/>
 -->
 <!-- bite -->
 <scene>
-	<cam id="666"
+	<cam id="0"
 			pos="0, -5, -10"
 			dir="0, 0, 1"
 			hor="0.6, 0, 0"
 			ver="0, 0.6, 0"
 			/>
-	<plane id="1"
+	<plane id="0"
 			pos="0, -10, 0"
 			normale="0, 1, 0"
-			color="00FF0000"
+			color="0, 255, 0, 0"
 			/>
-	<sphere id="2"
+	<sphere id="0"
 			pos="0, -5, 0"
 			dir="0, 0, 0"
 			radius="2"
-			color="0000FF00"
+			color="0, 0, 255, 0"
 			/>
-	<sphere id="3"
+	<sphere id="1"
 			pos="0, -5, 10"
 			dir="0, 0, 0"
 			radius="3"
-			color="00660066"
+			color="0, 0, 0, 255"
 			/>
 </scene>

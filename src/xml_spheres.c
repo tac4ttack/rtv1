@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:43:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/22 21:36:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,37 @@ void		xml_node_sphere(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_sphere_data(e, tmp, sphere_node, &i);
+	sphere_node->type = 5;
 	if (XML->node_lst == NULL)
 		XML->node_lst = sphere_node;
 	else
 		xml_list_add_first(&XML->node_lst, sphere_node);
 	xml_node_clean(tmp);
 	NSPH++;
+}
+
+void		xml_allocate_sphere(t_env *e)
+{
+	if (NSPH > 0)
+	{
+		if (!(e->spheres = malloc(sizeof(t_sphere) * NSPH)))
+			s_error("\x1b[2;31mCan't create spheres array\x1b[0m", e);
+	}
+	else
+		e->spheres = NULL;
+}
+
+void		xml_push_sphere(t_env *e, t_node *list)
+{
+//	NSPH--;
+//	e->spheres[NSPH].pos = list->pos;
+	e->spheres[list->id].pos.x = list->pos.x;
+	e->spheres[list->id].pos.y = list->pos.y;
+	e->spheres[list->id].pos.z = list->pos.z;
+//	e->spheres[NSPH].dir = list->dir;
+	e->spheres[list->id].dir.x = list->dir.x;
+	e->spheres[list->id].dir.y = list->dir.y;
+	e->spheres[list->id].dir.z = list->dir.z;
+	e->spheres[list->id].radius = list->radius;
+	e->spheres[list->id].color = list->color;
 }

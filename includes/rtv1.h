@@ -132,6 +132,7 @@ typedef struct			s_node
 	cl_float			radius;
 	cl_float			angle;
 	cl_int				color;
+	cl_int				light;
 	cl_float			intensity;
 	struct s_node		*next;
 }						t_node;
@@ -220,40 +221,53 @@ typedef	struct			s_env
 void					init(t_env *e, int ac, char *av);
 void					set_hooks(t_env *e);
 
-void					xml_init(t_env *e, int ac, char *av);
-void					xml_get_file(t_env *e, int ac, char *av);
+void					xml_allocate_cam(t_env *e);
+void					xml_allocate_cone(t_env *e);
+void					xml_allocate_cyl(t_env *e);
+void					xml_allocate_light(t_env *e);
+void					xml_allocate_plane(t_env *e);
+void					xml_allocate_sphere(t_env *e);
 int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);
-void					xml_parse_nodes(t_env *e);
-void					xml_node_clean(char **target);
-t_node					*xml_list_new(char type);
+void					xml_data_angle(t_env *e, char **attributes, \
+										int *i, t_node *node);									
+void					xml_data_color(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_dir(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_hor(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_intens(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_normale(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_pos(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_radius(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_type(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_ver(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_init(t_env *e, int ac, char *av);
+void					xml_get_file(t_env *e, int ac, char *av);
+int						xml_grab_color(char *str);
 void					xml_list_add_first(t_node **begin, t_node *node);
+t_node					*xml_list_new(char type);
+void					xml_node_clean(char **target);
 void					xml_node_cam(t_env *e, char *node);
 void					xml_node_cone(t_env *e, char *node);
 void					xml_node_cylinder(t_env *e, char *node);
 void					xml_node_light(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
 void					xml_node_sphere(t_env *e, char *node);
-void					xml_data_pos(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_dir(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_hor(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_ver(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_normale(t_env *e, char **attributes, \
-											int *i, t_node *node);
-void					xml_data_radius(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_angle(t_env *e, char **attributes, \
-										int *i, t_node *node);									
-void					xml_data_color(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_type(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_intens(t_env *e, char **attributes, \
-										int *i, t_node *node);
+void					xml_parse_nodes(t_env *e);
+void					xml_push_cam(t_env *e, t_node *list);
+void					xml_push_cone(t_env *e, t_node *list);
+void					xml_push_cyl(t_env *e, t_node *list);
+void					xml_push_light(t_env *e, t_node *list);
+void					xml_push_plane(t_env *e, t_node *list);
+void					xml_push_sphere(t_env *e, t_node *list);
 
 int						quit(t_env *e);
 void					error(void);

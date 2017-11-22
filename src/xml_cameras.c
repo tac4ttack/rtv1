@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 14:51:53 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/22 21:36:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,43 @@ void		xml_node_cam(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_cam_data(e, tmp, cam_node, &i);
+	cam_node->type = 0;
 	if (XML->node_lst == NULL)
 		XML->node_lst = cam_node;
 	else
 		xml_list_add_first(&XML->node_lst, cam_node);
 	xml_node_clean(tmp);
 	NCAM++;
+}
+
+void		xml_allocate_cam(t_env *e)
+{
+	if (NCAM > 0)
+	{
+		if (!(e->cameras = malloc(sizeof(t_cam) * NCAM)))
+			s_error("\x1b[2;31mCan't create cameras array\x1b[0m", e);
+	}
+	else
+		e->cameras = NULL;
+}
+
+void		xml_push_cam(t_env *e, t_node *list)
+{
+//	NCAM--;
+//	e->cameras[NCAM].pos = list->pos;
+	e->cameras[list->id].pos.x = list->pos.x;
+	e->cameras[list->id].pos.y = list->pos.y;
+	e->cameras[list->id].pos.z = list->pos.z;
+//	e->cameras[NCAM].dir = list->dir;
+	e->cameras[list->id].dir.x = list->dir.x;
+	e->cameras[list->id].dir.y = list->dir.y;
+	e->cameras[list->id].dir.z = list->dir.z;
+//	e->cameras[NCAM].hor = list->hor;
+	e->cameras[list->id].hor.x = list->hor.x;
+	e->cameras[list->id].hor.y= list->hor.y;
+	e->cameras[list->id].hor.z = list->hor.z;
+//	e->cameras[NCAM].ver = list->ver;
+	e->cameras[list->id].ver.x = list->ver.x;
+	e->cameras[list->id].ver.y = list->ver.y;
+	e->cameras[list->id].ver.z = list->ver.z;
 }

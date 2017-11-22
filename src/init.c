@@ -12,56 +12,45 @@ void		set_hooks(t_env *e)
 
 void	load_scene(t_env *e)
 {
-	NCAM = 1;
-	NCON = 2;
-	NCYL = 1;
-	NLIG = 2;
-	NPLA = 5;
-	NSPH = 2;
+	t_node	*list;
+	
+	xml_allocate_cam(e);
+	xml_allocate_cone(e);
+	xml_allocate_cyl(e);
+	xml_allocate_light(e);
+	xml_allocate_plane(e);
+	xml_allocate_sphere(e);
+	list = XML->node_lst;
 
-	if (NCAM > 0)
-	{
-		if (!(e->cameras = malloc(sizeof(t_cam) * NCAM)))
-			s_error("\x1b[2;31mCan't create cameras array\x1b[0m", e);
-	}
-	else
-		e->cameras = NULL;
-	if (NCON > 0)
-	{
-		if (!(e->cones = malloc(sizeof(t_cone) * NCON)))
-			s_error("\x1b[2;31mCan't create cones array\x1b[0m", e);
-	}
-	else
-		e->cones = NULL;
-	if (NCYL > 0)
-	{
-		if (!(e->cylinders = malloc(sizeof(t_cylinder) * NCYL)))
-			s_error("\x1b[2;31mCan't create cylinders array\x1b[0m", e);
-	}
-	else
-		e->cylinders = NULL;
-	if (NLIG > 0)
-	{
-		if (!(e->lights = malloc(sizeof(t_light) * NLIG)))
-			s_error("\x1b[2;31mCan't create lights array\x1b[0m", e);
-	}
-	else
-		e->lights = NULL;
-	if (NPLA > 0)
-	{
-		if (!(e->planes = malloc(sizeof(t_plane) * NPLA)))
-			s_error("\x1b[2;31mCan't create planes array\x1b[0m", e);
-	}
-	else
-		e->planes = NULL;
-	if (NSPH > 0)
-	{
-		if (!(e->spheres = malloc(sizeof(t_sphere) * NSPH)))
-			s_error("\x1b[2;31mCan't create spheres array\x1b[0m", e);
-	}
-	else
-		e->spheres = NULL;
+//	PARSING NON SÛR IL FAUT CONTROLER TOUTES LES VALEURS
+//	ABORT DU À LA DECREMENTAFION DE NCAM ETC...
 
+	while (list != NULL)
+	{
+		if (list->type == 0)
+			xml_push_cam(e, list);	
+		if (list->type == 1)
+			xml_push_cone(e, list);
+		if (list->type == 2)
+			xml_push_cyl(e, list);
+		if (list->type == 3)
+			xml_push_light(e, list);		
+		if (list->type == 4)
+			xml_push_plane(e, list);
+		if (list->type == 5)
+			xml_push_sphere(e, list);
+		list = list->next;
+	}
+	// clean list?
+	
+//	NCAM = 1;
+//	NCON = 2;
+//	NCYL = 1;
+//	NLIG = 2;
+//	NPLA = 5;
+//	NSPH = 2;
+
+/*
 //	REMPLISSAGE MANOUEL AIE CARAMBA
 	//camera
 	ft_bzero(&e->cameras[0], sizeof(t_cam));
@@ -202,7 +191,7 @@ void	load_scene(t_env *e)
 	e->cylinders[0].dir.z = 0;
 	e->cylinders[0].radius = 3.0;
 	e->cylinders[0].color = 0x000033ff;	
-
+*/
 }
 
 void		frame_init(t_env *e)
