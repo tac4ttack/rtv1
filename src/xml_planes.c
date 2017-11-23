@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/22 21:36:24 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/23 16:39:24 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 {
 	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
 		s_error("\x1b[2;31mError in plane, ID expected in #0\x1b[0m", e);
+	if (ft_atoi(att[(*i)] + 4) != NPLA - 1)
+		s_error("\x1b[2;31mError in plane, ID is incorrect\x1b[0m", e);
 	else
 		plane_node->id = ft_atoi(att[(*i)++] + 4);
 	printf("PLANE id = %d\n", plane_node->id);
@@ -44,6 +46,7 @@ void		xml_node_plane(t_env *e, char *node)
 	
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
+	NPLA++;
 	plane_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
@@ -54,7 +57,6 @@ void		xml_node_plane(t_env *e, char *node)
 	else
 		xml_list_add_first(&XML->node_lst, plane_node);
 	xml_node_clean(tmp);
-	NPLA++;
 }
 
 void		xml_allocate_plane(t_env *e)
@@ -70,14 +72,7 @@ void		xml_allocate_plane(t_env *e)
 
 void		xml_push_plane(t_env *e, t_node *list)
 {
-//	NPLA--;
-//	e->planes[NPLA].pos = list->pos;
-	e->planes[list->id].pos.x = list->pos.x;
-	e->planes[list->id].pos.y = list->pos.y;
-	e->planes[list->id].pos.z = list->pos.z;
-//	e->planes[NPLA].normale = list->normale;
-	e->planes[list->id].normale.x = list->normale.x;
-	e->planes[list->id].normale.y = list->normale.y;
-	e->planes[list->id].normale.z = list->normale.z;
+	e->planes[list->id].pos = list->pos;
+	e->planes[list->id].normale = list->normale;
 	e->planes[list->id].color = list->color;
 }

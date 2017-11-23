@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:33:45 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/20 16:43:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/23 12:57:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void		xml_read_file(t_env *e)
 		}
 	}
 	close(XML->scene_fd);
-//	printf("SCENE = \n%s\n\n", XML->scene);
 }
 
 void		xml_get_file(t_env *e, int ac, char *av)

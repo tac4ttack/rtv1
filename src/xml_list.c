@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:46:52 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/20 15:07:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/23 15:18:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,20 @@ void		xml_list_add_first(t_node **begin, t_node *node)
 	}
 }
 
-// USELESS? on a pas vraiment besoin de manipuler ces merdes
-void		xml_list_add_last(t_node **begin, t_node *node)
+void		xml_list_clean(t_env *e, t_node **list)
 {
 	t_node	*tmp;
-
-	tmp = *begin;
-	if (node != NULL)
+	
+	tmp = *list;
+	if (*list)
 	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = node;
-		node->next = NULL;
+		while (tmp)
+		{
+			tmp = (*list)->next;
+			free(*list);
+			*list = tmp;
+		}
 	}
+	else
+		s_error("\x1b[2;31mError while cleaning scene linked list\x1b[0m", e);
 }

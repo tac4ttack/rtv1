@@ -109,13 +109,13 @@ typedef struct			s_sphere
 
 typedef struct			s_param
 {
-	unsigned int		n_cams;
-	unsigned int		n_cones;
-	unsigned int		n_cylinders;
-	unsigned int		n_lights;
-	unsigned int		n_planes;
-	unsigned int		n_spheres;
-	unsigned int		active_cam;
+	int					n_cams;
+	int					n_cones;
+	int					n_cylinders;
+	int					n_lights;
+	int					n_planes;
+	int					n_spheres;
+	int					active_cam;
 	cl_float			bloom;
 	cl_float3			mvt;
 }						t_param;
@@ -253,6 +253,7 @@ void					xml_init(t_env *e, int ac, char *av);
 void					xml_get_file(t_env *e, int ac, char *av);
 int						xml_grab_color(char *str);
 void					xml_list_add_first(t_node **begin, t_node *node);
+void					xml_list_clean(t_env *e, t_node **list);
 t_node					*xml_list_new(char type);
 void					xml_node_clean(char **target);
 void					xml_node_cam(t_env *e, char *node);

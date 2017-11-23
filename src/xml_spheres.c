@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/22 21:36:32 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/23 16:39:13 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
 {
 	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
 		s_error("\x1b[2;31mError in sphere, ID expected in #0\x1b[0m", e);
+	if (ft_atoi(att[(*i)] + 4) != NSPH - 1)
+		s_error("\x1b[2;31mError in sphere, ID is incorrect\x1b[0m", e);
 	else
 		sphere_node->id = ft_atoi(att[(*i)++] + 4);
 	printf("sphere id = %d\n", sphere_node->id);
@@ -49,6 +51,7 @@ void		xml_node_sphere(t_env *e, char *node)
 	
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
+	NSPH++;
 	sphere_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
@@ -59,7 +62,6 @@ void		xml_node_sphere(t_env *e, char *node)
 	else
 		xml_list_add_first(&XML->node_lst, sphere_node);
 	xml_node_clean(tmp);
-	NSPH++;
 }
 
 void		xml_allocate_sphere(t_env *e)
@@ -75,15 +77,8 @@ void		xml_allocate_sphere(t_env *e)
 
 void		xml_push_sphere(t_env *e, t_node *list)
 {
-//	NSPH--;
-//	e->spheres[NSPH].pos = list->pos;
-	e->spheres[list->id].pos.x = list->pos.x;
-	e->spheres[list->id].pos.y = list->pos.y;
-	e->spheres[list->id].pos.z = list->pos.z;
-//	e->spheres[NSPH].dir = list->dir;
-	e->spheres[list->id].dir.x = list->dir.x;
-	e->spheres[list->id].dir.y = list->dir.y;
-	e->spheres[list->id].dir.z = list->dir.z;
+	e->spheres[list->id].pos = list->pos;
+	e->spheres[list->id].dir = list->dir;
 	e->spheres[list->id].radius = list->radius;
 	e->spheres[list->id].color = list->color;
 }

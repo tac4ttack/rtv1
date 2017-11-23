@@ -50,7 +50,7 @@
 		color="0, 255, 255, 255"
 		/>
 -->
-<!-- bite -->
+
 <scene>
 	<cam id="0"
 			pos="0, -5, -10"
@@ -59,8 +59,8 @@
 			ver="0, 0.6, 0"
 			/>
 	<plane id="0"
-			pos="0, -10, 0"
-			normale="0, 1, 0"
+			pos="0, 10, 0"
+			normale="0, -1, 0"
 			color="0, 255, 0, 0"
 			/>
 	<sphere id="0"
@@ -68,6 +68,13 @@
 			dir="0, 0, 0"
 			radius="2"
 			color="0, 0, 255, 0"
+			/>
+	<light id="0"
+			type="0"
+			pos="0, -10, 5"
+			dir="0, 0, 0"
+			intensity="42"
+			color="0, 255, 255, 255"
 			/>
 	<sphere id="1"
 			pos="0, -5, 10"
