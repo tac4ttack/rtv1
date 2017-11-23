@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 17:09:09 by fmessina          #+#    #+#             */
-/*   Updated: 2017/06/21 13:43:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/23 16:53:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_ftoa(float n)
 	while (n * 10 != 0)
 	{
 		tmp = (int)n;
-		res = ft_strjoin_frs1(res, ft_itoa(n));
+		res = ft_strjoin_free(res, ft_itoa(n));
 		n -= tmp;
 		n *= 10;
 		i++;

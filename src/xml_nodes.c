@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/23 16:43:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/23 18:31:37 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 		{
 			XML->is_comm = 0;
 			if (ft_strlen(node) != 4)
+			{
+				ft_putstr("\x1b[2;31mWRONG NODE = \x1b[0m");
+				ft_putstr(node);
 				s_error("\x1b[2;31mError in XML syntax\x1b[0m", e);
+			}
 		}
 		else
 			XML->is_comm = 1;
@@ -51,7 +55,6 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 void				xml_process_node(t_env *e, char *node)
 {
 	XML->sub_node = ft_strsplit(node, ' ');
-//	printf("node is %s\n", XML->sub_node[0]);
 	if (ft_strcmp(XML->sub_node[0], "!--") == 0 ||  XML->is_comm == 1)
 		xml_node_generic(e, node, 1);
 	else if (XML->is_comm == 0 && ft_strcmp(XML->sub_node[0], "?xml") == 0)
@@ -86,12 +89,10 @@ void				xml_parse_nodes(t_env *e)
 		s_error("\x1b[2;31mError getting nodes\x1b[0m", e);
 	while (XML->nodes[i])
 	{
-//		ft_putendl(XML->nodes[i]);
 		if (i == 0)
 			xml_node_generic(e, XML->nodes[i], 0);
 		else
 			xml_process_node(e, XML->nodes[i]);
 		i++;
 	}
-//	xml_node_clean(XML->nodes);  USELESS
 }
