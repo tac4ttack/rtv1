@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/23 18:31:37 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 16:16:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 		if ((node = ft_strstr(node, "-->")) != NULL)
 		{
 			XML->is_comm = 0;
-			if (ft_strlen(node) != 4)
+		//	printf("NODE = %s\n", ft_strtrim(node));
+		//	node = ft_strtrim(node);
+		//	printf("len = %zu\n", ft_strlen(node));
+			if (ft_strlen(ft_strtrim(node)) != 3)
 			{
 				ft_putstr("\x1b[2;31mWRONG NODE = \x1b[0m");
 				ft_putstr(node);
@@ -54,6 +57,7 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 
 void				xml_process_node(t_env *e, char *node)
 {
+//	printf("NODE = %s\n", node);
 	XML->sub_node = ft_strsplit(node, ' ');
 	if (ft_strcmp(XML->sub_node[0], "!--") == 0 ||  XML->is_comm == 1)
 		xml_node_generic(e, node, 1);

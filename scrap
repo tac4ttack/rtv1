@@ -7,9 +7,10 @@ TODO LIST PARSER:
 * securiser la recuperation des valeurs numeriques
 	-> pour les vecteurs si valeur incorrecte alors recupere 0
 	-> OK DONE (couleur angle radius et couleur protégées)
-	
+
 * bug si pas d'espace entre type de noeud et Id
 
 * bug si pas d'espace ou retour à la ligne pour balise fermeture noeud
 	-> OK DONE
 * bug si ligne vide après balise fermante de commentaire
+	-> OK DONE
