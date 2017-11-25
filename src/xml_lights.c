@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/23 16:41:44 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 14:58:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,32 @@ static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 		s_error("\x1b[2;31mError in light, ID is incorrect\x1b[0m", e);
 	else
 		light_node->id = ft_atoi(att[(*i)++] + 4);
-//	printf("light id = %d\n", light_node->id);
+	printf("\nLIGHT id = %d\n", light_node->id);
 	if (ft_strncmp(att[*i], "type=\"", 6) != 0)
 		s_error("\x1b[2;31mError in light, TYPE expected in #1\x1b[0m", e);
 	else
 		xml_data_type(e, att, i, light_node);
-//	printf("type = %d\n", light_node->type);
+	printf("type = %d\n", light_node->type);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[2;31mError in light, POS expected in #2\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, light_node);
-//	printf("pos x = %f | y = %f | z = %f\n", light_node->pos.x, light_node->pos.y, light_node->pos.z);
+	printf("pos x = %f | y = %f | z = %f\n", light_node->pos.x, light_node->pos.y, light_node->pos.z);
 	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
 		s_error("\x1b[2;31mError in light, DIR expected in #3\x1b[0m", e);
 	else
 		xml_data_dir(e, att, i, light_node);
-//	printf("dir x = %f | y = %f | z = %f\n", light_node->dir.x, light_node->dir.y, light_node->dir.z);
+	printf("dir x = %f | y = %f | z = %f\n", light_node->dir.x, light_node->dir.y, light_node->dir.z);
 	if (ft_strncmp(att[*i], "intensity=\"",	11) != 0)
 		s_error("\x1b[2;31mError in light, INTENSITY expected in #4\x1b[0m", e);
 	else
 		xml_data_intens(e, att, i, light_node);
-//	printf("angle = %f\n", light_node->intensity);
+	printf("angle = %f\n", light_node->intensity);
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
 		s_error("\x1b[2;31mError in light, COLOR expected in #5\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, light_node);
-//	printf("color = %xd\n", light_node->color);
+	printf("color = %xd\n", light_node->color);
 }
 
 void		xml_node_light(t_env *e, char *node)
@@ -60,7 +60,9 @@ void		xml_node_light(t_env *e, char *node)
 	light_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
-	xml_light_data(e, tmp, light_node, &i);	
+	xml_light_data(e, tmp, light_node, &i);
+	if (tmp[i] == NULL || ft_strcmp(tmp[i], "/>") != 0)
+		s_error("\x1b[2;31mError LIGHT node isn't closed\x1b[0m", e);
 	light_node->type = 3;
 	if (XML->node_lst == NULL)
 		XML->node_lst = light_node;
