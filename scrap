@@ -6,6 +6,7 @@ TODO LIST PARSER:
 	-> SEMBLE OK
 * securiser la recuperation des valeurs numeriques
 	-> pour les vecteurs si valeur incorrecte alors recupere 0
+	   semble protégé car si valeur manquante alors attribut suivant est pété et l'erreur est signalée
 	-> OK DONE (couleur angle radius et couleur protégées)
 
 * bug si pas d'espace entre type de noeud et Id

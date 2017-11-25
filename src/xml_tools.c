@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 17:35:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/22 17:10:47 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 16:41:55 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char	*xml_check_line(t_env *e, char *buf)
 			free(buf);
 			s_error("\x1b[2;31mError target file is invalid\x1b[0m", e);
 		}
+		(buf[i] == '\t'? buf[i] = ' ' : 0);
 		(buf[i] == '<' ? XML->lbra++ : 0);
 		(buf[i] == '>' ? XML->rbra++ : 0);
 		(buf[i] == '/' ? XML->slas++ : 0);

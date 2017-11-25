@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 16:16:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 17:59:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,20 @@ void				xml_node_scene(t_env *e, char *node, char mod)
 
 void				xml_node_generic(t_env *e, char *node, char mod)
 {
+	char *tmp;
+	
+	tmp = ft_strtrim(node);
 	if (mod == 0)
 	{
-		if (ft_strcmp(node, "?xml version=\"1.0\"?> ") != 0)
+		if (ft_strcmp(tmp, "?xml version=\"1.0\"?>") != 0)
 			s_error("\x1b[2;31mError XML header is invalid\x1b[0m", e);
 	}
 	else if (mod == 1)
 	{
-		if ((node = ft_strstr(node, "-->")) != NULL)
+		if ((node = ft_strstr(tmp, "-->")) != NULL)
 		{
 			XML->is_comm = 0;
-		//	printf("NODE = %s\n", ft_strtrim(node));
-		//	node = ft_strtrim(node);
-		//	printf("len = %zu\n", ft_strlen(node));
-			if (ft_strlen(ft_strtrim(node)) != 3)
+			if (ft_strlen(node) != 3)
 			{
 				ft_putstr("\x1b[2;31mWRONG NODE = \x1b[0m");
 				ft_putstr(node);
@@ -53,11 +53,12 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 		else
 			XML->is_comm = 1;
 	}
+	free(tmp);
 }
 
 void				xml_process_node(t_env *e, char *node)
 {
-//	printf("NODE = %s\n", node);
+
 	XML->sub_node = ft_strsplit(node, ' ');
 	if (ft_strcmp(XML->sub_node[0], "!--") == 0 ||  XML->is_comm == 1)
 		xml_node_generic(e, node, 1);
