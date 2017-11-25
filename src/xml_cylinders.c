@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:43:15 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 15:26:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 {
 	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
 		s_error("\x1b[2;31mError in cylinder, ID expected in #0\x1b[0m", e);
+	if (ft_atoi(att[(*i)] + 4) != NCYL - 1)
+		s_error("\x1b[2;31mError in cylinder, ID is incorrect\x1b[0m", e);
 	else
 		cyl_node->id = ft_atoi(att[(*i)++] + 4);
-	printf("CYLINDER id = %d\n", cyl_node->id);
+	printf("\nCYLINDER id = %d\n", cyl_node->id);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[2;31mError in cylinder, POS expected in #1\x1b[0m", e);
 	else
@@ -49,14 +51,41 @@ void		xml_node_cylinder(t_env *e, char *node)
 	
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
+	NCYL++;
 	cyl_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_cylinder_data(e, tmp, cyl_node, &i);
+	if (tmp[i] == NULL)
+	{
+		if (ft_strstr(tmp[i - 1], "/>") == NULL)
+			s_error("\x1b[2;31mError CYLINDER node isn't closed\x1b[0m", e);
+	}
+	else if (ft_strcmp(tmp[i], "/>") != 0)
+		s_error("\x1b[2;31mError CYLINDER node isn't closed\x1b[0m", e);
+	cyl_node->type = 2;
 	if (XML->node_lst == NULL)
 		XML->node_lst = cyl_node;
 	else
 		xml_list_add_first(&XML->node_lst, cyl_node);
 	xml_node_clean(tmp);
-	NCYL++;
+}
+
+void		xml_allocate_cyl(t_env *e)
+{
+	if (NCYL > 0)
+	{
+		if (!(e->cylinders = malloc(sizeof(t_cylinder) * NCYL)))
+			s_error("\x1b[2;31mCan't create cylinders array\x1b[0m", e);
+	}
+	else
+		e->cylinders = NULL;
+}
+
+void		xml_push_cyl(t_env *e, t_node *list)
+{
+	e->cylinders[list->id].pos = list->pos;
+	e->cylinders[list->id].dir = list->dir;
+	e->cylinders[list->id].radius = list->radius;
+	e->cylinders[list->id].color = list->color;
 }
