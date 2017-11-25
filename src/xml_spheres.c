@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 14:59:10 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 15:26:46 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,12 @@ void		xml_node_sphere(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_sphere_data(e, tmp, sphere_node, &i);
-	if (tmp[i] == NULL || ft_strcmp(tmp[i], "/>") != 0)
+	if (tmp[i] == NULL)
+	{
+		if (ft_strstr(tmp[i - 1], "/>") == NULL)
+			s_error("\x1b[2;31mError SPHERE node isn't closed\x1b[0m", e);
+	}
+	else if (ft_strcmp(tmp[i], "/>") != 0)
 		s_error("\x1b[2;31mError SPHERE node isn't closed\x1b[0m", e);
 	sphere_node->type = 5;
 	if (XML->node_lst == NULL)

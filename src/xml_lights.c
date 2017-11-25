@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 14:58:45 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 15:26:27 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,12 @@ void		xml_node_light(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_light_data(e, tmp, light_node, &i);
-	if (tmp[i] == NULL || ft_strcmp(tmp[i], "/>") != 0)
+	if (tmp[i] == NULL)
+	{	
+		if (ft_strstr(tmp[i - 1], "/>") == NULL)
+			s_error("\x1b[2;31mError LIGHT node isn't closed\x1b[0m", e);
+	}
+	else if (ft_strcmp(tmp[i], "/>") != 0)
 		s_error("\x1b[2;31mError LIGHT node isn't closed\x1b[0m", e);
 	light_node->type = 3;
 	if (XML->node_lst == NULL)

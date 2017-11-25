@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 14:58:01 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 15:26:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,13 @@ void		xml_node_cone(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_cone_data(e, tmp, cone_node, &i);
-	if (tmp[i] == NULL || ft_strcmp(tmp[i], "/>") != 0)
-		s_error("\x1b[2;31mError CONE node isn't closed\x1b[0m", e);
+	if (tmp[i] == NULL)
+	{
+		if (ft_strstr(tmp[i - 1], "/>") == NULL)
+			s_error("\x1b[2;31mError CONES node isn't closed\x1b[0m", e);
+	}
+	else if (ft_strcmp(tmp[i], "/>") != 0)
+		s_error("\x1b[2;31mError CONES node isn't closed\x1b[0m", e);
 	cone_node->type = 1;
 	if (XML->node_lst == NULL)
 		XML->node_lst = cone_node;

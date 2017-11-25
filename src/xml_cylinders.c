@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 14:58:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/11/25 15:26:19 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,12 @@ void		xml_node_cylinder(t_env *e, char *node)
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
 	xml_cylinder_data(e, tmp, cyl_node, &i);
-	if (tmp[i] == NULL || ft_strcmp(tmp[i], "/>") != 0)
+	if (tmp[i] == NULL)
+	{
+		if (ft_strstr(tmp[i - 1], "/>") == NULL)
+			s_error("\x1b[2;31mError CYLINDER node isn't closed\x1b[0m", e);
+	}
+	else if (ft_strcmp(tmp[i], "/>") != 0)
 		s_error("\x1b[2;31mError CYLINDER node isn't closed\x1b[0m", e);
 	cyl_node->type = 2;
 	if (XML->node_lst == NULL)
