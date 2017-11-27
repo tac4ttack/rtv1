@@ -40,7 +40,7 @@
 
 # define WIDTH					1920
 # define HEIGHT					1080
-# define DEPTH					2000
+# define DEPTH					2000 //DAFUQ IS THIS SHIT?
 
 # define NCAM					e->param.n_cams
 # define NCON					e->param.n_cones
@@ -209,7 +209,6 @@ typedef	struct			s_env
 	cl_mem				planes_mem;
 	t_sphere			*spheres;
 	cl_mem				spheres_mem;
-	cl_float3			mvt;
 //	next data may be deleted after testing etc
 	char				run;
 }						t_env;
