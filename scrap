@@ -10,8 +10,10 @@ TODO LIST PARSER:
 	-> OK DONE (couleur angle radius et couleur protégées)
 
 * bug si pas d'espace entre type de noeud et Id
-
+	-> OK DONE
 * bug si pas d'espace ou retour à la ligne pour balise fermeture noeud
 	-> OK DONE
 * bug si ligne vide après balise fermante de commentaire
 	-> OK DONE
+
+* position plan WTF?
