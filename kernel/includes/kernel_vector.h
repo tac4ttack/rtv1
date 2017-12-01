@@ -1,6 +1,6 @@
-double3			sub_vect(double3 v1, double3 v2)
+float3			sub_vect(float3 v1, float3 v2)
 {
-	double3		res;
+	float3		res;
 
 	res.x = v1.x - v2.x;
 	res.y = v1.y - v2.y;
@@ -8,9 +8,9 @@ double3			sub_vect(double3 v1, double3 v2)
 	return (res);
 }
 
-double3			add_vect(double3 v1, double3 v2)
+float3			add_vect(float3 v1, float3 v2)
 {
-	double3		res;
+	float3		res;
 
 	res.x = v1.x + v2.x;
 	res.y = v1.y + v2.y;
@@ -18,14 +18,14 @@ double3			add_vect(double3 v1, double3 v2)
 	return (res);
 }
 
-double			norme_vect(double3 v)
+float			norme_vect(float3 v)
 {
 	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-double3			normalize_vect(double3 v)
+float3			normalize_vect(float3 v)
 {
-	double3		res;
+	float3		res;
 	int			id = 1 / sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 
 	res.x = v.x * id;
@@ -34,14 +34,14 @@ double3			normalize_vect(double3 v)
 	return (res);
 }
 
-double			dot_vect(double3 v1, double3 v2)
+float			dot_vect(float3 v1, float3 v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
-double3			mult_fvect(double m, double3 v)
+float3			mult_fvect(float m, float3 v)
 {
-	double3		res;
+	float3		res;
 
 	res.x = m * v.x;
 	res.y = m * v.y;
@@ -49,12 +49,12 @@ double3			mult_fvect(double m, double3 v)
 	return (res);
 }
 
-double			modh_vect(int x)
+float			modh_vect(int x)
 {
-	return ((double)((double)x - (WINX / 2.0)) / (WINX / 2.0));
+	return ((float)((float)x - (WINX / 2.0)) / (WINX / 2.0));
 }
 
-double			modv_vect(int y)
+float			modv_vect(int y)
 {
-	return ((double)(((double)y - (WINY / 2.0)) / (WINY / 2.0) * WINY / WINX));
+	return ((float)(((float)y - (WINY / 2.0)) / (WINY / 2.0) * WINY / WINX));
 }
