@@ -60,50 +60,50 @@ typedef struct			s_p2i
 
 typedef struct			s_cam
 {
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float3			hor;
-	cl_float3			ver;
-//	cl_float3			ray;   DAFUQ IS THIS SHIT?
+	cl_double3			pos;
+	cl_double3			dir;
+	cl_double3			hor;
+	cl_double3			ver;
+//	cl_double3			ray;   DAFUQ IS THIS SHIT?
 }						t_cam;
 
 typedef struct			s_cone
 {
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float			angle;
+	cl_double3			pos;
+	cl_double3			dir;
+	cl_double			angle;
 	cl_int				color;
 }						t_cone;
 
 typedef struct			s_cylinder
 {
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float			radius;
+	cl_double3			pos;
+	cl_double3			dir;
+	cl_double			radius;
 	cl_int				color;
 }						t_cylinder;
 
 typedef struct			s_light
 {
 	cl_int				type;
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float			intensity;
+	cl_double3			pos;
+	cl_double3			dir;
+	cl_double			intensity;
 	cl_int				color;
 }						t_light;
 
 typedef struct			s_plane
 {
-	cl_float3			pos;
-	cl_float3			normale;
+	cl_double3			pos;
+	cl_double3			normale;
 	cl_int				color;
 }						t_plane;
 
 typedef struct			s_sphere
 {
-	cl_float3			pos;
-	cl_float3			dir;
-	cl_float			radius;
+	cl_double3			pos;
+	cl_double3			dir;
+	cl_double			radius;
 	cl_int				color;
 }						t_sphere;
 
@@ -116,24 +116,24 @@ typedef struct			s_param
 	int					n_planes;
 	int					n_spheres;
 	int					active_cam;
-	cl_float			bloom;
-	cl_float3			mvt;
+	cl_double			bloom;
+	cl_double3			mvt;
 }						t_param;
 
 typedef struct			s_node
 {
 	int					id;
 	int					type;
-	cl_float3			hor;
-	cl_float3			ver;
-	cl_float3			dir;
-	cl_float3			pos;
-	cl_float3			normale;
-	cl_float			radius;
-	cl_float			angle;
+	cl_double3			hor;
+	cl_double3			ver;
+	cl_double3			dir;
+	cl_double3			pos;
+	cl_double3			normale;
+	cl_double			radius;
+	cl_double			angle;
 	cl_int				color;
 	cl_int				light;
-	cl_float			intensity;
+	cl_double			intensity;
 	struct s_node		*next;
 }						t_node;
 
