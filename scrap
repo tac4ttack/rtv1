@@ -17,3 +17,27 @@ TODO LIST PARSER:
 	-> OK DONE
 
 * position plan WTF?
+
+CONE:
+-----
+	* lumiere hs
+	* pos semble ok
+	* dir fonctionne seulement avec 1 comme valeur sur UN SEUL axe
+	* angle ok sauf si 90 ou plus, facilement corrigeable dans parser
+
+CYLINDRE:
+---------
+	* lumiere semble ok
+	* dir comportements bizarre avec 0 0 0, ou valeur virgule negative
+		--> atof fonctionne mal avec virgule negative
+	
+PLANE:
+------
+	* des fois la position rend la camera immobile, illusion d'optique?
+	* normale semble ok
+
+SPHERE:
+-------:
+	* position semble ok
+	* direction inverifiable sans textures ou modificateur
+	* radius semble ok

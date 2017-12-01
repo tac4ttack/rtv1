@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <scene>
 	<cam 	id="0"
-			pos="0, -5, -200"
+			pos="0, -5, -25"
 			dir="0, 0, 1"
 			hor="0.6, 0, 0"
 			ver="0, 0.6, 0"
 			/>
 	<plane 	id="0"
-			pos="0, -20, 0"
-			normale="0, -1, 0"
+			pos="50, 15, 0"
+			normale="0.1, 4.2, -0.25"
 			color="0, 255, 0, 0"
 			/>
 	<light 	id="0"
