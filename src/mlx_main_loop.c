@@ -35,7 +35,7 @@ void	refresh(t_env *e)
 
 int		mlx_main_loop(t_env *e)
 {
-	if (e)
+	if (e && e->run == 1)
 	{
 		mlx_keyboard_repeated(e);
 		mlx_mouse_get_pos(e->win, &e->mou_x, &e->mou_y);
