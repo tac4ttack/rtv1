@@ -81,6 +81,7 @@ typedef struct			s_cylinder
 	cl_float3			dir;
 	cl_float			radius;
 	cl_int				color;
+	cl_float			height;
 }						t_cylinder;
 
 typedef struct			s_light
@@ -134,6 +135,7 @@ typedef struct			s_node
 	cl_int				color;
 	cl_int				light;
 	cl_float			intensity;
+	cl_float			height;
 	struct s_node		*next;
 }						t_node;
 
@@ -247,6 +249,8 @@ void					xml_data_radius(t_env *e, char **attributes, \
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_ver(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_init(t_env *e, int ac, char *av);
 void					xml_get_file(t_env *e, int ac, char *av);

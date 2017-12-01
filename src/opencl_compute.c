@@ -41,6 +41,7 @@ int			get_imgptr(t_env *e)
 int			draw(t_env *e)
 {
 	int		err;
+	const size_t	g[2] = {WIDTH, HEIGHT};
 
 	opencl_set_args(e);
 	err = clGetKernelWorkGroupInfo(e->kernel, e->device_id, \
@@ -56,9 +57,9 @@ int			draw(t_env *e)
 		s_error("Error: Failed to retrieve kernel work group info!", e);
 	}
 	e->global = (size_t)e->count;
-	e->local = 256;
-	err = clEnqueueNDRangeKernel(e->commands, e->kernel, 1, NULL, \
-			&e->global, &e->local, 0, NULL, NULL);
+	//e->local = 256;
+	err = clEnqueueNDRangeKernel(e->commands, e->kernel, 2, NULL, \
+			g, NULL, 0, NULL, NULL);
 	if (err)
 		s_error("Error: Failed to execute kernel!\n", e);
 	get_imgptr(e);

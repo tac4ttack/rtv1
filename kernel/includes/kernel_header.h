@@ -54,6 +54,7 @@ typedef struct			s_cylinder
 	float3				dir;
 	float				radius;
 	int					color;
+	float				height;
 }						t_cylinder;
 
 typedef struct			s_light
