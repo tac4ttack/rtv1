@@ -19,64 +19,64 @@
 
 typedef struct			s_light_ray
 {
-	float3				dir;
-	float				dist;
+	double3				dir;
+	double				dist;
 }						t_light_ray;
 
 typedef struct			s_hit
 {
-	float				dist;
+	double				dist;
 	int					type;
 	int					id;
-	float3				pos;
-	float3				normale;
+	double3				pos;
+	double3				normale;
 }						t_hit;
 
 typedef struct			s_cam
 {
-	float3				pos;
-	float3				dir;
-	float3				hor;
-	float3				ver;
+	double3				pos;
+	double3				dir;
+	double3				hor;
+	double3				ver;
 }						t_cam;
 
 typedef struct			s_cone
 {
-	float3				pos;
-	float3				dir;
-	float				angle;
+	double3				pos;
+	double3				dir;
+	double				angle;
 	int					color;
 }						t_cone;
 
 typedef struct			s_cylinder
 {
-	float3				pos;
-	float3				dir;
-	float				radius;
+	double3				pos;
+	double3				dir;
+	double				radius;
 	int					color;
 }						t_cylinder;
 
 typedef struct			s_light
 {
 	int					type;
-	float3				pos;
-	float3				dir;
-	float				intensity;
+	double3				pos;
+	double3				dir;
+	double				intensity;
 	int					color;
 }						t_light;
 
 typedef struct			s_plane
 {
-	float3				pos;
-	float3				normale;
+	double3				pos;
+	double3				normale;
 	int					color;
 }						t_plane;
 
 typedef struct			s_sphere
 {
-	float3				pos;
-	float3				dir;
-	float				radius;
+	double3				pos;
+	double3				dir;
+	double				radius;
 	int					color;
 }						t_sphere;
 
@@ -89,8 +89,8 @@ typedef struct			s_param
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
-	float				bloom;
-	float3				mvt;
+	double				bloom;
+	double3				mvt;
 }						t_param;
 
 typedef struct			s_scene
@@ -98,14 +98,14 @@ typedef struct			s_scene
 	t_param				*param;
 	t_cam				__constant *cameras;
 	t_cone				__constant *cones;
-	float				*cones_dst;
+	double				*cones_dst;
 	t_cylinder			__constant *cylinders;
-	float				*cylinders_dst;
+	double				*cylinders_dst;
 	t_light				__constant *lights;
-	float				*lights_dst;
+	double				*lights_dst;
 	t_plane				__constant *planes;
-	float				*planes_dst;
+	double				*planes_dst;
 	t_sphere			__constant *spheres;
-	float				*spheres_dst;
-	float3				ray;
+	double				*spheres_dst;
+	double3				ray;
 }						t_scene;
