@@ -18,6 +18,11 @@ TODO LIST PARSER:
 
 * position plan WTF?
 
+CAMERA:
+-------
+	* direction autre que Z bug
+	* il faut sortir du couple hor ver
+
 CONE:
 -----
 	* lumiere hs
