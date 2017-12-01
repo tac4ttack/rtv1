@@ -34,10 +34,10 @@ typedef struct			s_hit
 
 typedef struct			s_cam
 {
+	float3				pos;
+	float3				dir;
 	float3				hor;
 	float3				ver;
-	float3				dir;
-	float3				pos;
 }						t_cam;
 
 typedef struct			s_cone
@@ -58,7 +58,7 @@ typedef struct			s_cylinder
 
 typedef struct			s_light
 {
-	char				type;
+	int					type;
 	float3				pos;
 	float3				dir;
 	float				intensity;
@@ -74,9 +74,9 @@ typedef struct			s_plane
 
 typedef struct			s_sphere
 {
-	float				radius;
 	float3				pos;
 	float3				dir;
+	float				radius;
 	int					color;
 }						t_sphere;
 

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xml_load.c                                         :+:      :+:    :+:   */
+/*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/21 03:44:24 by adalenco          #+#    #+#             */
-/*   Updated: 2017/11/21 08:18:38 by adalenco         ###   ########.fr       */
+/*   Created: 2017/11/21 11:07:10 by fmessina          #+#    #+#             */
+/*   Updated: 2017/11/21 11:07:17 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "libft.h"
 
 float		ft_atof(char *str)
 {
@@ -33,31 +33,4 @@ float		ft_atof(char *str)
 		++i;
 	}
 	return (n);
-}
-
-int			load_file(t_env *e)
-{
-	int		i = 6;
-	if (ft_strstr(SCN, "<scene>") != SCN)
-		return (1);
-	printf("%f\n", ft_atof("0.6"));
-	while (SCN[i])
-	{
-		if (ft_strstr(SCN + i, "<cam"))
-		{
-			;
-		}
-		if (ft_strstr(SCN + i, "<light"))
-			;
-		if (ft_strstr(SCN + i, "<sphere"))
-			;
-		if (ft_strstr(SCN + i, "<plane"))
-			;
-		if (ft_strstr(SCN + i, "<cylinder"))
-			;
-		if (ft_strstr(SCN + i, "<cone"))
-			;
-		++i;
-	}
-	return (0);
 }

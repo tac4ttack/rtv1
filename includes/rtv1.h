@@ -22,7 +22,6 @@
 # include <math.h>
 # include "libft.h"
 # include "mlx.h"
-# include "get_next_line.h"
 
 # ifdef DEBUG
 #  define DBUG					1
@@ -41,7 +40,7 @@
 
 # define WIDTH					1920
 # define HEIGHT					1080
-# define DEPTH					2000
+# define DEPTH					2000 //DAFUQ IS THIS SHIT?
 
 # define NCAM					e->param.n_cams
 # define NCON					e->param.n_cones
@@ -50,6 +49,7 @@
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
 
+# define XML					e->xml
 # define SCN					e->scene
 
 typedef struct			s_p2i
@@ -60,11 +60,11 @@ typedef struct			s_p2i
 
 typedef struct			s_cam
 {
+	cl_float3			pos;
+	cl_float3			dir;
 	cl_float3			hor;
 	cl_float3			ver;
-	cl_float3			dir;
-	cl_float3			pos;
-	cl_float3			ray;
+//	cl_float3			ray;   DAFUQ IS THIS SHIT?
 }						t_cam;
 
 typedef struct			s_cone
@@ -85,7 +85,7 @@ typedef struct			s_cylinder
 
 typedef struct			s_light
 {
-	cl_char				type;
+	cl_int				type;
 	cl_float3			pos;
 	cl_float3			dir;
 	cl_float			intensity;
@@ -101,32 +101,58 @@ typedef struct			s_plane
 
 typedef struct			s_sphere
 {
-	cl_float			radius;
 	cl_float3			pos;
 	cl_float3			dir;
+	cl_float			radius;
 	cl_int				color;
 }						t_sphere;
 
 typedef struct			s_param
 {
-	unsigned int		n_cams;
-	unsigned int		n_cones;
-	unsigned int		n_cylinders;
-	unsigned int		n_lights;
-	unsigned int		n_planes;
-	unsigned int		n_spheres;
-	unsigned int		active_cam;
+	int					n_cams;
+	int					n_cones;
+	int					n_cylinders;
+	int					n_lights;
+	int					n_planes;
+	int					n_spheres;
+	int					active_cam;
 	cl_float			bloom;
 	cl_float3			mvt;
 }						t_param;
 
+typedef struct			s_node
+{
+	int					id;
+	int					type;
+	cl_float3			hor;
+	cl_float3			ver;
+	cl_float3			dir;
+	cl_float3			pos;
+	cl_float3			normale;
+	cl_float			radius;
+	cl_float			angle;
+	cl_int				color;
+	cl_int				light;
+	cl_float			intensity;
+	struct s_node		*next;
+}						t_node;
+
 typedef	struct			s_xml
 {
-	unsigned int		lbra;
-	unsigned int		rbra;
-	unsigned int		slas;
-	unsigned int		dquo;
-	unsigned int		excl;
+	char				*scene;
+	int					scene_fd;
+	char				**nodes;
+	char				**sub_node;
+	t_node				*node_lst;
+	char				is_comm;
+	char				in_scene;
+	int					n_nodes;
+	int					n_sub;
+	int					lbra;
+	int					rbra;
+	int					slas;
+	int					dquo;
+	int					excl;
 }						t_xml;
 
 typedef struct			s_frame
@@ -157,8 +183,7 @@ typedef	struct			s_env
 	int					mou_x;
 	int					mou_y;
 	int					debug;
-	char				*scene;
-	int					scene_fd;
+	t_xml				*xml;
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
@@ -184,7 +209,6 @@ typedef	struct			s_env
 	cl_mem				planes_mem;
 	t_sphere			*spheres;
 	cl_mem				spheres_mem;
-	cl_float3			mvt;
 //	next data may be deleted after testing etc
 	char				run;
 }						t_env;
@@ -193,7 +217,57 @@ typedef	struct			s_env
 *****		comment template		*****
 */
 
-void					init(t_env *e);
+void					init(t_env *e, int ac, char *av);
+void					set_hooks(t_env *e);
+
+void					xml_allocate_cam(t_env *e);
+void					xml_allocate_cone(t_env *e);
+void					xml_allocate_cyl(t_env *e);
+void					xml_allocate_light(t_env *e);
+void					xml_allocate_plane(t_env *e);
+void					xml_allocate_sphere(t_env *e);
+int						xml_check_char(char c);
+char					*xml_check_line(t_env *e, char *buf);
+void					xml_data_angle(t_env *e, char **attributes, \
+										int *i, t_node *node);									
+void					xml_data_color(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_dir(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_hor(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_intens(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_normale(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_pos(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_radius(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_type(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_ver(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_init(t_env *e, int ac, char *av);
+void					xml_get_file(t_env *e, int ac, char *av);
+int						xml_grab_color(char *str);
+void					xml_list_add_first(t_node **begin, t_node *node);
+void					xml_list_clean(t_env *e, t_node **list);
+t_node					*xml_list_new(char type);
+void					xml_node_clean(char **target);
+void					xml_node_cam(t_env *e, char *node);
+void					xml_node_cone(t_env *e, char *node);
+void					xml_node_cylinder(t_env *e, char *node);
+void					xml_node_light(t_env *e, char *node);
+void					xml_node_plane(t_env *e, char *node);
+void					xml_node_sphere(t_env *e, char *node);
+void					xml_parse_nodes(t_env *e);
+void					xml_push_cam(t_env *e, t_node *list);
+void					xml_push_cone(t_env *e, t_node *list);
+void					xml_push_cyl(t_env *e, t_node *list);
+void					xml_push_light(t_env *e, t_node *list);
+void					xml_push_plane(t_env *e, t_node *list);
+void					xml_push_sphere(t_env *e, t_node *list);
 
 int						quit(t_env *e);
 void					error(void);
@@ -209,9 +283,6 @@ void					mlx_keyboard_repeated(t_env *e);
 int						mlx_key_release(int key, t_env *e);
 int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
-
-void					get_file(t_env *e, int ac, char *av);
-int						load_file(t_env *e);
 
 int						opencl_init(t_env *e);
 void					opencl_close(t_env *e);

@@ -26,6 +26,7 @@ int			get_imgptr(t_env *e)
 	int		err;
 
 	clFinish(e->commands);
+	 // the "CL_TRUE" flag blocks the read operation until all work items have finished their computation
 	err = clEnqueueReadBuffer(e->commands, e->output, CL_TRUE, 0, \
 			sizeof(char) * (e->count * 4), e->frame->pix, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
@@ -44,6 +45,10 @@ int			draw(t_env *e)
 	opencl_set_args(e);
 	err = clGetKernelWorkGroupInfo(e->kernel, e->device_id, \
 			CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL);
+//	e->local = 1024 | e->count = 2073600
+//	CL_KERNEL_WORK_GROUP_SIZE = 4528
+//	printf("CL_KERNEL_WORK_GROUP_SIZE = %d\n", CL_KERNEL_WORK_GROUP_SIZE);
+//	printf("e->local = %zu | e->count = %u\n", e->local, e->count);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
@@ -51,6 +56,7 @@ int			draw(t_env *e)
 		s_error("Error: Failed to retrieve kernel work group info!", e);
 	}
 	e->global = (size_t)e->count;
+	e->local = 256;
 	err = clEnqueueNDRangeKernel(e->commands, e->kernel, 1, NULL, \
 			&e->global, &e->local, 0, NULL, NULL);
 	if (err)

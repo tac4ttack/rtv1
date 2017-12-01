@@ -58,8 +58,18 @@ SRC_NAME =  			init.c \
 						opencl_compute.c \
 						opencl_init.c \
 						tools.c \
-						xml_file.c \
-						xml_load.c
+						xml.c \
+						xml_cameras.c \
+						xml_cones.c \
+						xml_cylinders.c \
+						xml_data_num.c \
+						xml_data_vector.c \
+						xml_lights.c \
+						xml_list.c \
+						xml_nodes.c \
+						xml_planes.c \
+						xml_spheres.c \
+						xml_tools.c
 
 default: gpu
 
@@ -85,7 +95,7 @@ gpu_flags:
 	$(eval GPU_L = -framework OpenCL)
 	$(eval GPU_MACRO = -DGPU)
 
-debug: clean cleanlibft debuglibft debug_flag
+debug: clean cleanlibft debuglibft debug_flag gpu
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
 	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)

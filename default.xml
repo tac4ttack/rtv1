@@ -1,68 +1,92 @@
+<?xml version="1.0"?>
+
+
 <!--
+
+	Comments cannot appear before XML declaration. <- semble ok car verif header
+	Comments may appear anywhere in a document. -> semble ok
+	Comments must not appear within attribute values. -> a faire
+	Comments cannot be nested inside the other comments. -> semble OK
+
+	Object informations have to be filled strictly like showed below,
 
 <cam id="0"
 		pos="0, 0, 0"
+		dir="0, 0, 1"
 		hor="0.6, 0, 0"
 		ver="0, 0.6, 0"
-		dir="0, 0, 1"
 		/>
 
 <cone id="0"
 		pos="0, 0, 0"
 		dir="0, 0, 0"
-		color="0x00ff0000"
+		angle="4.2"
+		color="0, 255, 255, 255"
 		/>
 
 <cylinder id="0"
 		pos="0, 0, 0"
 		dir="0, 0, 0"
 		radius="42"
-		color="0x00ff0000"
+		color="0, 255, 255, 255"
 		/>
 
 <light id="0"
+		type="0"
 		pos="0, 0, 0"
 		dir="0, 0, 0"
-		type="0"
 		intensity="42"
-		color="0x00ffffff"
+		color="0, 255, 255, 255"
 		/>
 
-<plane id="0"
+<plane id="0" 
 		pos="0, 0, 0"
 		normale="0, 0, 1"
-		color="0x00ff0000"
+		color="0, 255, 255, 255"
 		/>
 
 <sphere id="0"
 		pos="0, 0, 0"
 		dir="0, 0, 0"
-		color="0x00ff0000"
-		/>
-		
--->
+		radius="4.2"
+		color="0, 255, 255, 255"/> -->  	
+
+
 <scene>
-	<cam id="0"
-			pos="-20, 0, 50"
+	<cam 	id="0"
+			pos="0, -5, -20"
+			dir="0, 0, 1"
 			hor="0.6, 0, 0"
 			ver="0, 0.6, 0"
-			dir="0, 0, 1"
 			/>
-	<plane id="1"
-			pos="0, 0, 0"
-			normale="0, 0, 1"
-			color="0x00ff0000"
+	<plane 	id="0"
+			pos="0, 10, 0"
+			normale="0, -1, 0"
+			color="0, 255, 0, 0"
 			/>
-	<sphere id="2"
-			pos="0, 0, 0"
+		<!--	<sphere id="0"
+			pos="0, -5, 0"
 			dir="0, 0, 0"
-			radius="5"
-			color="0x00ff0000"
-			/>
-	<sphere id="3"
-			pos="0, 0, 0"
+			radius="2"
+			color="0, 0, 255, 0"
+			/>-->
+	<light 	id="0"
+			type="0"
+			pos="0, -10, 5"
 			dir="0, 0, 0"
-			radius="10"
-			color="0x00ff0000"
+			intensity="42"
+			color="0, 255, 255, 255"
+			/>
+		<!--<cylinder id="0"
+			pos="0, 0, 0"
+			dir="1, 1, 0"
+			radius="3"
+			color="0, 0, 255, 255"
+			/>-->
+	<sphere id="0"
+			pos="0, -5, 10"
+			dir="0, 0, 0"
+			radius="3"
+			color="0, 0, 0, 255"
 			/>
 </scene>

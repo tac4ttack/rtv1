@@ -7,10 +7,10 @@ void	print_usage()
 
 void	flush(t_env *e)
 {
-	if (e->scene)
-		free(e->scene);
 	if (e->kernel_src)
 		free(e->kernel_src);
+	if (XML)
+		free(XML);
 	if (e->frame && e->frame->ptr)
 		mlx_destroy_image(e->mlx, e->frame->ptr);
 	if (e->frame)

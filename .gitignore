@@ -3,6 +3,8 @@
 rtv1
 libft/*.o
 log
+.vscode
+docs/exe
 
 # Prerequisites
 *.d
@@ -56,4 +58,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-.vscode

@@ -1,36 +1,17 @@
-Caméra:
--------
-	* Position	= vecteur 3f
-	* Vect.U Ho = vecteur 3f
-	* Vect.U Ve = vecteur 3f
+TODO LIST PARSER:
+-----------------
+* securiser la recuperation d'id qui servira a remplir les tableaux à transmettre au kernel
+	-> OK DONE
+* free de la liste chainee // semble ok mais beaucoup de fuite memoire
+	-> SEMBLE OK
+* securiser la recuperation des valeurs numeriques
+	-> pour les vecteurs si valeur incorrecte alors recupere 0
+	   semble protégé car si valeur manquante alors attribut suivant est pété et l'erreur est signalée
+	-> OK DONE (couleur angle radius et couleur protégées)
 
-Lumières:
----------
-	* Type =
-		- ambiante: la lumière reçue de façon uniforme par tout point de la scène, indifféremment de la position des autres sources et objets. permet d'évider zones non éclairées complètement noires
-		- ponctuelle: source lumineuse placée en un point de l'espace, et qui éclaire uniformément dans toutes les directions. Une lumière ponctuelle a une influence diffuse et spéculaire sur la couleur de l'objet
-		- directionnelle: source de lumière ponctuelle, mais qui n'émet que dans une direction.
-	* Position	= vecteur 3f (dépend du type)
-	* Direction	= vecteur 3f (dépend du type)
-	* Couleur	= valeur numérique (prévoir fonction de blend)
+* bug si pas d'espace entre type de noeud et Id
 
-Sphere:
--------
-	* Position	= vecteur 3f
-	* Rotation	= ??? inutile si pas de texture ???
-	* Rayon		= valeur numerique
-	* Couleur	= valeur numerique
-
-Plan:
------
-	* Position	= vecteur 3f
-	* Normale	= vecteur 3f
-	* Couleur	= valeur numérique
-
-Cylindre:
----------
-
-
-Cone:
------
-
+* bug si pas d'espace ou retour à la ligne pour balise fermeture noeud
+	-> OK DONE
+* bug si ligne vide après balise fermante de commentaire
+	-> OK DONE
