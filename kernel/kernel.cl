@@ -278,11 +278,13 @@ unsigned int			light(t_hit hit, t_scene scene)
 	return (res_color);
 }
 
-unsigned int	get_pixel_color(t_scene scene, double3 mvt)
+unsigned int	get_pixel_color(t_scene scene)
 {
 	t_hit		hit;
 	double		bias = 0.00001;
 
+	// PARAM mvt pour mouvement de la camera remplacable par position de la cam
+	// directement incrementee?
 	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
 	if (hit.dist > 0)
 	{
@@ -320,5 +322,5 @@ __kernel void	ray_trace(__global char *output,
 	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 
 	scene.ray = get_ray_cam(ACTIVECAM, x ,y);
-	OUTPUTE = get_pixel_color(scene, PARAM->mvt);
+	OUTPUTE = get_pixel_color(scene);
 }
