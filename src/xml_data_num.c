@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 12:32:12 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/23 18:39:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/01 17:52:14 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,20 @@ void		xml_data_radius(t_env *e, char **attributes, int *i, t_node *node)
 		s_error("\x1b[2;31mError reading RADIUS from scene\x1b[0m", e);
 }
 
+void		xml_data_height(t_env *e, char **attributes, int *i, t_node *node)
+{
+	if (e && attributes && node)
+	{
+		if (attributes[(*i)] == NULL)
+			s_error("\x1b[2;31mError reading HEIGHT value\x1b[0m", e);
+		node->height = ft_atof(attributes[(*i)++] + 8);
+		if (node->height < 0)
+			s_error("\x1b[2;31mError HEIGHT can't be 0 or less\x1b[0m", e);
+	}
+	else
+		s_error("\x1b[2;31mError reading HEIGHT from scene\x1b[0m", e);
+}
+
 void		xml_data_angle(t_env *e, char **attributes, int *i, t_node *node)
 {
 	if (e && attributes && node)
@@ -61,8 +75,8 @@ void		xml_data_angle(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)] == NULL)
 			s_error("\x1b[2;31mError reading ANGLE value\x1b[0m", e);	
 		node->angle = ft_atof(attributes[(*i)++] + 7);
-		if (node->angle <= 0)
-			s_error("\x1b[2;31mError ANGLE can't be 0 or less\x1b[0m", e);	
+		if (node->angle < 0)
+			s_error("\x1b[2;31mError ANGLE can't be negative\x1b[0m", e);	
 	}
 	else
 		s_error("\x1b[2;31mError reading ANGLE from scene\x1b[0m", e);	
