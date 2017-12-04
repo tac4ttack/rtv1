@@ -83,7 +83,7 @@
 		angle="4.2"
 		color="0, 255, 255, 255"
 		/>-->
-		<sphere id="0"
+		<sphere id="1"
 			pos="0, -5, 10"
 			dir="0, 0, 0"
 			radius="3"
