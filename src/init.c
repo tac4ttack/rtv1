@@ -80,7 +80,6 @@ void		init(t_env *e, int ac, char *av)
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
-	e->gpu = 1;
 	if (opencl_init(e) != 0)
 	{
 		e->gpu = 0;

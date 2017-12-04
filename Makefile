@@ -15,6 +15,8 @@ LIBFTFLAGS :=			-lft
 
 LIBMATHFLAGS :=			-lm
 
+OPENCL :=				-framework OpenCL
+
 OS_TEST := $(shell uname)
 ifeq ($(OS_TEST), Darwin)
 INC_NAMES = 			$(NAME).h \
@@ -77,7 +79,7 @@ all: $(NAME)
 
 $(NAME): libft mlx $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME) with $(OS_NAME) MLX version$(EOC)"
-	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(GPU_L) $(ASANFLAGS)
+	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
 	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
@@ -92,7 +94,6 @@ cpu: CPU
 GPU: gpu_flags all
 gpu: GPU
 gpu_flags:
-	$(eval GPU_L = -framework OpenCL)
 	$(eval GPU_MACRO = -DGPU)
 
 debug: clean cleanlibft debuglibft debug_flag gpu

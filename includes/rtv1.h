@@ -1,6 +1,12 @@
 #ifndef RTV1_H
 # define RTV1_H
 
+# include <stdlib.h>
+# include <unistd.h>
+# include <math.h>
+# include "libft.h"
+# include "mlx.h"
+
 # ifdef MAC_KEYS
 #  include "mac_keys.h"
 # elif LINUX_KEYS
@@ -10,18 +16,15 @@
 # ifdef GPU
 #  define MAX_SOURCE_SIZE	(0x100000)
 #  define IS_GPU			1
-#  ifdef __APPLE__
-#   include <OpenCL/opencl.h>
-#  else
-#   include <CL/cl.h>
-#  endif
+# else
+#  define IS_GPU			0
 # endif
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <math.h>
-# include "libft.h"
-# include "mlx.h"
+# ifdef __APPLE__
+#  include <OpenCL/opencl.h>
+# else
+#  include <CL/cl.h>
+# endif
 
 # ifdef DEBUG
 #  define DBUG					1
