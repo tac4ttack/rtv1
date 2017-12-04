@@ -77,13 +77,13 @@
 			intensity="42"
 			color="0, 255, 255, 255"
 			/>
-		<!--<cylinder id="0"
-			pos="0, 0, 0"
-			dir="1, 1, 0"
-			radius="3"
-			color="0, 0, 255, 255"
-			/>-->
-	<sphere id="0"
+		<!--<cone id="0"
+		pos="0, 0, 20"
+		dir="0, 1, 0"
+		angle="4.2"
+		color="0, 255, 255, 255"
+		/>-->
+		<sphere id="0"
 			pos="0, -5, 10"
 			dir="0, 0, 0"
 			radius="3"

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 15:26:19 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/01 19:03:46 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,12 @@ static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 		s_error("\x1b[2;31mError in cylinder, COLOR expected in #4\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, cyl_node);
-	printf("color = %xd\n", cyl_node->color);
+	printf("color= %xd\n", cyl_node->color);
+	if (ft_strncmp(att[*i], "height=\"", 8) != 0)
+		s_error("\x1b[2;31mError in cylinder, HEIGHT expected in #5\x1b[0m", e);
+	else
+		xml_data_height(e, att, i, cyl_node);
+	printf("height= %lf\n", cyl_node->height);
 }
 
 void		xml_node_cylinder(t_env *e, char *node)
@@ -88,4 +93,5 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].dir = list->dir;
 	e->cylinders[list->id].radius = list->radius;
 	e->cylinders[list->id].color = list->color;
+	e->cylinders[list->id].height = list->height;
 }
