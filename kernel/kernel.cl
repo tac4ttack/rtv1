@@ -3,6 +3,8 @@
 #include "kernel_data.h"
 #include "kernel_vector.h"
 
+#pragma OPENCL EXTENSION cl_khr_fp64 : enable
+
 float3					get_sphere_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc;
