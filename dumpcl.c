@@ -19,6 +19,5 @@ int main(int argc, char* const argv[]) {
         clGetDeviceInfo(devices[i], CL_DEVICE_VERSION, 128, buf, NULL);
         fprintf(stdout, "%s\n", buf);
     }
-
     free(devices);
 }
