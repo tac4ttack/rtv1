@@ -16,8 +16,8 @@
 			/>
 	<cone id="0"
 		  pos="0, -5, 5"
-		  dir="1, 0, 0"
-		  angle="60"
+		  dir="0, 1, 0"
+		  angle="10"
 		  color="0, 255, 80, 0"
 		  />
 </scene>

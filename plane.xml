@@ -6,16 +6,36 @@
 			hor="0.6, 0, 0"
 			ver="0, 0.6, 0"
 			/>
-	<plane 	id="0"
-			pos="50, 15, 0"
-			normale="0.1, 4.2, -0.25"
-			color="0, 255, 0, 0"
-			/>
 	<light 	id="0"
 			type="0"
 			pos="0, -10, 5"
 			dir="0, 0, 0"
 			intensity="42"
 			color="0, 255, 255, 255"
+			/>
+	<plane 	id="0"
+			pos="0, -15, 0"
+			normale="0, 1, 0"
+			color="0, 255, 0, 0"
+			/>
+	<plane 	id="1"
+			pos="-15, 0, 0"
+			normale="1, 0, 0"
+			color="0, 0, 255, 0"
+			/>
+	<plane 	id="2"
+			pos="15, 0, 0"
+			normale="1, 0, 0"
+			color="0, 0, 0, 255"
+			/>
+	<plane 	id="3"
+			pos="0, 15, 0"
+			normale="0, -1, 0"
+			color="0, 0, 120, 120"
+			/>
+	<plane 	id="4"
+			pos="0, 0, 30"
+			normale="0, 0, -1"
+			color="0, 120, 120, 0"
 			/>
 </scene>
