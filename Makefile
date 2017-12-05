@@ -75,7 +75,7 @@ SRC_NAME =  			init.c \
 
 default: gpu
 
-all: $(NAME)
+all: Makefile $(NAME)
 
 $(NAME): libft mlx $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME) with $(OS_NAME) MLX version$(EOC)"
