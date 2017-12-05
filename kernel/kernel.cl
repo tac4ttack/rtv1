@@ -3,8 +3,6 @@
 #include "kernel_data.h"
 #include "kernel_vector.h"
 
-#pragma OPENCL EXTENSION cl_khr_fp64 : enable
-
 float3					get_sphere_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc;
@@ -122,7 +120,7 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 {
 	float				t;
 
-	if ((t = dot_vect(ray, normalize(plane.normale))) == 0)
+	if ((t = dot_vect(normalize(ray), normalize(plane.normale))) == 0)
 		return (0);
 	t = (dot_vect(plane.pos - origin, normalize(plane.normale))) / t;
 		if (t < 0.001)
@@ -251,14 +249,14 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 			dot_vect(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, normalize(CYLIND[hit.id].dir)));
 		res = (hit.pos - CYLIND[hit.id].pos) - (normalize(CYLIND[hit.id].dir) * res);
 	}
-	else if (hit.type == 4)
+	else if (hit.type == 4) // bizarrement on fait l'inverse de ce qu'on peut voir dans le code d'autres personnes
 	{
 		if (dot_vect(PLANE[hit.id].normale, scene.ray) < 0)
 			res = PLANE[hit.id].normale;
 		else
 			res = -PLANE[hit.id].normale;
 	}
-	else
+	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
 	return (normalize(res));
 }
@@ -273,7 +271,6 @@ unsigned int			light(t_hit hit, t_scene scene)
 	unsigned int		ambiant_color = blend_ambiant(obj_color);//light_angle(120, obj_color, scene);
 	unsigned int		res_color = 0;
 	unsigned int		tmp_color = 0;
-
 
 	//	printf("%u\n", obj_color);
 	while (++i < PARAM->n_lights)
@@ -300,7 +297,7 @@ unsigned int			light(t_hit hit, t_scene scene)
 unsigned int	get_pixel_color(t_scene scene)
 {
 	t_hit		hit;
-	float		bias = 0.00001;
+	float		bias = 0.000001;
 
 	// PARAM mvt pour mouvement de la camera remplacable par position de la cam
 	// directement incrementee?
@@ -318,7 +315,8 @@ unsigned int	get_pixel_color(t_scene scene)
 	return (BACKCOLOR);
 }
 
-float3					get_ray_cam(t_cam cam, int x, int y)
+// OLD CAN BE DELETED
+/*float3					get_ray_cam(t_cam cam, int x, int y)
 {
 	float3				ray;
 	float3				h = mult_fvect(modh_vect(x), cam.hor);
@@ -326,6 +324,18 @@ float3					get_ray_cam(t_cam cam, int x, int y)
 
 	ray = normalize(cam.dir) + v + h;
 	return (normalize(ray));
+}
+*/
+
+float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
+{
+	float3					cam_ray;
+	float					ratio = (float)PARAM->win_w / (float)PARAM->win_h;
+	cam_ray.x = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((PARAM->fov / 2) * DEG2RAD));
+//	cam_ray.x += sin(cam_ray.x * 10) / 10.0; // deformation kikoolol
+	cam_ray.y = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((PARAM->fov / 2) * DEG2RAD));
+	cam_ray.z = cam.dir.z;
+	return(normalize(cam_ray));
 }
 
 __kernel void	ray_trace(__global char *output,
@@ -337,12 +347,10 @@ __kernel void	ray_trace(__global char *output,
 						  __constant t_plane *planes,
 						  __constant t_sphere *spheres)
 {
+	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 	int		x = get_global_id(0);
 	int		y = get_global_id(1);
-	int		id = x  + 1920 * y;
-
-	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
-
-	scene.ray = get_ray_cam(ACTIVECAM, x ,y);
+	int		id = x + (PARAM->win_w * y);
+	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);
 }

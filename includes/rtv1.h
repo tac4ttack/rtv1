@@ -41,8 +41,9 @@
 # define DEG2RAD				(M_PI / 180)
 # define RAD2DEG				(180 / M_PI)
 
-# define WIDTH					1920
-# define HEIGHT					1080
+# define WIDTH					(double)1024
+# define HEIGHT					(double)768
+# define FOV					30
 # define DEPTH					2000 //DAFUQ IS THIS SHIT?
 
 # define NCAM					e->param.n_cams
@@ -120,6 +121,9 @@ typedef struct			s_param
 	int					n_planes;
 	int					n_spheres;
 	int					active_cam;
+	int					win_w;
+	int					win_h;
+	cl_float			fov;
 	cl_float			bloom;
 	cl_float3			mvt;
 }						t_param;

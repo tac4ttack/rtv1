@@ -23,8 +23,8 @@ void			mlx_keyboard_repeated(t_env *e)
 	(KP_S ? e->param.mvt.z -= 0.1 : 0);
 	(KP_A ? e->param.mvt.x -= 0.1 : 0);
 	(KP_D ? e->param.mvt.x += 0.1 : 0);
-	(KP_SPC ? e->param.mvt.y -= 0.1 : 0);
-	(KP_C ? e->param.mvt.y += 0.1 : 0);
+	(KP_SPC ? e->param.mvt.y += 0.1 : 0);
+	(KP_C ? e->param.mvt.y -= 0.1 : 0);
 	(KP_R ? reset_cam_pos(e) : 0);
 	(KP_NPLU ? e->param.bloom += 0.1 : 0);
 	(KP_NMIN ? e->param.bloom -= 0.1 : 0);

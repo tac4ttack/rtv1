@@ -73,6 +73,9 @@ void		init(t_env *e, int ac, char *av)
 	e->mou_y = 0;
 	e->gpu = IS_GPU;
 	e->param.bloom = 1.80;
+	e->param.win_w = WIDTH;
+	e->param.win_h = HEIGHT;
+	e->param.fov = FOV;
 	e->run = 1;
 	xml_init(e, ac, av);
 	if (!(e->mlx = mlx_init()))

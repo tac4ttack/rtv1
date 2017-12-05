@@ -1,7 +1,5 @@
-#define WINX 1920
-#define WINY 1080
-
 #define BACKCOLOR 0x00333333
+#define RAND_MAX	2147483647
 
 #define DEG2RAD (M_PI / 180)
 #define RAD2DEG (180 / M_PI)
@@ -90,6 +88,9 @@ typedef struct			s_param
 	unsigned int		n_planes;
 	unsigned int		n_spheres;
 	unsigned int		active_cam;
+	unsigned int		win_w;
+	unsigned int		win_h;
+	float				fov;
 	float				bloom;
 	float3				mvt;
 }						t_param;
