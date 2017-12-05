@@ -4,6 +4,7 @@ rtv1
 libft/*.o
 log
 .vscode
+dumpcl
 docs/exe
 
 # Prerequisites
@@ -58,4 +59,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-dumpcl
