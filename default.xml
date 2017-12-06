@@ -1,20 +1,23 @@
 <?xml version="1.0"?>
-
-
 <!--
+Comments rules:
+---------------
 
-	Comments cannot appear before XML declaration. <- semble ok car verif header
-	Comments may appear anywhere in a document. -> semble ok
-	Comments must not appear within attribute values. -> a faire
-	Comments cannot be nested inside the other comments. -> semble OK
+	Comments cannot appear before XML declaration.
+	Comments may appear anywhere in a document.
+	Comments must not appear within attribute values. -> a faire SEGFAULT :(
+	Comments cannot be nested inside the other comments.
+	
+Object informations have to be filled strictly like showed below:
+-----------------------------------------------------------------
 
-	Object informations have to be filled strictly like showed below,
-
+<resolution width="1024" height="768"> -> have to be implemented
 <cam id="0"
 		pos="0, 0, 0"
 		dir="0, 0, 1"
-		hor="0.6, 0, 0"
-		ver="0, 0.6, 0"
+		hor="0.6, 0, 0" -> have to be removed
+		ver="0, 0.6, 0" -> have to be removed
+		fov="30.0"		-> have to be added
 		/>
 
 <cone id="0"
@@ -31,10 +34,8 @@
 		color="0, 255, 255, 255"
 		/>
 
-
-// Lights type are 0 for ambient, 1 for spot, 2 for directionnal
 <light id="0"
-		type="0"
+		type="0" 		0 = ambient | 1 = spot | 2 = directional
 		pos="0, 0, 0"
 		dir="0, 0, 0"
 		intensity="42"
@@ -51,8 +52,8 @@
 		pos="0, 0, 0"
 		dir="0, 0, 0"
 		radius="4.2"
-		color="0, 255, 255, 255"/> -->  	
-
+		color="0, 255, 255, 255"/>
+--> 
 
 <scene>
 	<cam 	id="0"
@@ -62,7 +63,7 @@
 			ver="0, .6, 0"
 			/>
 	<plane 	id="0"
-			pos="0, -4.2, 0"
+			pos="0, -8.4, 0"
 			normale="0, 1, 0"
 			color="0, 255, 0, 0"
 			/>

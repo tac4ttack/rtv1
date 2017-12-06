@@ -9,7 +9,7 @@ TODO LIST PARSER:
 * rajouter la propriété 'reflexion' aux objets
 * rajouter la propriété 'refraction' aux objets
 
-* correction atof avec nombre à virgule négatifs
+* correction atof avec nombre à virgule négatifs -> OK FAIT
 
 CAMERA:
 -------
