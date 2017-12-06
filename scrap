@@ -1,22 +1,15 @@
 TODO LIST PARSER:
 -----------------
-* securiser la recuperation d'id qui servira a remplir les tableaux à transmettre au kernel
-	-> OK DONE
-* free de la liste chainee // semble ok mais beaucoup de fuite memoire
-	-> SEMBLE OK
-* securiser la recuperation des valeurs numeriques
-	-> pour les vecteurs si valeur incorrecte alors recupere 0
-	   semble protégé car si valeur manquante alors attribut suivant est pété et l'erreur est signalée
-	-> OK DONE (couleur angle radius et couleur protégées)
+* refaire gestion lumières, présence OBLIGATOIRE et UNIQUE d'une lumière d'ambiance
+	-> nouveau type de noeud? sa couleur doit être à virgule (ex: [0.1 , 0.3 , 0.1])
+* rajouter noeud type 'resolution' pour définir la résolution
+* rajouter la propriété 'fov' à la caméra
+* rajouter la propriété 'specular' aux objets
+* rajouter la propriété 'diffuse' aux objets
+* rajouter la propriété 'reflexion' aux objets
+* rajouter la propriété 'refraction' aux objets
 
-* bug si pas d'espace entre type de noeud et Id
-	-> OK DONE
-* bug si pas d'espace ou retour à la ligne pour balise fermeture noeud
-	-> OK DONE
-* bug si ligne vide après balise fermante de commentaire
-	-> OK DONE
-
-* position plan WTF?
+* correction atof avec nombre à virgule négatifs
 
 CAMERA:
 -------
