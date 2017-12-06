@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 19:26:13 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/21 16:41:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/06 16:02:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <limits.h>
 # include <stddef.h>
 # include <stdint.h>
+# include <math.h>
 
 typedef struct		s_list
 {
@@ -31,8 +32,8 @@ typedef struct		s_list
 
 int					ft_ahtoi(char const *str);
 int					ft_atoi(char const *str);
-long				ft_atol(const char *str);
-float				ft_atof(char *str);
+long				ft_atol(char const *str);
+float				ft_atof(char const *str);
 
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
