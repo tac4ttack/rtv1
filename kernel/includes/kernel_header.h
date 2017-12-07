@@ -34,8 +34,7 @@ typedef struct			s_cam
 {
 	float3				pos;
 	float3				dir;
-	float3				hor;
-	float3				ver;
+	float				fov;
 }						t_cam;
 
 typedef struct			s_cone

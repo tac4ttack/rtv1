@@ -66,8 +66,7 @@ typedef struct			s_cam
 {
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float3			hor;
-	cl_float3			ver;
+	cl_float			fov;
 //	cl_float3			ray;   DAFUQ IS THIS SHIT?
 }						t_cam;
 
@@ -132,8 +131,7 @@ typedef struct			s_node
 {
 	int					id;
 	int					type;
-	cl_float3			hor;
-	cl_float3			ver;
+	cl_float			fov;
 	cl_float3			dir;
 	cl_float3			pos;
 	cl_float3			normale;
@@ -243,7 +241,9 @@ void					xml_data_color(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_dir(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_data_hor(t_env *e, char **attributes, \
+void					xml_data_fov(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_intens(t_env *e, char **attributes, \
 										int *i, t_node *node);
@@ -254,10 +254,6 @@ void					xml_data_pos(t_env *e, char **attributes, \
 void					xml_data_radius(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_type(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_ver(t_env *e, char **attributes, \
-										int *i, t_node *node);
-void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_init(t_env *e, int ac, char *av);
 void					xml_get_file(t_env *e, int ac, char *av);

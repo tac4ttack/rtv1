@@ -59,8 +59,7 @@ Object informations have to be filled strictly like showed below:
 	<cam 	id="0"
 			pos="0, -5, -20"
 			dir="0, 0, 1"
-			hor=".6, 0, 0"
-			ver="0, .6, 0"
+			fov="30"
 			/>
 	<plane 	id="0"
 			pos="0, -8.4, 0"

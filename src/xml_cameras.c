@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 15:25:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/07 14:12:02 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,11 @@ static void	xml_cam_data(t_env *e, char **att, t_node *cam_node, int *i)
 	else
 		xml_data_dir(e, att, i, cam_node);
 	printf("dir x = %f | y = %f | z = %f\n", cam_node->dir.x, cam_node->dir.y, cam_node->dir.z);
-	if (ft_strncmp(att[*i], "hor=\"", 5) != 0)
-	s_error("\x1b[2;31mError in camera, HOR expected in #3\x1b[0m", e);
+	if (ft_strncmp(att[*i], "fov=\"", 5) != 0)
+	s_error("\x1b[2;31mError in camera, FOV expected in #3\x1b[0m", e);
 	else
-		xml_data_hor(e, att, i, cam_node);
-	printf("hor x = %f | y = %f | z = %f\n", cam_node->hor.x, cam_node->hor.y, cam_node->hor.z);
-	if (ft_strncmp(att[*i], "ver=\"", 5) != 0)
-		s_error("\x1b[2;31mError in camera, VER expected in #4\x1b[0m", e);
-	else
-		xml_data_ver(e, att, i, cam_node);
-	printf("ver x = %f | y = %f | z = %f\n", cam_node->ver.x, cam_node->ver.y, cam_node->ver.z);
+		xml_data_fov(e, att, i, cam_node);
+	printf("fov = %f\n", cam_node->fov);
 }
 
 void		xml_node_cam(t_env *e, char *node)
@@ -86,6 +81,5 @@ void		xml_push_cam(t_env *e, t_node *list)
 {
 	e->cameras[list->id].pos = list->pos;
 	e->cameras[list->id].dir = list->dir;
-	e->cameras[list->id].hor = list->hor;
-	e->cameras[list->id].ver = list->ver;
+	e->cameras[list->id].fov = list->fov;
 }
