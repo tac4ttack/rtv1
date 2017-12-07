@@ -6,6 +6,7 @@ log
 .vscode
 dumpcl
 docs/exe
+.DS_Store
 
 # Prerequisites
 *.d
