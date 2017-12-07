@@ -275,21 +275,18 @@ unsigned int			light(t_hit hit, t_scene scene)
 	//	printf("%u\n", obj_color);
 	while (++i < PARAM->n_lights)
 	{
-		if (LIGHT[i].type != 0)
+		light_ray.dir = LIGHT[i].pos - hit.pos;
+		light_ray.dist = norme_vect(light_ray.dir);
+		light_ray.dir = normalize(light_ray.dir);
+		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
+		;//	printf("%f\n", light_hit.dist);
+		else
 		{
-			light_ray.dir = LIGHT[i].pos - hit.pos;
-			light_ray.dist = norme_vect(light_ray.dir);
-			light_ray.dir = normalize(light_ray.dir);
-			light_hit = ray_hit(hit.pos, light_ray.dir, scene);
-			if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-			;//	printf("%f\n", light_hit.dist);
-			else
-			{
-				angle = light_angelamerkel(hit, light_ray);
-				if ((tmp_color = light_angle(angle, obj_color, scene)) < ambiant_color)
-					tmp_color = ambiant_color;
-				res_color = blend_add(res_color, tmp_color);
-			}
+			angle = light_angelamerkel(hit, light_ray);
+			if ((tmp_color = light_angle(angle, obj_color, scene)) < ambiant_color)
+				tmp_color = ambiant_color;
+			res_color = blend_add(res_color, tmp_color);
 		}
 	}
 	if (res_color == 0)
