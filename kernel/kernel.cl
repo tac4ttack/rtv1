@@ -240,7 +240,7 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		res = dot_vect(scene.ray, normalize(CONES[hit.id].dir)) * \
 			hit.dist - dot_vect(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, normalize(CONES[hit.id].dir));
 		res = (hit.pos - normalize(CONES[hit.id].pos)) - (k * normalize(CONES[hit.id].dir) * res);
-		if (dot_vect(CONES[hit.id].pos - hit.pos, normalize(CONES[hit.id].dir)) > 0)
+	//	if (dot_vect(CONES[hit.id].pos - hit.pos, normalize(CONES[hit.id].dir)) > 0)
 			res = -res;
 	}
 	else if (hit.type == 2)
@@ -309,9 +309,9 @@ unsigned int	get_pixel_color(t_scene scene)
 	{
 		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
-		if (hit.type == 4)
+		/*if (hit.type == 4)
 			hit.pos = hit.pos + ((bias + hit.dist / 5) * hit.normale);
-		else
+		else*/
 			hit.pos = hit.pos + ((bias + hit.dist / 200) * hit.normale);
 		return (light(hit, scene));
 	}
