@@ -89,9 +89,9 @@ typedef struct			s_param
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	float				fov;
 	float				bloom;
 	float3				mvt;
+	float3				ambient;
 }						t_param;
 
 typedef struct			s_scene

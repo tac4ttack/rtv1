@@ -11,13 +11,12 @@ Comments rules:
 Object informations have to be filled strictly like showed below:
 -----------------------------------------------------------------
 
-<resolution width="1024" height="768"> -> have to be implemented
+<?xml version="1.0"?>
+<scene res="1024, 768" ambient="0.1, 0.5, 0.1">
 <cam id="0"
 		pos="0, 0, 0"
 		dir="0, 0, 1"
-		hor="0.6, 0, 0" -> have to be removed
-		ver="0, 0.6, 0" -> have to be removed
-		fov="30.0"		-> have to be added
+		fov="30.0"
 		/>
 
 <cone id="0"
@@ -53,10 +52,11 @@ Object informations have to be filled strictly like showed below:
 		dir="0, 0, 0"
 		radius="4.2"
 		color="0, 255, 255, 255"/>
+</scene>
 --> 
 
-<scene>
-	<cam 	id="0"
+<scene res="320, 240" ambient="0.1, 0.5, 0.1">
+<cam 	id="0"
 			pos="0, -5, -20"
 			dir="0, 0, 1"
 			fov="30"

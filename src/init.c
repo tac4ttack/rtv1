@@ -64,20 +64,18 @@ void		frame_init(t_env *e)
 void		init(t_env *e, int ac, char *av)
 {
 	ft_bzero(e, sizeof(t_env));
+	xml_init(e, ac, av);
 	e->debug = DBUG;
-	e->win_w = WIDTH;
-	e->win_h = HEIGHT;
+	e->win_w = e->param.win_w;
+	e->win_h = e->param.win_h;
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
 	e->mou_x = 0;
 	e->mou_y = 0;
 	e->gpu = IS_GPU;
 	e->param.bloom = 1.80;
-	e->param.win_w = WIDTH;
-	e->param.win_h = HEIGHT;
-	e->param.fov = FOV;
 	e->run = 1;
-	xml_init(e, ac, av);
+//	xml_init(e, ac, av);
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))

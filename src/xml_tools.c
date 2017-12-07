@@ -6,17 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 17:35:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 16:41:55 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/07 16:10:51 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-
-int		xml_grab_color(char *str)
-{
-	ft_strlen(str);
-	return (-1);
-}
 
 void	xml_node_clean(char **target)
 {

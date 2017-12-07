@@ -41,8 +41,8 @@
 # define DEG2RAD				(M_PI / 180)
 # define RAD2DEG				(180 / M_PI)
 
-# define WIDTH					(double)1024
-# define HEIGHT					(double)768
+# define WIDTH					e->param.win_w
+# define HEIGHT					e->param.win_h
 # define FOV					30
 # define DEPTH					2000 //DAFUQ IS THIS SHIT?
 
@@ -122,9 +122,9 @@ typedef struct			s_param
 	int					active_cam;
 	int					win_w;
 	int					win_h;
-	cl_float			fov;
 	cl_float			bloom;
 	cl_float3			mvt;
+	cl_float3			ambient;
 }						t_param;
 
 typedef struct			s_node
@@ -257,7 +257,6 @@ void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_init(t_env *e, int ac, char *av);
 void					xml_get_file(t_env *e, int ac, char *av);
-int						xml_grab_color(char *str);
 void					xml_list_add_first(t_node **begin, t_node *node);
 void					xml_list_clean(t_env *e, t_node **list);
 t_node					*xml_list_new(char type);
@@ -267,6 +266,7 @@ void					xml_node_cone(t_env *e, char *node);
 void					xml_node_cylinder(t_env *e, char *node);
 void					xml_node_light(t_env *e, char *node);
 void					xml_node_plane(t_env *e, char *node);
+void					xml_node_scene(t_env *e, char *node, char mod);
 void					xml_node_sphere(t_env *e, char *node);
 void					xml_parse_nodes(t_env *e);
 void					xml_push_cam(t_env *e, t_node *list);
