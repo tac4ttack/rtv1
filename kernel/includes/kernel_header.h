@@ -43,6 +43,8 @@ typedef struct			s_cone
 	float3				dir;
 	float				angle;
 	int					color;
+	float				diff;
+	float				spec;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -52,6 +54,8 @@ typedef struct			s_cylinder
 	float				radius;
 	int					color;
 	float				height;
+	float				diff;
+	float				spec;
 }						t_cylinder;
 
 typedef struct			s_light
@@ -68,6 +72,8 @@ typedef struct			s_plane
 	float3				pos;
 	float3				normale;
 	int					color;
+	float				diff;
+	float				spec;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -76,6 +82,8 @@ typedef struct			s_sphere
 	float3				dir;
 	float				radius;
 	int					color;
+	float				diff;
+	float				spec;
 }						t_sphere;
 
 typedef struct			s_param
@@ -89,9 +97,9 @@ typedef struct			s_param
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	float				fov;
 	float				bloom;
 	float3				mvt;
+	float3				ambient;
 }						t_param;
 
 typedef struct			s_scene

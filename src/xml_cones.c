@@ -6,11 +6,30 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 15:26:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/07 18:08:03 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
+{
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
+		s_error("\x1b[2;31mError in cone, COLOR expected in #4\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, cone_node);
+	printf("color = %xwd\n", cone_node->color);
+	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cone, DIFFUSE expected in #5\x1b[0m", e);
+	else
+		xml_data_diffiouse(e, att, i, cone_node);
+	printf("diffuse = %f\n", cone_node->diff);
+	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cone, SPECULAR expected in #6\x1b[0m", e);
+	else
+		xml_data_speculos(e, att, i, cone_node);
+	printf("specular = %f\n", cone_node->spec);
+}
 
 static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
 {
@@ -36,11 +55,7 @@ static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
 	else
 		xml_data_angle(e, att, i, cone_node);
 	printf("angle = %f\n", cone_node->angle);
-	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[2;31mError in cone, COLOR expected in #4\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, cone_node);
-	printf("color = %xwd\n", cone_node->color);
+	xml_cone_data_n(e, att, cone_node, i);
 }
 
 void		xml_node_cone(t_env *e, char *node)

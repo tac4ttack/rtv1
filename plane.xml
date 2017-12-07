@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
-<scene>
-	<cam 	id="0"
-			pos="0, -5, -25"
+<scene res="1024, 768" ambient="0.1, 0.5, 0.1">
+<cam 	id="0"
+			pos="0, -5, -20"
 			dir="0, 0, 1"
-			hor="0.6, 0, 0"
-			ver="0, 0.6, 0"
+			fov="30"
 			/>
 	<light 	id="0"
 			type="0"
@@ -17,25 +16,35 @@
 			pos="0, -15, 0"
 			normale="0, 1, 0"
 			color="0, 255, 0, 0"
+			diff="0.42"
+			spec="0.42"
 			/>
 	<plane 	id="1"
 			pos="-15, 0, 0"
 			normale="1, 0, 0"
 			color="0, 0, 255, 0"
+			diff="0.42"
+			spec="0.42"
 			/>
 	<plane 	id="2"
 			pos="15, 0, 0"
 			normale="1, 0, 0"
 			color="0, 0, 0, 255"
+			diff="0.42"
+			spec="0.42"
 			/>
 	<plane 	id="3"
 			pos="0, 15, 0"
 			normale="0, -1, 0"
 			color="0, 0, 120, 120"
+			diff="0.42"
+			spec="0.42"
 			/>
 	<plane 	id="4"
 			pos="0, 0, 30"
 			normale="0, 0, -1"
 			color="0, 120, 120, 0"
+			diff="0.42"
+			spec="0.42"
 			/>
 </scene>

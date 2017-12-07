@@ -6,11 +6,30 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 15:26:46 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/07 18:09:48 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+static void	xml_sphere_data_n(t_env *e, char **att, t_node *sphere_node, int *i)
+{
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
+		s_error("\x1b[2;31mError in sphere, COLOR expected in #4\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, sphere_node);
+	printf("color = %xd\n", sphere_node->color);
+	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
+		s_error("\x1b[2;31mError in sphere, DIFFUSE expected in #5\x1b[0m", e);
+	else
+		xml_data_diffiouse(e, att, i, sphere_node);
+	printf("diffuse = %f\n", sphere_node->diff);
+	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
+		s_error("\x1b[2;31mError in sphere, SPECULAR expected in #6\x1b[0m", e);
+	else
+		xml_data_speculos(e, att, i, sphere_node);
+	printf("specular = %f\n", sphere_node->spec);
+}
 
 static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
 {
@@ -36,11 +55,7 @@ static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
 	else
 		xml_data_radius(e, att, i, sphere_node);
 	printf("radius = %f\n", sphere_node->radius);
-	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[2;31mError in sphere, COLOR expected in #4\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, sphere_node);
-	printf("color = %xd\n", sphere_node->color);
+	xml_sphere_data_n(e, att, sphere_node, i);
 }
 
 void		xml_node_sphere(t_env *e, char *node)

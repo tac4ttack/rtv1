@@ -6,27 +6,11 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 18:10:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/07 17:02:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-
-void				xml_node_scene(t_env *e, char *node, char mod)
-{
-	if (mod == 0)
-	{
-		if (ft_strlen(node) != 7)
-			s_error("\x1b[2;31mError in XML syntax\x1b[0m", e);
-		XML->in_scene = 1;
-	}
-	else if (mod == 1)
-	{
-		if (ft_strlen(node) != 8)
-			s_error("\x1b[2;31mError in XML syntax\x1b[0m", e);
-		XML->in_scene = 0;
-	}
-}
 
 void				xml_node_generic(t_env *e, char *node, char mod)
 {
@@ -63,7 +47,7 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_generic(e, node, 1);
 	else if (XML->is_comm == 0 && ft_strcmp(XML->sub_node[0], "?xml") == 0)
 		s_error("\x1b[2;31mError double XML header\x1b[0m", e);
-	else if (XML->is_comm == 0 && ft_strcmp(XML->sub_node[0], "scene>") == 0)
+	else if (XML->is_comm == 0 && ft_strcmp(XML->sub_node[0], "scene") == 0)
 		xml_node_scene(e, node, 0);
 	else if (XML->is_comm == 0 && ft_strcmp(XML->sub_node[0], "/scene>") == 0)
 		xml_node_scene(e, node, 1);
@@ -81,7 +65,7 @@ void				xml_process_node(t_env *e, char *node)
 		xml_node_sphere(e, node);
 	else
 		s_error("\x1b[2;31mError wrong node type\x1b[0m", e);
-	xml_node_clean(XML->sub_node);
+	xml_node_clean(XML->sub_node);	
 }
 
 void				xml_parse_nodes(t_env *e)

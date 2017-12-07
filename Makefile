@@ -65,12 +65,13 @@ SRC_NAME =  			init.c \
 						xml_cones.c \
 						xml_cylinders.c \
 						xml_data_float.c \
-						xml_data_num.c \
+						xml_data_int.c \
 						xml_data_vector.c \
 						xml_lights.c \
 						xml_list.c \
 						xml_nodes.c \
 						xml_planes.c \
+						xml_scene.c \
 						xml_spheres.c \
 						xml_tools.c
 
