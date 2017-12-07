@@ -6,11 +6,37 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/01 19:03:46 by adalenco         ###   ########.fr       */
+/*   Updated: 2017/12/07 18:08:20 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
+{
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
+		s_error("\x1b[2;31mError in cylinder, COLOR expected in #4\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, cyl_node);
+	printf("color= %xd\n", cyl_node->color);
+	if (ft_strncmp(att[*i], "height=\"", 8) != 0)
+		s_error("\x1b[2;31mError in cylinder, HEIGHT expected in #5\x1b[0m", e);
+	else
+		xml_data_height(e, att, i, cyl_node);
+	printf("height= %lf\n", cyl_node->height);
+	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cylinder, \
+				DIFFUSE expected in #5\x1b[0m", e);
+	else
+		xml_data_diffiouse(e, att, i, cyl_node);
+	printf("diffuse = %f\n", cyl_node->diff);
+	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cylinder, \
+				SPECULAR expected in #6\x1b[0m", e);
+	else
+		xml_data_speculos(e, att, i, cyl_node);
+	printf("specular = %f\n", cyl_node->spec);
+}
 
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 {
@@ -36,16 +62,7 @@ static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 	else
 		xml_data_radius(e, att, i, cyl_node);
 	printf("radius = %f\n", cyl_node->radius);
-	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[2;31mError in cylinder, COLOR expected in #4\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, cyl_node);
-	printf("color= %xd\n", cyl_node->color);
-	if (ft_strncmp(att[*i], "height=\"", 8) != 0)
-		s_error("\x1b[2;31mError in cylinder, HEIGHT expected in #5\x1b[0m", e);
-	else
-		xml_data_height(e, att, i, cyl_node);
-	printf("height= %lf\n", cyl_node->height);
+	xml_cylinder_data_n(e, att, cyl_node, i);
 }
 
 void		xml_node_cylinder(t_env *e, char *node)
@@ -53,7 +70,7 @@ void		xml_node_cylinder(t_env *e, char *node)
 	t_node	*cyl_node;
 	char	**tmp;
 	int		i;
-	
+
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
 	NCYL++;

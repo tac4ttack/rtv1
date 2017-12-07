@@ -30,6 +30,7 @@ static void	xml_scene_ambient(t_env *e, char **att, int *i)
 		e->param.ambient.x = ft_atof(att[(*i)++] + 9);
 		e->param.ambient.y = ft_atof(att[(*i)++]);
 		e->param.ambient.z = ft_atof(att[(*i)++]);
+// RAJOUTER CONTROLE DE LA VALEUR QUAND ON SAURA QUELLE VALEUR CA DOIT AVOIR t(ಠ益ಠt)
 	}
 	else
 		s_error("\x1b[2;31mError reading AMBIENT from scene node\x1b[0m", e);

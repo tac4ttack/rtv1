@@ -6,11 +6,30 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 15:26:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/07 18:08:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
+{
+	if (ft_strncmp(att[*i], "color=\"",	7) != 0)
+		s_error("\x1b[2;31mError in plane, COLOR expected in #3\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, plane_node);
+	printf("color = %xd\n", plane_node->color);
+	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
+		s_error("\x1b[2;31mError in plane, DIFFUSE expected in #4\x1b[0m", e);
+	else
+		xml_data_diffiouse(e, att, i, plane_node);
+	printf("diffuse = %f\n", plane_node->diff);
+	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
+		s_error("\x1b[2;31mError in plane, SPECULAR expected in #5\x1b[0m", e);
+	else
+		xml_data_speculos(e, att, i, plane_node);
+	printf("specular = %f\n", plane_node->spec);
+}
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 {
@@ -31,11 +50,7 @@ static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 	else
 		xml_data_normale(e, att, i, plane_node);
 	printf("normale x = %f | y = %f | z = %f\n", plane_node->normale.x, plane_node->normale.y, plane_node->normale.z);
-	if (ft_strncmp(att[*i], "color=\"",	7) != 0)
-		s_error("\x1b[2;31mError in plane, COLOR expected in #3\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, plane_node);
-	printf("color = %xd\n", plane_node->color);
+	xml_plane_data_n(e, att, plane_node, i);
 }
 
 void		xml_node_plane(t_env *e, char *node)

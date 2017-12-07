@@ -24,6 +24,8 @@ Object informations have to be filled strictly like showed below:
 		dir="0, 0, 0"
 		angle="4.2"
 		color="0, 255, 255, 255"
+		diff="0.42"
+		spec="0.42"
 		/>
 
 <cylinder id="0"
@@ -31,6 +33,8 @@ Object informations have to be filled strictly like showed below:
 		dir="0, 0, 0"
 		radius="42"
 		color="0, 255, 255, 255"
+		diff="0.42"
+		spec="0.42"
 		/>
 
 <light id="0"
@@ -45,6 +49,8 @@ Object informations have to be filled strictly like showed below:
 		pos="0, 0, 0"
 		normale="0, 0, 1"
 		color="0, 255, 255, 255"
+		diff="0.42"
+		spec="0.42"
 		/>
 
 <sphere id="0"
@@ -52,10 +58,12 @@ Object informations have to be filled strictly like showed below:
 		dir="0, 0, 0"
 		radius="4.2"
 		color="0, 255, 255, 255"/>
+		diff="0.42"
+		spec="0.42"
 </scene>
 --> 
 
-<scene res="320, 240" ambient="0.1, 0.5, 0.1">
+<scene res="1024, 768" ambient="0.1, 0.5, 0.1">
 <cam 	id="0"
 			pos="0, -5, -20"
 			dir="0, 0, 1"
