@@ -63,7 +63,7 @@ Object informations have to be filled strictly like showed below:
 </scene>
 --> 
 
-<scene res="1024, 768" ambient="0.1, 0.5, 0.1">
+<scene res="1024, 768" ambient="0.1, 0.1, 0.1">
 <cam 	id="0"
 			pos="0, -5, -20"
 			dir="0, 0, 1"
@@ -89,13 +89,6 @@ Object informations have to be filled strictly like showed below:
 			pos="-10, -5, -5"
 			dir="0, 0, 0"
 			intensity="42"
-			color="0, 255, 255, 255"
-			/>
-	<light 	id="1"
-			type="0"
-			pos="0, 0, 0"
-			dir="0, 0, 0"
-			intensity="0.3"
 			color="0, 255, 255, 255"
 			/>
 <cone id="0"
