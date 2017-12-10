@@ -1,5 +1,6 @@
-#define BACKCOLOR 0x00333333
-#define RAND_MAX	2147483647
+#define BACKCOLOR 0x00ffffff
+
+#define MAX_DIST 500.0
 
 #define DEG2RAD (M_PI / 180)
 #define RAD2DEG (180 / M_PI)
