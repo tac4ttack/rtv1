@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/07 18:08:38 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/11 13:58:47 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 		s_error("\x1b[2;31mError in plane, DIFFUSE expected in #4\x1b[0m", e);
 	else
 		xml_data_diffiouse(e, att, i, plane_node);
-	printf("diffuse = %f\n", plane_node->diff);
+	printf("diff.x = %f | diff.y = %f | diff.z = %f\n", plane_node->diff.x, plane_node->diff.y, plane_node->diff.z);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
 		s_error("\x1b[2;31mError in plane, SPECULAR expected in #5\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, plane_node);
-	printf("specular = %f\n", plane_node->spec);
+	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", plane_node->spec.x, plane_node->spec.y , plane_node->spec.z);
 }
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
@@ -97,4 +97,6 @@ void		xml_push_plane(t_env *e, t_node *list)
 	e->planes[list->id].pos = list->pos;
 	e->planes[list->id].normale = list->normale;
 	e->planes[list->id].color = list->color;
+	e->planes[list->id].diff = list->diff;
+	e->planes[list->id].spec = list->spec;
 }

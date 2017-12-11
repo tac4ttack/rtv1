@@ -61,6 +61,20 @@ unsigned int			get_obj_hue(t_scene scene, t_hit hit)
 	return (color);
 }
 
+float3			get_obj_diffuse(t_scene scene, t_hit hit)
+{
+	float3	diffuse = 0;
+	if (hit.type == 1)
+		diffuse = CONES[hit.id].diff;
+	if (hit.type == 2)
+		diffuse = CYLIND[hit.id].diff;
+	if (hit.type == 4)
+		diffuse = PLANE[hit.id].diff;
+	if (hit.type == 5)
+		diffuse = SPHERE[hit.id].diff;
+	return (diffuse);
+}
+
 unsigned int	get_ambient(unsigned int obj_color, t_scene scene)
 {
 	unsigned int r, g, b;
@@ -76,16 +90,17 @@ unsigned int	get_ambient(unsigned int obj_color, t_scene scene)
 
 unsigned int			color_diffuse(t_hit hit, t_scene scene, unsigned int color, float coef)
 {
-	unsigned int col_r = (color & 0x00FF0000) >> 16;
-	unsigned int col_g = (color & 0x0000FF00) >> 8;
-	unsigned int col_b = (color & 0x000000FF);
-	unsigned int obj_r = (get_obj_hue(scene, hit) & 0x00FF0000) >> 16;
-	unsigned int obj_g = (get_obj_hue(scene, hit) & 0x0000FF00) >> 8;
-	unsigned int obj_b = (get_obj_hue(scene, hit) & 0x000000FF);
+	float3			diffuse = get_obj_diffuse(scene, hit);
+	unsigned int	col_r = (color & 0x00FF0000) >> 16;
+	unsigned int	col_g = (color & 0x0000FF00) >> 8;
+	unsigned int	col_b = (color & 0x000000FF);
+	unsigned int	obj_r = (get_obj_hue(scene, hit) & 0x00FF0000) >> 16;
+	unsigned int	obj_g = (get_obj_hue(scene, hit) & 0x0000FF00) >> 8;
+	unsigned int	obj_b = (get_obj_hue(scene, hit) & 0x000000FF);
 
-	col_r += obj_r * coef * 0.42;
-	col_g += obj_g * coef * 0.42;
-	col_b += obj_b * coef * 0.42;
+	col_r += obj_r * coef * diffuse.x;
+	col_g += obj_g * coef * diffuse.y;
+	col_b += obj_b * coef * diffuse.z;
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
 

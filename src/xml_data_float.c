@@ -6,9 +6,11 @@ void	xml_data_speculos(t_env *e, char **attributes, int *i, t_node *node)
 	{
 		if (attributes[(*i)] == NULL)
 			s_error("\x1b[2;31mError reading SPECULAR value\x1b[0m", e);
-		node->spec = ft_atof(attributes[(*i)++] + 6);
+		node->spec.x = ft_atof(attributes[(*i)++] + 6);
+		node->spec.y = ft_atof(attributes[(*i)++]);
+		node->spec.z = ft_atof(attributes[(*i)++]);
 // RAJOUTER CONTROLE DE LA VALEUR QUAND ON SAURA QUELLE VALEUR CA DOIT AVOIR t(ಠ益ಠt)
-		if (node->spec <= 0)
+		if (node->spec.x <= 0 || node->spec.y <= 0 || node->spec.z <= 0)
 			s_error("\x1b[2;31mError SPECULAR can't be 0 or less\x1b[0m", e);
 	}
 	else
@@ -21,9 +23,11 @@ void	xml_data_diffiouse(t_env *e, char **attributes, int *i, t_node *node)
 	{
 		if (attributes[(*i)] == NULL)
 			s_error("\x1b[2;31mError reading DIFFUSE value\x1b[0m", e);
-		node->diff = ft_atof(attributes[(*i)++] + 6);
+		node->diff.x = ft_atof(attributes[(*i)++] + 6);
+		node->diff.y = ft_atof(attributes[(*i)++]);
+		node->diff.z = ft_atof(attributes[(*i)++]);
 // RAJOUTER CONTROLE DE LA VALEUR QUAND ON SAURA QUELLE VALEUR CA DOIT AVOIR t(ಠ益ಠt)
-		if (node->diff <= 0)
+		if (node->diff.x <= 0 || node->diff.y <= 0 || node->diff.z <= 0)
 			s_error("\x1b[2;31mError DIFFUSE can't be 0 or less\x1b[0m", e);
 	}
 	else

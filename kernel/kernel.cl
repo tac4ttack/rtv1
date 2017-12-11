@@ -327,8 +327,8 @@ unsigned int	get_pixel_color(t_scene scene)
 //			hit.pos = hit.pos + ((bias + hit.dist / 5) * hit.normale);
 //		else
 			hit.pos = hit.pos + ((/*bias +  BIAS INUTILE MAINTENANT?*/hit.dist / 100) * hit.normale);
-		return (light(hit, scene));
-//		return (phong(hit, scene));
+//		return (light(hit, scene));
+		return (phong(hit, scene));
 	}
 //	return (BACKCOLOR);
 //	return (((unsigned int)PARAM->ambient.x << 16) + \

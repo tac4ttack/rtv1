@@ -44,8 +44,8 @@ typedef struct			s_cone
 	float3				dir;
 	float				angle;
 	int					color;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -55,8 +55,8 @@ typedef struct			s_cylinder
 	float				radius;
 	int					color;
 	float				height;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 }						t_cylinder;
 
 typedef struct			s_light
@@ -73,8 +73,8 @@ typedef struct			s_plane
 	float3				pos;
 	float3				normale;
 	int					color;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -83,8 +83,8 @@ typedef struct			s_sphere
 	float3				dir;
 	float				radius;
 	int					color;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 }						t_sphere;
 
 typedef struct			s_param
