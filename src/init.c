@@ -24,13 +24,13 @@ void	load_scene(t_env *e)
 	while (list != NULL)
 	{
 		if (list->type == 0)
-			xml_push_cam(e, list);	
+			xml_push_cam(e, list);
 		if (list->type == 1)
 			xml_push_cone(e, list);
 		if (list->type == 2)
 			xml_push_cyl(e, list);
 		if (list->type == 3)
-			xml_push_light(e, list);		
+			xml_push_light(e, list);
 		if (list->type == 4)
 			xml_push_plane(e, list);
 		if (list->type == 5)

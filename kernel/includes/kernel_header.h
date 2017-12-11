@@ -35,6 +35,8 @@ typedef struct			s_cam
 	float3				pos;
 	float3				dir;
 	float				fov;
+	float				pitch;
+	float				yaw;
 }						t_cam;
 
 typedef struct			s_cone

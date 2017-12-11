@@ -68,6 +68,8 @@ typedef struct			s_cam
 	cl_float3			dir;
 	cl_float			fov;
 //	cl_float3			ray;   DAFUQ IS THIS SHIT?
+	cl_float			pitch;
+	cl_float			yaw;
 }						t_cam;
 
 typedef struct			s_cone

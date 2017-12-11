@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/25 15:26:27 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/11 18:03:31 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 		s_error("\x1b[2;31mError in light, INTENSITY expected in #4\x1b[0m", e);
 	else
 		xml_data_intens(e, att, i, light_node);
-	printf("angle = %f\n", light_node->intensity);
+	printf("intensity = %f\n", light_node->intensity);
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
 		s_error("\x1b[2;31mError in light, COLOR expected in #5\x1b[0m", e);
 	else

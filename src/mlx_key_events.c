@@ -31,10 +31,18 @@ void			mlx_keyboard_repeated(t_env *e)
 	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9 \
 		|| KP_I || KP_K || KP_J || KP_L || KP_U || KP_O)
 	{
-		(KP_I ? e->cameras[0].dir.y += 0.01 : 0);
-		(KP_K ? e->cameras[0].dir.y -= 0.01 : 0);
-		(KP_J ? e->cameras[0].dir.x -= 0.01 : 0);
-		(KP_L ? e->cameras[0].dir.x += 0.01 : 0);
+		(KP_I ? e->cameras[0].pitch += 1 : 0);
+		if (e->cameras[0].pitch == 360)
+			e->cameras[0].pitch = 0;
+		(KP_K ? e->cameras[0].pitch -= 1 : 0);
+		if (e->cameras[0].pitch == -1)
+			e->cameras[0].pitch = 359;
+		(KP_J ? e->cameras[0].yaw -= 1 : 0);
+		if (e->cameras[0].yaw == 360)
+			e->cameras[0].yaw = 0;
+		(KP_L ? e->cameras[0].yaw += 1 : 0);
+		if (e->cameras[0].yaw == -1)
+			e->cameras[0].yaw = 359;
 		(KP_U ? e->cameras[0].dir.z += 0.01 : 0);
 		(KP_O ? e->cameras[0].dir.z -= 0.01 : 0);
 		(KP_N4 ? e->lights[0].pos.x -= 0.1 : 0);

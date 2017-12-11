@@ -77,21 +77,21 @@ Object informations have to be filled strictly like showed below:
 			spec="0.42"
 			/>
 	<sphere id="0"
-			pos="0, -5, 10"
+			pos="10, 0, 0"
 			dir="0, 0, 0"
 			radius="2"
 			color="0, 0, 255, 0"
 			diff="0.42"
 			spec="0.42"
 			/>
-	<light 	id="0"
+		<!--<light 	id="0"
 			type="1"
 			pos="-10, -5, -5"
 			dir="0, 0, 0"
 			intensity="42"
 			color="0, 255, 255, 255"
-			/>
-	<light 	id="1"
+			/>-->
+	<light 	id="0"
 			type="0"
 			pos="0, 0, 0"
 			dir="0, 0, 0"

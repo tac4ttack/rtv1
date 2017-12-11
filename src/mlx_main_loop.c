@@ -15,6 +15,8 @@ void	display_hud(t_env *e)
 	mlx_string_put(e->mlx, e->win, 10, 25, 0x00ffffff, mvty);
 	mlx_string_put(e->mlx, e->win, 10, 40, 0x00ffffff, mvtz);
 	mlx_string_put(e->mlx, e->win, 10, 55, 0x00ffffff, bloom);
+	mlx_string_put(e->mlx, e->win, 10, 70, 0x00ffffff, ft_ftoa(e->cameras[0].pitch));
+	mlx_string_put(e->mlx, e->win, 10, 85, 0x00ffffff, ft_ftoa(e->cameras[0].yaw));
 	free(mvtx);
 	free(mvty);
 	free(mvtz);

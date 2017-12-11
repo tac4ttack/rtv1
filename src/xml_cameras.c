@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/07 17:19:25 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/11 18:59:04 by adalenco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,6 @@ void		xml_push_cam(t_env *e, t_node *list)
 	e->cameras[list->id].pos = list->pos;
 	e->cameras[list->id].dir = list->dir;
 	e->cameras[list->id].fov = list->fov;
+	e->cameras[list->id].pitch = 0;
+	e->cameras[list->id].yaw = 0;
 }

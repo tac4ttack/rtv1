@@ -49,12 +49,12 @@ float3			mult_fvect(float m, float3 v)
 	return (res);
 }
 
-/*float			modh_vect(int x)
+float			modh_vect(int x, int win_w)
 {
-	return ((float)((float)x - (WINX / 2.0)) / (WINX / 2.0));
+	return ((float)((float)x - (win_w / 2.0)) / (win_w / 2.0));
 }
 
-float			modv_vect(int y)
+float			modv_vect(int y, int win_h, int win_w)
 {
-	return ((float)(((float)y - (WINY / 2.0)) / (WINY / 2.0) * WINY / WINX));
-}*/
+	return ((float)(((float)y - (win_h / 2.0)) / (win_h / 2.0) * win_h / win_w));
+}
