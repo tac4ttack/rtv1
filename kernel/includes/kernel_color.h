@@ -64,6 +64,7 @@ unsigned int			get_obj_hue(t_scene scene, t_hit hit)
 float3			get_obj_diffuse(t_scene scene, t_hit hit)
 {
 	float3	diffuse = 0;
+	
 	if (hit.type == 1)
 		diffuse = CONES[hit.id].diff;
 	if (hit.type == 2)
@@ -101,6 +102,9 @@ unsigned int			color_diffuse(t_hit hit, t_scene scene, unsigned int color, float
 	col_r += obj_r * coef * diffuse.x;
 	col_g += obj_g * coef * diffuse.y;
 	col_b += obj_b * coef * diffuse.z;
+	(col_r > 255 ? col_r = 255 : 0);
+	(col_g > 255 ? col_g = 255 : 0);
+	(col_b > 255 ? col_b = 255 : 0);
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
 
@@ -110,7 +114,8 @@ unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, floa
 	unsigned int col_g = (color & 0x0000FF00) >> 8;
 	unsigned int col_b = (color & 0x000000FF);
 
-	coef = pow(coef, 64) * 0.2 * 0.2;
+	coef = pow(coef, 2) * 0.9;
+	//printf("%f\n", coef);
 	col_r += coef;
 	col_g += coef;
 	col_b += coef;

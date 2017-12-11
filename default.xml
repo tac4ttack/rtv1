@@ -86,7 +86,7 @@ Object informations have to be filled strictly like showed below:
 			/>
 	<light 	id="0"
 			type="1"
-			pos="-15, -5, -5"
+			pos="0, -5, -5"
 			dir="0, 0, 0"
 			intensity="42"
 			color="0, 255, 255, 255"

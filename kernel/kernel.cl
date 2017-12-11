@@ -286,10 +286,11 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	unsigned int		ambient_color = get_ambient(obj_color, scene);
 	unsigned int		res_color = ambient_color;
 	float				tmp;
-
-	float				angle = 0;
+	float3				tmp2;
 	t_light_ray			light_ray;
 	t_hit				light_hit;
+
+	float				angle = 0;
 	unsigned int		tmp_color = 0;
 
 	//	printf("%u\n", obj_color);
@@ -302,12 +303,13 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		tmp = dot_vect(hit.normale, light_ray.dir);
 		if (tmp > 0)
 			res_color = color_diffuse(hit, scene, res_color, tmp);
-		tmp = -dot_vect(hit.normale, light_ray.dir);
+		tmp = dot_vect(hit.normale, -light_ray.dir);
 		if (tmp > 0)
 			res_color = color_specular(hit, scene, res_color, tmp);
 	}
-	if (res_color == 0)
-		res_color = ambient_color;
+//	if (res_color == 0)
+//		res_color = ambient_color;
+	
 	return (res_color);
 }
 
