@@ -300,12 +300,17 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		light_ray.dist = norme_vect(light_ray.dir);
 		light_ray.dir = normalize(light_ray.dir);
 		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
+		;//	printf("%f\n", light_hit.dist);
+		else
+		{
 		tmp = dot_vect(hit.normale, light_ray.dir);
 		if (tmp > 0)
 			res_color = color_diffuse(hit, scene, res_color, tmp);
 		tmp = dot_vect(hit.normale, -light_ray.dir);
 		if (tmp > 0)
 			res_color = color_specular(hit, scene, res_color, tmp);
+		}
 	}
 //	if (res_color == 0)
 //		res_color = ambient_color;
@@ -353,7 +358,7 @@ unsigned int	get_pixel_color(t_scene scene)
 
 float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
 {
-	float3					cam_ray;
+	float3					cam_ray = 0;
 	float					ratio = (float)PARAM->win_w / (float)PARAM->win_h;
 	cam_ray.x += ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
 //	cam_ray.x += sin(cam_ray.x * 10) / 10.0; // deformation kikoolol

@@ -115,7 +115,7 @@ unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, floa
 	unsigned int col_b = (color & 0x000000FF);
 
 	coef = pow(coef, 2) * 0.9;
-	//printf("%f\n", coef);
+//	printf("%f\n", coef);
 	col_r += coef;
 	col_g += coef;
 	col_b += coef;
