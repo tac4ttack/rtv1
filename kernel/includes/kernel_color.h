@@ -61,6 +61,19 @@ unsigned int			get_obj_hue(t_scene scene, t_hit hit)
 	return (color);
 }
 
+unsigned int	get_ambient(unsigned int obj_color, t_scene scene)
+{
+	unsigned int r, g, b;
+
+	r = (obj_color & 0x00FF0000) >> 16;
+	g = (obj_color & 0x0000FF00) >> 8;
+	b = (obj_color & 0x000000FF);
+	r = (r * PARAM->ambient.x > 255 ? 255 : r * PARAM->ambient.x);
+	g = (g * PARAM->ambient.y > 255 ? 255 : g * PARAM->ambient.y);
+	b = (b * PARAM->ambient.z > 255 ? 255 : b * PARAM->ambient.z);
+	return ((r << 16) + (g << 8) + b);
+}
+
 float3			get_obj_diffuse(t_scene scene, t_hit hit)
 {
 	float3	diffuse = 0;
@@ -74,19 +87,6 @@ float3			get_obj_diffuse(t_scene scene, t_hit hit)
 	if (hit.type == 5)
 		diffuse = SPHERE[hit.id].diff;
 	return (diffuse);
-}
-
-unsigned int	get_ambient(unsigned int obj_color, t_scene scene)
-{
-	unsigned int r, g, b;
-
-	r = (obj_color & 0x00FF0000) >> 16;
-	g = (obj_color & 0x0000FF00) >> 8;
-	b = (obj_color & 0x000000FF);
-	r = (r * PARAM->ambient.x > 255 ? 255 : r * PARAM->ambient.x);
-	g = (g * PARAM->ambient.y > 255 ? 255 : g * PARAM->ambient.y);
-	b = (b * PARAM->ambient.z > 255 ? 255 : b * PARAM->ambient.z);
-	return ((r << 16) + (g << 8) + b);
 }
 
 unsigned int			color_diffuse(t_hit hit, t_scene scene, unsigned int color, float coef)
@@ -108,16 +108,39 @@ unsigned int			color_diffuse(t_hit hit, t_scene scene, unsigned int color, float
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
 
+float3			get_obj_speculos(t_scene scene, t_hit hit)
+{
+	float3	speculos = 0;
+	
+	if (hit.type == 1)
+		speculos = CONES[hit.id].spec;
+	if (hit.type == 2)
+		speculos = CYLIND[hit.id].spec;
+	if (hit.type == 4)
+		speculos = PLANE[hit.id].spec;
+	if (hit.type == 5)
+		speculos = SPHERE[hit.id].spec;
+	return (speculos);
+}
+
 unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, float coef)
 {
-	unsigned int col_r = (color & 0x00FF0000) >> 16;
-	unsigned int col_g = (color & 0x0000FF00) >> 8;
-	unsigned int col_b = (color & 0x000000FF);
+	float3			speculos = get_obj_speculos(scene, hit);
+	float			old_coef = coef;
+	unsigned int	col_r = (color & 0x00FF0000) >> 16;
+	unsigned int	col_g = (color & 0x0000FF00) >> 8;
+	unsigned int	col_b = (color & 0x000000FF);
 
-	coef = pow(coef, 2) * 0.9;
+//	coef = pow(coef, 2) * 0.9;
 //	printf("%f\n", coef);
+	coef = 255 * pow(old_coef, LIGHT[hit.id].intensity) * speculos.x;
 	col_r += coef;
+	coef = 255 * pow(old_coef, LIGHT[hit.id].intensity) * speculos.y;
 	col_g += coef;
+	coef = 255 * pow(old_coef, LIGHT[hit.id].intensity) * speculos.z;
 	col_b += coef;
+	(col_r > 255 ? col_r = 255 : 0);
+	(col_g > 255 ? col_g = 255 : 0);
+	(col_b > 255 ? col_b = 255 : 0);
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
