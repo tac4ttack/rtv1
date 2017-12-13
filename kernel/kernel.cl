@@ -307,9 +307,9 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		tmp = dot_vect(hit.normale, light_ray.dir);
 		if (tmp > 0)
 			res_color = color_diffuse(hit, scene, res_color, tmp);
-		tmp = dot_vect(hit.normale, -light_ray.dir);
-		if (tmp > 0)
-			res_color = color_specular(hit, scene, res_color, tmp);
+		tmp = light_angelamerkel(hit, light_ray);
+		if (tmp < 16)
+			res_color = 0x00FFFFFF;
 		}
 	}
 //	if (res_color == 0)
