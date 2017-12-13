@@ -367,7 +367,8 @@ float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
 	cam_ray.x += ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
 //	cam_ray.x += sin(cam_ray.x * 10) / 10.0; // deformation kikoolol
 	cam_ray.y += ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((cam.fov / 2) * DEG2RAD));
-	cam_ray.z = cam.dir.z;
+	cam_ray += normalize(cam.dir);
+//	cam_ray.z += cam.dir.z;
 	return(normalize(cam_ray));
 }
 

@@ -28,9 +28,9 @@ void			mlx_keyboard_repeated(t_env *e)
 //	(KP_R ? reset_cam_pos(e) : 0);
 	(KP_NPLU ? e->param.bloom += 0.1 : 0);
 	(KP_NMIN ? e->param.bloom -= 0.1 : 0);
-	if (KP_T || KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9 \
-		|| KP_I || KP_K || KP_J || KP_L || KP_U || KP_O || \
-		KP_T || KP_G || KP_F || KP_H || KP_R || KP_Y)
+	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9 \
+		|| KP_I || KP_K || KP_J || KP_L || KP_U || KP_O \
+		|| KP_Z || KP_T || KP_G || KP_F || KP_H || KP_R || KP_Y)
 	{
 		(KP_I ? e->cameras[0].dir.y += 0.01 : 0);
 		(KP_K ? e->cameras[0].dir.y -= 0.01 : 0);
@@ -44,9 +44,10 @@ void			mlx_keyboard_repeated(t_env *e)
 		(KP_N5 ? e->lights[0].pos.y += 0.1 : 0);
 		(KP_N7 ? e->lights[0].pos.z -= 0.1 : 0);
 		(KP_N9 ? e->lights[0].pos.z += 0.1 : 0);
-		if (KP_T)
+		if (KP_Z)
 			e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
 
+		// A VIRER
 		(KP_T ? e->spheres[0].pos.y += 0.1 : 0);
 		(KP_G ? e->spheres[0].pos.y -= 0.1 : 0);
 		(KP_F ? e->spheres[0].pos.x -= 0.1 : 0);
