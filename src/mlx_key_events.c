@@ -43,24 +43,33 @@ void			mlx_keyboard_repeated(t_env *e)
 		(KP_RA ? e->cameras[0].yaw += 1 : 0);
 		if (e->cameras[0].yaw == -1)
 			e->cameras[0].yaw = 359;
-		(KP_U ? e->cylinders[0].roll -= 1 : 0);
-		if (e->cylinders[0].roll == 360)
-			e->cylinders[0].roll = 0;
-		(KP_O ? e->cylinders[0].roll += 1 : 0);
-		if (e->cylinders[0].roll == -1)
-			e->cylinders[0].roll = 359;
-		(KP_I ? e->cylinders[0].pitch += 1 : 0);
-		if (e->cylinders[0].pitch == 360)
-			e->cylinders[0].pitch = 0;
-		(KP_K ? e->cylinders[0].pitch -= 1 : 0);
-		if (e->cylinders[0].pitch == -1)
-			e->cylinders[0].pitch = 359;
-		(KP_J ? e->cylinders[0].yaw -= 1 : 0);
-		if (e->cylinders[0].yaw == 360)
-			e->cylinders[0].yaw = 0;
-		(KP_L ? e->cylinders[0].yaw += 1 : 0);
-		if (e->cylinders[0].yaw == -1)
-			e->cylinders[0].yaw = 359;
+		if (NCYL != 0)
+		{
+			if (KP_I)
+			{
+				e->cylinders[0].dir = rotx(e->cylinders[0].dir, 1 * DEG2RAD);
+			}
+			if (KP_K)
+			{
+				e->cylinders[0].dir = rotx(e->cylinders[0].dir, -1 * DEG2RAD);
+			}
+			if (KP_J)
+			{
+				e->cylinders[0].dir = roty(e->cylinders[0].dir, 1 * DEG2RAD);
+			}
+			if (KP_L)
+			{
+				e->cylinders[0].dir = roty(e->cylinders[0].dir, -1 * DEG2RAD);
+			}
+			if (KP_U)
+			{
+				e->cylinders[0].dir = rotz(e->cylinders[0].dir, 1 * DEG2RAD);
+			}
+			if (KP_O)
+			{
+				e->cylinders[0].dir = rotz(e->cylinders[0].dir, -1 * DEG2RAD);
+			}
+		}
 		(KP_N4 ? e->lights[0].pos.x -= 0.1 : 0);
 		(KP_N6 ? e->lights[0].pos.x += 0.1 : 0);
 		(KP_N8 ? e->lights[0].pos.y -= 0.1 : 0);

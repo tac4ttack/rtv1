@@ -87,19 +87,12 @@ typedef struct			s_cylinder
 {
 	cl_float3			pos;
 	cl_float3			dir;
+	cl_float3			base_dir;
 	cl_float			radius;
 	cl_int				color;
 	cl_float			height;
-<<<<<<< HEAD
-	cl_float			diff;
-	cl_float			spec;
-	cl_float			pitch;
-	cl_float			yaw;
-	cl_float			roll;
-=======
 	cl_float3			diff;
 	cl_float3			spec;
->>>>>>> tac
 }						t_cylinder;
 
 typedef struct			s_light
@@ -319,5 +312,10 @@ void					opencl_close(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
+
+cl_float3				normalize_vect(cl_float3 v);
+cl_float3				rotz(cl_float3 dir, float roll);
+cl_float3				roty(cl_float3 dir, float yaw);
+cl_float3				rotx(cl_float3 dir, float pitch);
 
 #endif

@@ -106,16 +106,11 @@ void		xml_allocate_cyl(t_env *e)
 void		xml_push_cyl(t_env *e, t_node *list)
 {
 	e->cylinders[list->id].pos = list->pos;
+	e->cylinders[list->id].base_dir = list->dir;
 	e->cylinders[list->id].dir = list->dir;
 	e->cylinders[list->id].radius = list->radius;
 	e->cylinders[list->id].color = list->color;
 	e->cylinders[list->id].height = list->height;
-<<<<<<< HEAD
-	e->cylinders[list->id].pitch = 0;
-	e->cylinders[list->id].yaw = 0;
-	e->cylinders[list->id].roll = 0;
-=======
 	e->cylinders[list->id].diff = list->diff;
 	e->cylinders[list->id].spec = list->spec;
->>>>>>> tac
 }

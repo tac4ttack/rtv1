@@ -31,6 +31,7 @@ int			opencl_builderrors(t_env *e, int err)
 
 int			opencl_allocate_scene_memory(t_env *e)
 {
+
 	if (NCAM > 0)
 		if (!(e->cameras_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_cam) * NCAM, e->cameras, NULL)))
