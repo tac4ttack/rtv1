@@ -37,6 +37,7 @@ typedef struct			s_cam
 	float				fov;
 	float				pitch;
 	float				yaw;
+	float				roll;
 }						t_cam;
 
 typedef struct			s_cone
@@ -58,6 +59,9 @@ typedef struct			s_cylinder
 	float				height;
 	float				diff;
 	float				spec;
+	float				pitch;
+	float				yaw;
+	float				roll;
 }						t_cylinder;
 
 typedef struct			s_light

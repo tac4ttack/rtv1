@@ -70,6 +70,7 @@ typedef struct			s_cam
 //	cl_float3			ray;   DAFUQ IS THIS SHIT?
 	cl_float			pitch;
 	cl_float			yaw;
+	cl_float			roll;
 }						t_cam;
 
 typedef struct			s_cone
@@ -91,6 +92,9 @@ typedef struct			s_cylinder
 	cl_float			height;
 	cl_float			diff;
 	cl_float			spec;
+	cl_float			pitch;
+	cl_float			yaw;
+	cl_float			roll;
 }						t_cylinder;
 
 typedef struct			s_light

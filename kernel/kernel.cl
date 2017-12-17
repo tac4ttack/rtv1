@@ -3,6 +3,19 @@
 #include "kernel_data.h"
 #include "kernel_vector.h"
 
+float3						rotat_vect(float3 vect, float pitch, float yaw, float roll)
+{
+	float3					res;
+	float					rad_pitch = pitch * DEG2RAD;
+	float					rad_yaw = yaw * DEG2RAD;
+	float					rad_roll = roll * DEG2RAD;
+
+	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
+	res.y = vect.x * sin(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_roll) * cos(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (cos(rad_roll) * -sin(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
+	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) + vect.z * cos(rad_yaw) * cos(rad_pitch);
+	return (res);
+}
+
 float3					get_sphere_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc;
@@ -52,7 +65,7 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 	float				res2;
 
 	origin -= cylind.pos;
-	abc = get_cylinder_abc(cylind.radius, normalize(cylind.dir), ray, origin);
+	abc = get_cylinder_abc(cylind.radius, rotat_vect(normalize(cylind.dir), cylind.pitch, cylind.yaw, cylind.roll), ray, origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);
@@ -326,18 +339,30 @@ unsigned int	get_pixel_color(t_scene scene)
 	return (normalize(ray));
 }*/
 
+
+
 float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
 {
 	float3					cam_ray;
-	float					pitch = cam.pitch * DEG2RAD;
-	float					yaw = cam.yaw * DEG2RAD;
 	float					ratio = (float)PARAM->win_w / (float)PARAM->win_h;
-	float xx = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
-	float yy = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((cam.fov / 2) * DEG2RAD));
-	cam_ray.x = xx + cos(yaw) + sin(yaw);
-	cam_ray.y = yy + cos(pitch) - sin(pitch);
-	cam_ray.z = -sin(yaw) + sin(pitch) + cos(pitch) + cos(yaw) + 1;
-	
+	cam_ray.x = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
+	cam_ray.y = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((cam.fov / 2) * DEG2RAD));
+	cam_ray.z = 1;
+/*  rotation XYZ
+	cam_ray.x = xx * cos(yaw) * cos(roll) + yy * cos(yaw) * -sin(roll) + sin(yaw);
+	cam_ray.y = xx * (-sin(pitch) * -sin(yaw) * cos(roll) + cos(pitch) * sin(roll)) + yy * (-sin(pitch) * -sin(yaw) * -sin(roll) + cos(pitch) * cos(roll)) + cos(yaw) * -sin(pitch);
+	cam_ray.z = xx * (cos(pitch) * -sin(yaw) * cos(roll) + sin(pitch) * sin(roll)) + yy * (cos(pitch) * -sin(yaw) * -sin(roll) + sin(pitch) * cos(roll)) + cos(yaw) * cos(pitch);
+
+// rotation ZYX
+	cam_ray.x = xx * cos(roll) * cos(yaw) + yy * (cos(pitch) * -sin(roll) + cos(roll) * sin(yaw) * sin(pitch)) + (-sin(roll) * -sin(pitch) + cos(roll) * sin(yaw) * cos(pitch));
+	cam_ray.y = xx * sin(roll) * cos(yaw) + yy * (cos(roll) * cos(pitch) + sin(roll) * sin(yaw) * sin(pitch)) + (cos(roll) * -sin(pitch) + sin(roll) * sin(yaw) * cos(pitch));
+	cam_ray.z = xx * -sin(yaw) + yy * cos(yaw) * sin(pitch) + cos(yaw) * cos(pitch);
+calcul simplifié
+	cam_ray.x = xx * cos(yaw) + yy * (sin(yaw) * sin(pitch)) + (sin(yaw) * cos(pitch));
+	cam_ray.y = yy * cos(pitch) + -sin(pitch);
+	cam_ray.z = xx * -sin(yaw) + yy * cos(yaw) * sin(pitch) + cos(yaw) * cos(pitch);
+*/
+	cam_ray = rotat_vect(cam_ray, cam.pitch, cam.yaw, 0);
 	return(normalize(cam_ray));
 }
 
