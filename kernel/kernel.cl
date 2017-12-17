@@ -3,7 +3,7 @@
 #include "kernel_data.h"
 #include "kernel_vector.h"
 
-float3						rotat_vect(float3 vect, float pitch, float yaw, float roll)
+float3						rotat_zyx(float3 vect, float pitch, float yaw, float roll)
 {
 	float3					res;
 	float					rad_pitch = pitch * DEG2RAD;
@@ -13,6 +13,19 @@ float3						rotat_vect(float3 vect, float pitch, float yaw, float roll)
 	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
 	res.y = vect.x * sin(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_roll) * cos(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (cos(rad_roll) * -sin(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
 	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) + vect.z * cos(rad_yaw) * cos(rad_pitch);
+	return (res);
+}
+
+float3						rotat_xyz(float3 vect, float pitch, float yaw, float roll)
+{
+	float3					res;
+	float					rad_pitch = pitch * DEG2RAD;
+	float					rad_yaw = yaw * DEG2RAD;
+	float					rad_roll = roll * DEG2RAD;
+
+	res.x = xx * cos(rad_yaw) * cos(rad_roll) + yy * cos(rad_yaw) * -sin(rad_roll) + sin(rad_yaw);
+	res.y = xx * (-sin(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + cos(rad_pitch) * sin(rad_roll)) + yy * (-sin(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + cos(rad_pitch) * cos(rad_roll)) + cos(rad_yaw) * -sin(rad_pitch);
+	res.z = xx * (cos(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + sin(rad_pitch) * sin(rad_roll)) + yy * (cos(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + sin(rad_pitch) * cos(rad_roll)) + cos(rad_yaw) * cos(rad_pitch);
 	return (res);
 }
 
@@ -65,7 +78,7 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 	float				res2;
 
 	origin -= cylind.pos;
-	abc = get_cylinder_abc(cylind.radius, rotat_vect(normalize(cylind.dir), cylind.pitch, cylind.yaw, cylind.roll), ray, origin);
+	abc = get_cylinder_abc(cylind.radius, rotat_xyz(normalize(cylind.dir), cylind.pitch, cylind.yaw, cylind.roll), ray, origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);
@@ -362,7 +375,7 @@ calcul simplifié
 	cam_ray.y = yy * cos(pitch) + -sin(pitch);
 	cam_ray.z = xx * -sin(yaw) + yy * cos(yaw) * sin(pitch) + cos(yaw) * cos(pitch);
 */
-	cam_ray = rotat_vect(cam_ray, cam.pitch, cam.yaw, 0);
+	cam_ray = rotat_zyx(cam_ray, cam.pitch, cam.yaw, 0);
 	return(normalize(cam_ray));
 }
 
