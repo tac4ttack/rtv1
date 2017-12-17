@@ -123,7 +123,7 @@ float3			get_obj_speculos(t_scene scene, t_hit hit)
 	return (speculos);
 }
 
-unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, float coef)
+unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, float coef, int i)
 {
 	float3			speculos = get_obj_speculos(scene, hit);
 	float			old_coef = coef;
@@ -133,11 +133,11 @@ unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, floa
 
 //	coef = pow(coef, 2) * 0.9;
 //	printf("%f\n", coef);
-	coef = 255 * pow(old_coef, LIGHT[hit.id].intensity) * speculos.x;
+	coef = 255 * pow(old_coef, LIGHT[i].intensity) * speculos.x;
 	col_r += coef;
-	coef = 255 * pow(old_coef, LIGHT[hit.id].intensity) * speculos.y;
+	coef = 255 * pow(old_coef, LIGHT[i].intensity) * speculos.y;
 	col_g += coef;
-	coef = 255 * pow(old_coef, LIGHT[hit.id].intensity) * speculos.z;
+	coef = 255 * pow(old_coef, LIGHT[i].intensity) * speculos.z;
 	col_b += coef;
 	(col_r > 255 ? col_r = 255 : 0);
 	(col_g > 255 ? col_g = 255 : 0);

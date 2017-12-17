@@ -11,3 +11,13 @@ cl_float3			normalize_vect(cl_float3 v)
 	res.z = v.z * id;
 	return (res);
 }
+
+cl_float3			add_cl_float(cl_float3 v1, cl_float3 v2)
+{
+	cl_float3		res;
+
+	res.x = v1.x + v2.x;
+	res.y = v1.y + v2.y;
+	res.z = v1.z + v2.z;
+	return (res);
+}

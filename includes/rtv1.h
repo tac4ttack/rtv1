@@ -317,5 +317,7 @@ cl_float3				normalize_vect(cl_float3 v);
 cl_float3				rotz(cl_float3 dir, float roll);
 cl_float3				roty(cl_float3 dir, float yaw);
 cl_float3				rotx(cl_float3 dir, float pitch);
+cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
+cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
 
 #endif
