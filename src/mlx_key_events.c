@@ -24,8 +24,8 @@ void			mlx_keyboard_repeated(t_env *e)
 	(KP_A ? e->param.mvt.x -= 0.1 : 0);
 	(KP_D ? e->param.mvt.x += 0.1 : 0);
 	(KP_SPC ? e->param.mvt.y += 0.1 : 0);
-	(KP_C ? e->param.mvt.y -= 0.1 : 0);
-	(KP_R ? reset_cam_pos(e) : 0);
+	(KP_C ? e->param.mvt.y -= 0.1 : 0);	
+//	(KP_R ? reset_cam_pos(e) : 0);
 	(KP_NPLU ? e->param.bloom += 0.1 : 0);
 	(KP_NMIN ? e->param.bloom -= 0.1 : 0);
 	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9 \
@@ -67,6 +67,8 @@ void			mlx_keyboard_repeated(t_env *e)
 		(KP_N5 ? e->lights[0].pos.y += 0.1 : 0);
 		(KP_N7 ? e->lights[0].pos.z -= 0.1 : 0);
 		(KP_N9 ? e->lights[0].pos.z += 0.1 : 0);
+		if (KP_Z)
+			e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
 		opencl_allocate_scene_memory(e);
 	}
 }

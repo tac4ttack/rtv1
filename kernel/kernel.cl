@@ -178,21 +178,6 @@ unsigned int			light_angle(float angle, unsigned int obj_color, t_scene scene)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			get_obj_hue(t_scene scene, t_hit hit)
-{
-	unsigned int		color = 0;
-
-	if (hit.type == 1)
-		color = CONES[hit.id].color;
-	if (hit.type == 2)
-		color = CYLIND[hit.id].color;
-	if (hit.type == 4)
-		color = PLANE[hit.id].color;
-	if (hit.type == 5)
-		color = SPHERE[hit.id].color;
-	return (color);
-}
-
 float					light_angelamerkel(t_hit hit, t_light_ray light_ray)
 {
 	float				cos_angela;
@@ -216,7 +201,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 	hit.id = 0;
 	hit.pos = (0, 0, 0);
 	hit.normale = (0, 0, 0);
-
 //	printf("dist = %i\n", PARAM->n_cones);
 	while (i < max)
 	{
@@ -287,6 +271,7 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	return (normalize(res));
 }
 
+
 unsigned int			light(t_hit hit, t_scene scene)
 {
 	int					i = -1;
@@ -294,7 +279,7 @@ unsigned int			light(t_hit hit, t_scene scene)
 	t_light_ray			light_ray;
 	t_hit				light_hit;
 	unsigned int		obj_color = get_obj_hue(scene, hit);
-	unsigned int		ambiant_color = blend_ambiant(obj_color);//light_angle(120, obj_color, scene);
+	unsigned int		ambient_color = blend_ambiant(obj_color);
 	unsigned int		res_color = 0;
 	unsigned int		tmp_color = 0;
 
@@ -310,13 +295,56 @@ unsigned int			light(t_hit hit, t_scene scene)
 		else
 		{
 			angle = light_angelamerkel(hit, light_ray);
-			if ((tmp_color = light_angle(angle, obj_color, scene)) < ambiant_color)
-				tmp_color = ambiant_color;
+			if ((tmp_color = light_angle(angle, obj_color, scene)) < ambient_color)
+				tmp_color = ambient_color;
 			res_color = blend_add(res_color, tmp_color);
 		}
 	}
 	if (res_color == 0)
-		res_color = ambiant_color;
+		res_color = ambient_color;
+	return (res_color);
+}
+
+unsigned int			phong(t_hit hit, t_scene scene)
+{
+	int					i = -1;
+	unsigned int		obj_color = get_obj_hue(scene, hit);
+	unsigned int		ambient_color = get_ambient(obj_color, scene);
+	unsigned int		res_color = ambient_color;
+	float				tmp;
+	float3				tmp2;
+	t_light_ray			light_ray;
+	t_hit				light_hit;
+
+	float				angle = 0;
+	unsigned int		tmp_color = 0;
+
+	//	printf("%u\n", obj_color);
+	while (++i < PARAM->n_lights)
+	{
+		light_ray.dir = LIGHT[i].pos - hit.pos;
+		light_ray.dist = norme_vect(light_ray.dir);
+		light_ray.dir = normalize(light_ray.dir);
+		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
+		;//	printf("%f\n", light_hit.dist);
+		else
+		{
+		tmp = dot_vect(hit.normale, light_ray.dir);
+		if (tmp > 0)
+			res_color = color_diffuse(hit, scene, res_color, tmp);
+		tmp = -dot_vect(hit.normale, -light_ray.dir);
+		if (tmp > 0)
+			res_color = color_specular(hit, scene, res_color, tmp);
+//		tmp = light_angelamerkel(hit, light_ray);
+//		if (tmp < 16)
+//			res_color = 0x00FFFFFF;
+		}
+	}
+//	SANS EFFET
+//	if (res_color == 0)
+//		res_color = ambient_color;
+	
 	return (res_color);
 }
 
@@ -325,20 +353,25 @@ unsigned int	get_pixel_color(t_scene scene)
 	t_hit		hit;
 	float		bias = 0.000001;
 
-	// PARAM mvt pour mouvement de la camera remplacable par position de la cam
-	// directement incrementee?
+	hit.dist = MAX_DIST;
 	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
-	if (hit.dist > 0)
+//	if (hit.dist > 0)
+	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee
 	{
 		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
-		/*if (hit.type == 4)
-			hit.pos = hit.pos + ((bias + hit.dist / 5) * hit.normale);
-		else*/
-			hit.pos = hit.pos + ((bias + hit.dist / 200) * hit.normale);
-		return (light(hit, scene));
+//		if (hit.type == 4)
+//			hit.pos = hit.pos + ((bias + hit.dist / 5) * hit.normale);
+//		else
+			hit.pos = hit.pos + ((/*bias +  BIAS INUTILE MAINTENANT?*/hit.dist / 100) * hit.normale);
+//		return (light(hit, scene));
+		return (phong(hit, scene));
 	}
-	return (BACKCOLOR);
+//	return (BACKCOLOR);
+//	return (((unsigned int)PARAM->ambient.x << 16) + \
+			((unsigned int)PARAM->ambient.y << 8) +  \
+			(unsigned int)PARAM->ambient.z); 
+	return (get_ambient(BACKCOLOR, scene)); // renvoie la couleur de fond selon lumiere ambiante
 }
 
 // OLD CAN BE DELETED
@@ -356,7 +389,7 @@ unsigned int	get_pixel_color(t_scene scene)
 
 float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
 {
-	float3					cam_ray;
+	float3					cam_ray = 0;
 	float					ratio = (float)PARAM->win_w / (float)PARAM->win_h;
 	cam_ray.x = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
 	cam_ray.y = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((cam.fov / 2) * DEG2RAD));
@@ -391,7 +424,7 @@ __kernel void	ray_trace(__global char *output,
 	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 	int		x = get_global_id(0);
 	int		y = get_global_id(1);
-	int		id = x + (PARAM->win_w * y);
+	int		id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);
 }

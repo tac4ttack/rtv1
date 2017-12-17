@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/07 18:08:20 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/11 13:58:26 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 				DIFFUSE expected in #5\x1b[0m", e);
 	else
 		xml_data_diffiouse(e, att, i, cyl_node);
-	printf("diffuse = %f\n", cyl_node->diff);
+	printf("diff.x = %f | diff.y = %f | diff.z = %f\n", cyl_node->diff.x, cyl_node->diff.y, cyl_node->diff.z);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
 		s_error("\x1b[2;31mError in cylinder, \
 				SPECULAR expected in #6\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, cyl_node);
-	printf("specular = %f\n", cyl_node->spec);
-}
+	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", cyl_node->spec.x, cyl_node->spec.y , cyl_node->spec.z);}
 
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 {
@@ -111,7 +110,12 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].radius = list->radius;
 	e->cylinders[list->id].color = list->color;
 	e->cylinders[list->id].height = list->height;
+<<<<<<< HEAD
 	e->cylinders[list->id].pitch = 0;
 	e->cylinders[list->id].yaw = 0;
 	e->cylinders[list->id].roll = 0;
+=======
+	e->cylinders[list->id].diff = list->diff;
+	e->cylinders[list->id].spec = list->spec;
+>>>>>>> tac
 }

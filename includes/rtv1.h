@@ -79,8 +79,8 @@ typedef struct			s_cone
 	cl_float3			dir;
 	cl_float			angle;
 	cl_int				color;
-	cl_float			diff;
-	cl_float			spec;
+	cl_float3			diff;
+	cl_float3			spec;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -90,11 +90,16 @@ typedef struct			s_cylinder
 	cl_float			radius;
 	cl_int				color;
 	cl_float			height;
+<<<<<<< HEAD
 	cl_float			diff;
 	cl_float			spec;
 	cl_float			pitch;
 	cl_float			yaw;
 	cl_float			roll;
+=======
+	cl_float3			diff;
+	cl_float3			spec;
+>>>>>>> tac
 }						t_cylinder;
 
 typedef struct			s_light
@@ -111,8 +116,8 @@ typedef struct			s_plane
 	cl_float3			pos;
 	cl_float3			normale;
 	cl_int				color;
-	cl_float			diff;
-	cl_float			spec;
+	cl_float3			diff;
+	cl_float3			spec;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -121,8 +126,8 @@ typedef struct			s_sphere
 	cl_float3			dir;
 	cl_float			radius;
 	cl_int				color;
-	cl_float			diff;
-	cl_float			spec;
+	cl_float3			diff;
+	cl_float3			spec;
 }						t_sphere;
 
 typedef struct			s_param
@@ -155,8 +160,8 @@ typedef struct			s_node
 	cl_int				light;
 	cl_float			intensity;
 	cl_float			height;
-	cl_float			diff;
-	cl_float			spec;
+	cl_float3			diff;
+	cl_float3			spec;
 	struct s_node		*next;
 }						t_node;
 

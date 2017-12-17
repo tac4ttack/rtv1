@@ -1,5 +1,6 @@
-#define BACKCOLOR 0x00333333
-#define RAND_MAX	2147483647
+#define BACKCOLOR 0x00ffffff
+
+#define MAX_DIST 500.0
 
 #define DEG2RAD (M_PI / 180)
 #define RAD2DEG (180 / M_PI)
@@ -46,8 +47,8 @@ typedef struct			s_cone
 	float3				dir;
 	float				angle;
 	int					color;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -57,8 +58,8 @@ typedef struct			s_cylinder
 	float				radius;
 	int					color;
 	float				height;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 	float				pitch;
 	float				yaw;
 	float				roll;
@@ -78,8 +79,8 @@ typedef struct			s_plane
 	float3				pos;
 	float3				normale;
 	int					color;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -88,8 +89,8 @@ typedef struct			s_sphere
 	float3				dir;
 	float				radius;
 	int					color;
-	float				diff;
-	float				spec;
+	float3				diff;
+	float3				spec;
 }						t_sphere;
 
 typedef struct			s_param

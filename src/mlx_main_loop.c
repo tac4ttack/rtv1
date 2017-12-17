@@ -6,7 +6,7 @@ void	display_hud(t_env *e)
 	char *mvty;
 	char *mvtz;
 	char *bloom;
-
+	
 	mvtx = ft_ftoa(e->cameras[0].pos.x + e->param.mvt.x);
 	mvty = ft_ftoa(e->cameras[0].pos.y + e->param.mvt.y);
 	mvtz = ft_ftoa(e->cameras[0].pos.z + e->param.mvt.z);

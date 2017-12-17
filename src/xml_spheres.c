@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/07 18:09:48 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/11 13:59:07 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static void	xml_sphere_data_n(t_env *e, char **att, t_node *sphere_node, int *i)
 		s_error("\x1b[2;31mError in sphere, DIFFUSE expected in #5\x1b[0m", e);
 	else
 		xml_data_diffiouse(e, att, i, sphere_node);
-	printf("diffuse = %f\n", sphere_node->diff);
+	printf("diff.x = %f | diff.y = %f | diff.z = %f\n", sphere_node->diff.x, sphere_node->diff.y, sphere_node->diff.z);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
 		s_error("\x1b[2;31mError in sphere, SPECULAR expected in #6\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, sphere_node);
-	printf("specular = %f\n", sphere_node->spec);
+	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", sphere_node->spec.x, sphere_node->spec.y , sphere_node->spec.z);
 }
 
 static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
@@ -103,4 +103,6 @@ void		xml_push_sphere(t_env *e, t_node *list)
 	e->spheres[list->id].dir = list->dir;
 	e->spheres[list->id].radius = list->radius;
 	e->spheres[list->id].color = list->color;
+	e->spheres[list->id].diff = list->diff;
+	e->spheres[list->id].spec = list->spec;
 }
