@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/07 18:08:03 by fmessina         ###   ########.fr       */
+/*   Updated: 2017/12/11 13:57:34 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
 		s_error("\x1b[2;31mError in cone, DIFFUSE expected in #5\x1b[0m", e);
 	else
 		xml_data_diffiouse(e, att, i, cone_node);
-	printf("diffuse = %f\n", cone_node->diff);
+	printf("diff.x = %f | diff.y = %f | diff.z = %f\n", cone_node->diff.x, cone_node->diff.y, cone_node->diff.z);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
 		s_error("\x1b[2;31mError in cone, SPECULAR expected in #6\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, cone_node);
-	printf("specular = %f\n", cone_node->spec);
+	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", cone_node->spec.x, cone_node->spec.y , cone_node->spec.z);
 }
 
 static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
@@ -103,4 +103,6 @@ void		xml_push_cone(t_env *e, t_node *list)
 	e->cones[list->id].dir = list->dir;
 	e->cones[list->id].angle = list->angle;
 	e->cones[list->id].color = list->color;
+	e->cones[list->id].diff = list->diff;
+	e->cones[list->id].spec = list->spec;
 }

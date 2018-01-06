@@ -13,6 +13,8 @@ static	void	mlx_key_press_1(int key, t_env *e)
 	(key == K_D ? e->keys.k_d = 1 : 0);
 	(key == K_E ? e->keys.k_e = 1 : 0);
 	(key == K_F ? e->keys.k_f = 1 : 0);
+	(key == K_G ? e->keys.k_g = 1 : 0);
+	(key == K_H ? e->keys.k_h = 1 : 0);
 	(key == K_I ? e->keys.k_i = 1 : 0);
 	(key == K_J ? e->keys.k_j = 1 : 0);
 	(key == K_K ? e->keys.k_k = 1 : 0);

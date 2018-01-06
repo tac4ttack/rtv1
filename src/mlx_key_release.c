@@ -13,6 +13,8 @@ static	void	mlx_key_release_1(int key, t_env *e)
 	(key == K_D ? e->keys.k_d = 0 : 0);
 	(key == K_E ? e->keys.k_e = 0 : 0);
 	(key == K_F ? e->keys.k_f = 0 : 0);
+	(key == K_G ? e->keys.k_g = 0 : 0);
+	(key == K_H ? e->keys.k_h = 0 : 0);
 	(key == K_I ? e->keys.k_i = 0 : 0);
 	(key == K_J ? e->keys.k_j = 0 : 0);
 	(key == K_K ? e->keys.k_k = 0 : 0);
