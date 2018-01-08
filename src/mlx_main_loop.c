@@ -17,7 +17,7 @@ void	display_hud(t_env *e)
 	mlx_string_put(e->mlx, e->win, 10, 55, 0x00ffffff, bloom);
 	mlx_string_put(e->mlx, e->win, 10, 70, 0x00ffffff, ft_ftoa(e->cameras[0].pitch));
 	mlx_string_put(e->mlx, e->win, 10, 85, 0x00ffffff, ft_ftoa(e->cameras[0].yaw));
-	mlx_string_put(e->mlx, e->win, 10, 95, 0x00ffffff, ft_ftoa(e->cameras[0].roll));
+	mlx_string_put(e->mlx, e->win, 10, 100, 0x00ffffff, ft_ftoa(e->cameras[0].roll));
 	free(mvtx);
 	free(mvty);
 	free(mvtz);
@@ -44,7 +44,7 @@ int		mlx_main_loop(t_env *e)
 	if (e)
 	{
 		mlx_keyboard_repeated(e);
-		mlx_mouse_get_pos(e->win, &e->mou_x, &e->mou_y);
+		//printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->mou_x, e->mou_y);
 		refresh(e);
 	//	quit(e);
 	}

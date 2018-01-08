@@ -76,7 +76,7 @@ Object informations have to be filled strictly like showed below:
 			/>			
 	<plane 	id="0"
 			pos="0, -10, 0"
-			normale="0, 1, 2"
+			normale="0, 1, 0"
 			color="0, 255, 0, 0"
 			diff="0.42, 0.42, 0.42"
 			spec="0, 0, 0"

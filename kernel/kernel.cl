@@ -74,8 +74,9 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 {
 	float3				abc;
 	float				d;
-	float				res1;
-	float				res2;
+	float				res1 = 0;
+	float				res2 = 0;
+	float				m;
 
 	origin -= cylind.pos;
 	abc = get_cylinder_abc(cylind.radius, normalize(cylind.dir), ray, origin);
@@ -83,21 +84,23 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 	if (d < 0)
 		return (0);
 	if (d == 0)
-		return ((-abc[1]) / (2 * abc[0]));
-	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+		res1 = (-abc[1]) / (2 * abc[0]);
+	else
+	{
+		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	}
 	if (res1 < 0 && res2 < 0)
 		return (0);
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 	{
-		if (cylind.height == 0 || (dot_vect(ray, normalize(cylind.dir) * res1 +
-			dot_vect(origin, normalize(cylind.dir))) < cylind.height && dot_vect(ray, normalize(cylind.dir) * res1 +
-			dot_vect(origin, normalize(cylind.dir))) > 0))
+		if ((m = dot_vect(normalize(ray), normalize(cylind.dir) * res1) + dot_vect(origin, normalize(cylind.dir)) <= 0 && cylind.height != 0))
+			;
+		else if (cylind.height == 0 || ((norme_vect(normalize(cylind.dir) * m) < cylind.height)))
 			return (res1);
 	}
-	if (cylind.height ==  0 || (dot_vect(ray, normalize(cylind.dir) * res2 +
-			dot_vect(origin, normalize(cylind.dir))) < cylind.height && dot_vect(ray, normalize(cylind.dir) * res2 +
-			dot_vect(origin, normalize(cylind.dir))) > 0))
+	m = dot_vect(normalize(ray), normalize(cylind.dir) * res2) + dot_vect(origin, normalize(cylind.dir));
+	if (cylind.height == 0 || ((norme_vect(normalize(cylind.dir) * m)) < cylind.height))
 		return (res2);
 	else
 		return (0);
@@ -420,10 +423,68 @@ __kernel void	ray_trace(__global char *output,
 						  __constant t_plane *planes,
 						  __constant t_sphere *spheres)
 {
-	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
-	int		x = get_global_id(0);
-	int		y = get_global_id(1);
-	int		id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
+	int			x = get_global_id(0);
+	int			y = get_global_id(1);
+	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);
+	//if (x == PARAM->mou_x && y == PARAM->mou_y) mettre id et type a la fin d'outpute
+
+}
+
+__kernel void			hit_activeobj(__global t_hit *output, t_param param,
+						  __constant t_cam *cameras,
+						  __constant t_cone *cones,
+						  __constant t_cylinder *cylinders,
+						  __constant t_light *lights,
+						  __constant t_plane *planes,
+						  __constant t_sphere *spheres, int x, int y)
+{
+	t_scene				scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
+	float3				ray = get_ray_cam(ACTIVECAM, scene, x ,y);
+	float3				origin = ACTIVECAM.pos + PARAM->mvt;
+	unsigned int		i = 0;
+	int					max = get_max_obj(PARAM);
+	t_hit				hit;
+	float				dist = 0;
+
+	hit.dist = 0;
+	hit.type = 0;
+	hit.id = 0;
+	hit.pos = 0;
+	hit.normale = 0;
+	while (i < max)
+	{
+		if (i < PARAM->n_cones)
+			if (((dist = inter_cone(CONES[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 1;
+				hit.id = i;
+			}
+		if (i < PARAM->n_cylinders)
+			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 2;
+				hit.id = i;
+			}
+		if (i < PARAM->n_planes)
+			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 4;
+				hit.id = i;
+			}
+		if (i < PARAM->n_spheres)
+			if (((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 5;
+				hit.id = i;
+			}
+		i++;
+	}
+	output[0] = hit;
 }

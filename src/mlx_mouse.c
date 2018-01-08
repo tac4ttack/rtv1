@@ -7,5 +7,6 @@ int		mlx_mouse_events(int btn, int x, int y, t_env *e)
 	e->run = 1;
 	e->mou_x = x;
 	e->mou_y = y;
+	printf("toto");
 	return (0);
 }

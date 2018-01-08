@@ -52,6 +52,15 @@
 # define NLIG					e->param.n_lights
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
+# define ACTIVEOBJ				e->param.active_obj
+# define CAM					e->cameras
+# define CONES					e->cones
+# define CYLIND					e->cylinders
+# define LIGHT					e->lights
+# define PLANE					e->planes
+# define SPHERE					e->spheres
+# define PARAM					e->param
+# define ACTIVECAM				e->cameras[e->param.active_cam]
 
 # define XML					e->xml
 # define SCN					e->scene
@@ -61,6 +70,15 @@ typedef struct			s_p2i
 	int					x;
 	int					y;
 }						t_p2i;
+
+typedef struct			s_hit
+{
+	float				dist;
+	int					type;
+	int					id;
+	cl_float3			pos;
+	cl_float3			normale;
+}						t_hit;
 
 typedef struct			s_cam
 {
@@ -137,6 +155,7 @@ typedef struct			s_param
 	cl_float			bloom;
 	cl_float3			mvt;
 	cl_float3			ambient;
+	t_hit				target_obj;
 }						t_param;
 
 typedef struct			s_node
@@ -307,9 +326,10 @@ int						mlx_key_release(int key, t_env *e);
 int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
 
-int						opencl_init(t_env *e);
+int						opencl_init(t_env *e, char *str, unsigned int count);
 void					opencl_close(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);
+void					opencl_set_args(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
 
@@ -319,5 +339,7 @@ cl_float3				roty(cl_float3 dir, float yaw);
 cl_float3				rotx(cl_float3 dir, float pitch);
 cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
+cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
+void					get_activeobj(t_env *e);
 
 #endif

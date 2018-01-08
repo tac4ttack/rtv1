@@ -59,19 +59,19 @@ int			opencl_allocate_scene_memory(t_env *e)
 	return (0);
 }
 
-int			opencl_build(t_env *e)
+int			opencl_build(t_env *e, char *str, unsigned int count)
 {
 	int		err;
 
 	if ((err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/", \
 				NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5));
-	if (!(e->kernel = clCreateKernel(e->program, "ray_trace", &err)) \
+	if (!(e->kernel = clCreateKernel(e->program, str, &err)) \
 		|| err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6));
-	e->count = e->win_w * e->win_h;
+
 	if (!(e->output = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
-		e->count * 4, NULL, NULL)))
+		count, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
 	opencl_allocate_scene_memory(e);
 	return (0);
@@ -100,7 +100,7 @@ void		load_kernel(t_env *e)
 	close(fd);
 }
 
-int			opencl_init(t_env *e)
+int			opencl_init(t_env *e, char *str, unsigned int count)
 {
 	int		err;
 
@@ -117,6 +117,6 @@ int			opencl_init(t_env *e)
 	if (!(e->program = clCreateProgramWithSource(e->context, 1, \
 				(const char **)&e->kernel_src, NULL, &err)))
 		return (opencl_builderrors(e, 4));
-	opencl_build(e);
+	opencl_build(e, str, count);
 	return (0);
 }
