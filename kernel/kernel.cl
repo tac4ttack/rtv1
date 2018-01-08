@@ -319,7 +319,7 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		if (tmp > 0)
 			res_color = color_diffuse(hit, scene, res_color, tmp);
 //		tmp = -dot(hit.normale, -light_ray.dir);
-		reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
+		reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, -light_ray.dir), hit.normale) - light_ray.dir);
 //		reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, -light_ray.dir), hit.normale - -light_ray.dir));
 		tmp = dot(reflect, scene.ray);
 		if (tmp > 0)
