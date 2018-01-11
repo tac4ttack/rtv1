@@ -52,6 +52,7 @@ float3					get_cylinder_abc(float radius, float3 dir, float3 ray, float3 origin)
 {
 	float3		abc;
 
+	// SEMBLE OK
 	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
 	abc.y = 2 * (dot(ray, origin) - (dot(ray, dir) * dot(origin, dir)));
 	abc.z = dot(origin, origin) - (dot(origin, dir) * dot(origin, dir)) - (radius * radius);
@@ -93,7 +94,7 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 
 float3					get_cone_abc(t_cone cone, float3 ray, float3 origin)
 {
-	float3		abc;
+	float3		abc = 0;
 	float		k = cone.angle * DEG2RAD;
 	k = tan(k);
 	k = 1 + k * k;
@@ -200,22 +201,20 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		k = 1 + k * k;
 		res = dot(scene.ray, fast_normalize(CONES[hit.id].dir)) * \
 			hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
-		res = (hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res);
-	//	if (dot(CONES[hit.id].pos - hit.pos, fast_normalize(CONES[hit.id].dir)) > 0)
-			res = -res;
+		res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
 	}
 	else if (hit.type == 2)
 	{
-		res = dot(scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
+		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
 			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
-		res = (hit.pos - CYLIND[hit.id].pos) - (fast_normalize(CYLIND[hit.id].dir) * res);
+		res = hit.pos - CYLIND[hit.id].pos - (fast_normalize(CYLIND[hit.id].dir) * res);
 	}
-	else if (hit.type == 4) // bizarrement on fait l'inverse de ce qu'on peut voir dans le code d'autres personnes
+	else if (hit.type == 4)
 	{
-		if (dot(PLANE[hit.id].normale, scene.ray) < 0)
-			res = PLANE[hit.id].normale;
-		else
+		if (dot(PLANE[hit.id].normale, -scene.ray) < 0)
 			res = -PLANE[hit.id].normale;
+		else
+			res = PLANE[hit.id].normale;
 	}
 	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
@@ -243,15 +242,13 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		;
 		else
 		{
-		tmp = dot(hit.normale, light_ray.dir);
-		if (tmp > 0)
-			res_color = color_diffuse(hit, scene, res_color, tmp);
-//		tmp = -dot(hit.normale, -light_ray.dir);
-		reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
-//		reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, -light_ray.dir), hit.normale - -light_ray.dir));
-		tmp = dot(reflect, -scene.ray);
-		if (tmp > 0)
-			res_color = color_specular(hit, scene, res_color, tmp);
+			tmp = dot(hit.normale, light_ray.dir);
+			if (tmp > 0)
+				res_color = color_diffuse(hit, scene, res_color, tmp);
+			reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
+			tmp = dot(reflect, -scene.ray);
+			if (tmp > 0)
+				res_color = color_specular(hit, scene, res_color, tmp);
 		}
 	}
 
@@ -265,18 +262,14 @@ unsigned int	get_pixel_color(t_scene scene)
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
-	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee
+	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
 		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
-//		if (hit.type == 4)
-//			hit.pos = hit.pos + ((bias + hit.dist / 5) * hit.normale);
-//		else
-			hit.pos = hit.pos + ((bias +  hit.dist / 100) * hit.normale);
-//		return (light(hit, scene));
+		hit.pos = hit.pos + ((bias +  hit.dist / 100) * hit.normale);
 		return (phong(hit, scene));
 	}
-	return (get_ambient(BACKCOLOR, scene)); // renvoie la couleur de fond selon lumiere ambiante
+	return (get_ambient(BACKCOLOR, scene));
 }
 
 
@@ -303,7 +296,7 @@ __kernel void	ray_trace(__global char *output,
 	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 	int		x = get_global_id(0);
 	int		y = get_global_id(1);
-	int		id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	int		id = x + (PARAM->win_w * y);
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);
 }

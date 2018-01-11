@@ -73,9 +73,7 @@ void		init(t_env *e, int ac, char *av)
 	e->mou_x = 0;
 	e->mou_y = 0;
 	e->gpu = IS_GPU;
-	e->param.bloom = 1.80; // TMP
 	e->run = 1; //TMP ou pas?
-//	xml_init(e, ac, av);
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))
