@@ -82,9 +82,9 @@ void		init(t_env *e, int ac, char *av)
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
 	e->count = e->win_h * e->win_w;
-	if (opencl_init(e, "ray_trace", e->count * 4) != 0)
+	if (opencl_init(e, e->count * 4) != 0)
 	{
 		e->gpu = 0;
-		opencl_init(e, "ray_trace", e->count * 4);
+		opencl_init(e, e->count * 4);
 	}
 }

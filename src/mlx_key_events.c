@@ -27,8 +27,10 @@ void			mlx_keyboard_repeated(t_env *e)
 //	(KP_R ? reset_cam_pos(e) : 0);
 	(KP_NPLU ? e->param.bloom += 0.1 : 0);
 	(KP_NMIN ? e->param.bloom -= 0.1 : 0);
+	if (KP_R)
+		get_activeobj(e);
 	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9 \
-		|| KP_I || KP_K || KP_J || KP_L || KP_U || KP_O || KP_LA || KP_UA || KP_RA || KP_DA || KP_W || KP_D || KP_C || KP_A || KP_S || KP_R)
+		|| KP_I || KP_K || KP_J || KP_L || KP_U || KP_O || KP_LA || KP_UA || KP_RA || KP_DA || KP_W || KP_D || KP_C || KP_A || KP_S)
 	{
 		if (KP_W)
 			e->cameras[0].pos = add_cl_float(rotcam(e->cameras[0].dir, e->cameras[0].pitch * DEG2RAD, e->cameras[0].yaw * DEG2RAD), e->cameras[0].pos);
@@ -53,7 +55,8 @@ void			mlx_keyboard_repeated(t_env *e)
 		(KP_RA ? e->cameras[0].yaw += 2 : 0);
 		if (e->cameras[0].yaw == -1)
 			e->cameras[0].yaw = 359;
-
+		if (NCYL > 0)
+		{
 			if (KP_I)
 			{
 				e->cylinders[0].dir = rotx(e->cylinders[0].dir, 1 * DEG2RAD);
@@ -78,6 +81,7 @@ void			mlx_keyboard_repeated(t_env *e)
 			{
 				e->cylinders[0].dir = rotz(e->cylinders[0].dir, -1 * DEG2RAD);
 			}
+		}
 		(KP_N4 ? e->lights[0].pos.x -= 0.1 : 0);
 		(KP_N6 ? e->lights[0].pos.x += 0.1 : 0);
 		(KP_N8 ? e->lights[0].pos.y -= 0.1 : 0);
@@ -86,8 +90,6 @@ void			mlx_keyboard_repeated(t_env *e)
 		(KP_N9 ? e->lights[0].pos.z += 0.1 : 0);
 		if (KP_Z)
 			e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
-		if (KP_R)
-			get_activeobj(e);
 		opencl_allocate_scene_memory(e);
 	}
 }

@@ -32,26 +32,21 @@ cl_float3			sub_cl_float(cl_float3 v1, cl_float3 v2)
 	return (res);
 }
 
-void				kernel_refresh(t_env *e, char *str)
-{
-	int				err;
-
-	if (!(e->kernel = clCreateKernel(e->program, str, &err)) \
-		|| err != CL_SUCCESS)
-		{
-			ft_putendl("Error: Failed to create compute kernel!\n");
-			return;
-		}
-	opencl_set_args(e);
-}
-
 void				set_mouseargs(t_env *e)
 {
 	int				err;
 
 	err = 0;
-	err = clSetKernelArg(e->kernel, 8, sizeof(int), &e->mou_x);
-	err |= clSetKernelArg(e->kernel, 9, sizeof(int), &e->mou_y);
+	err = clSetKernelArg(e->kernel_activeobj, 0, sizeof(cl_mem), &e->output_obj);
+	err |= clSetKernelArg(e->kernel_activeobj, 1, sizeof(t_param), &e->param);
+	err |= clSetKernelArg(e->kernel_activeobj, 2, sizeof(cl_mem), &e->cameras_mem);
+	err |= clSetKernelArg(e->kernel_activeobj, 3, sizeof(cl_mem), &e->cones_mem);
+	err |= clSetKernelArg(e->kernel_activeobj, 4, sizeof(cl_mem), &e->cylinders_mem);
+	err |= clSetKernelArg(e->kernel_activeobj, 5, sizeof(cl_mem), &e->lights_mem);
+	err |= clSetKernelArg(e->kernel_activeobj, 6, sizeof(cl_mem), &e->planes_mem);
+	err |= clSetKernelArg(e->kernel_activeobj, 7, sizeof(cl_mem), &e->spheres_mem);
+	err |= clSetKernelArg(e->kernel_activeobj, 8, sizeof(int), &e->mou_x);
+	err |= clSetKernelArg(e->kernel_activeobj, 9, sizeof(int), &e->mou_y);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
@@ -63,15 +58,15 @@ void				set_mouseargs(t_env *e)
 void				get_activeobj(t_env *e)
 {
 	int				err;
-	const size_t	g = 1;
+	const size_t	g[2] = {1, 1};
+
 
 	mlx_mouse_get_pos(e->win, &e->mou_x, &e->mou_y);
-	kernel_refresh(e, "hit_activeobj");
 	set_mouseargs(e);
-	err = clEnqueueNDRangeKernel(e->commands, e->kernel, 1, NULL, \
-			&g, NULL, 0, NULL, NULL);
-	clFinish(e->commands);
-	err = clEnqueueReadBuffer(e->commands, e->output, CL_TRUE, 0, \
+	err = clEnqueueNDRangeKernel(e->commands_activeobj, e->kernel_activeobj, 2, NULL, \
+			g, NULL, 0, NULL, NULL);
+	clFinish(e->commands_activeobj);
+	err = clEnqueueReadBuffer(e->commands_activeobj, e->output_obj, CL_TRUE, 0, \
 			sizeof(t_hit), &e->param.target_obj, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 	{
@@ -80,6 +75,6 @@ void				get_activeobj(t_env *e)
 		s_error("Error: Failed to read output array!", e);
 	}
 	printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->mou_x, e->mou_y);
-	kernel_refresh(e, "ray_trace");
+
 }
 

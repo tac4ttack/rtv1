@@ -227,10 +227,13 @@ typedef	struct			s_env
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
-	cl_command_queue	commands;
+	cl_command_queue	commands_raytrace;
+	cl_command_queue	commands_activeobj;
 	cl_program			program;
-	cl_kernel			kernel;
-	cl_mem				output;
+	cl_kernel			kernel_raytrace;
+	cl_kernel			kernel_activeobj;
+	cl_mem				output_ptr;
+	cl_mem				output_obj;
 	int					gpu;
 	size_t				global;
 	size_t				local;
@@ -326,7 +329,7 @@ int						mlx_key_release(int key, t_env *e);
 int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
 
-int						opencl_init(t_env *e, char *str, unsigned int count);
+int						opencl_init(t_env *e, unsigned int count);
 void					opencl_close(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);
 void					opencl_set_args(t_env *e);
