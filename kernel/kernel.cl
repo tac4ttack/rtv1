@@ -199,15 +199,17 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		float k = CONES[hit.id].angle * DEG2RAD;
 		k = tan(k);
 		k = 1 + k * k;
-		res = dot(-=scene.ray, fast_normalize(CONES[hit.id].dir)) * \
+		res = dot(-scene.ray, fast_normalize(CONES[hit.id].dir)) * \
 			hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
 		res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
 	}
 	else if (hit.type == 2)
 	{
-		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
-			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
-		res = hit.pos - CYLIND[hit.id].pos - (fast_normalize(CYLIND[hit.id].dir) * res);
+//		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
+//			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
+//		res = hit.pos - CYLIND[hit.id].pos - fast_normalize(CYLIND[hit.id].dir) * res;
+		res = hit.pos - CYLIND[hit.id].pos;
+		res.z = 0;	// fonctionne pour cylindre aligné en Z
 	}
 	else if (hit.type == 4)
 	{
@@ -258,7 +260,6 @@ unsigned int			phong(t_hit hit, t_scene scene)
 unsigned int	get_pixel_color(t_scene scene)
 {
 	t_hit		hit;
-	float		bias = 0.000001;
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
@@ -266,7 +267,7 @@ unsigned int	get_pixel_color(t_scene scene)
 	{
 		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
-		hit.pos = hit.pos + ((bias +  hit.dist / 100) * hit.normale);
+		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
 		return (phong(hit, scene));
 	}
 	return (get_ambient(BACKCOLOR, scene));
