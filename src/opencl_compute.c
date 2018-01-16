@@ -27,8 +27,16 @@ int			get_imgptr(t_env *e)
 
 	clFinish(e->commands_raytrace);
 	 // the "CL_TRUE" flag blocks the read operation until all work items have finished their computation
-	err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, CL_TRUE, 0, \
-			sizeof(char) * (e->count * 4), e->frame->pix, 0, NULL, NULL);
+	err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, CL_FALSE, 0, \
+			(e->count * 4), e->frame->pix, 0, NULL, NULL);
+	if (e->run == 1)
+	{
+		err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, CL_FALSE, e->count * 4, \
+				4, &e->param.target_obj.type, 0, NULL, NULL);
+		err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, CL_FALSE, (e->count * 4) + 4, \
+				4, &e->param.target_obj.id, 0, NULL, NULL);
+		e->run = 0;
+	}
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);

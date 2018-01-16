@@ -152,10 +152,11 @@ typedef struct			s_param
 	int					active_cam;
 	int					win_w;
 	int					win_h;
-	cl_float			bloom;
 	cl_float3			mvt;
 	cl_float3			ambient;
 	t_hit				target_obj;
+	int					mou_x;
+	int					mou_y;
 }						t_param;
 
 typedef struct			s_node
@@ -220,20 +221,15 @@ typedef	struct			s_env
 	int					sce_h;
 	int					cen_x;
 	int					cen_y;
-	int					mou_x;
-	int					mou_y;
 	int					debug;
 	t_xml				*xml;
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
 	cl_command_queue	commands_raytrace;
-	cl_command_queue	commands_activeobj;
 	cl_program			program;
 	cl_kernel			kernel_raytrace;
-	cl_kernel			kernel_activeobj;
 	cl_mem				output_ptr;
-	cl_mem				output_obj;
 	int					gpu;
 	size_t				global;
 	size_t				local;
@@ -343,6 +339,5 @@ cl_float3				rotx(cl_float3 dir, float pitch);
 cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
 cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
-void					get_activeobj(t_env *e);
 
 #endif

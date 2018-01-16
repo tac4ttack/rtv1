@@ -69,14 +69,8 @@ int			opencl_build(t_env *e, unsigned int count)
 	if (!(e->kernel_raytrace = clCreateKernel(e->program, "ray_trace", &err)) \
 		|| err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6));
-	if (!(e->kernel_activeobj = clCreateKernel(e->program, "hit_activeobj", &err)) \
-		|| err != CL_SUCCESS)
-		return (opencl_builderrors(e, 6));
 	if (!(e->output_ptr = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
-		count, NULL, NULL)))
-		return (opencl_builderrors(e, 7));
-	if (!(e->output_obj = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
-		sizeof(t_hit), NULL, NULL)))
+		count + 8, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
 	opencl_allocate_scene_memory(e);
 	return (0);
@@ -117,9 +111,6 @@ int			opencl_init(t_env *e, unsigned int count)
 				NULL, NULL, &err)))
 		return (opencl_builderrors(e, 2));
 	if (!(e->commands_raytrace = clCreateCommandQueue(e->context, \
-				e->device_id, 0, &err)))
-		return (opencl_builderrors(e, 3));
-	if (!(e->commands_activeobj = clCreateCommandQueue(e->context, \
 				e->device_id, 0, &err)))
 		return (opencl_builderrors(e, 3));
 	if (!(e->program = clCreateProgramWithSource(e->context, 1, \

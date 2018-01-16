@@ -91,6 +91,7 @@ typedef struct			s_sphere
 	float3				spec;
 }						t_sphere;
 
+
 typedef struct			s_param
 {
 	unsigned int		n_cams;
@@ -102,9 +103,11 @@ typedef struct			s_param
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	float				bloom;
 	float3				mvt;
 	float3				ambient;
+	t_hit				target_obj;
+	int					mou_x;
+	int					mou_y;
 }						t_param;
 
 typedef struct			s_scene

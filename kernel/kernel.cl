@@ -157,41 +157,6 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 	return (t);
 }
 
-unsigned int			light_angle(float angle, unsigned int obj_color, t_scene scene)
-{
-	unsigned int		r = (obj_color & 0x00FF0000) >> 16;
-	unsigned int		g = (obj_color & 0x0000FF00) >> 8;
-	unsigned int		b = (obj_color & 0x000000FF);
-	float				mult = scene.param->bloom * angle;
-
-	//if (angle <= 0)
-	//	return (obj_color);
-	if (mult > r)
-		r = 0;
-	else if ((r -= mult) > 255)
-		r = 255;
-	if (mult > g)
-		g = 0;
-	else if ((g -= mult) > 255)
-		g = 255;
-	if (mult > b)
-		b = 0;
-	else if ((b -= mult) > 255)
-		b = 255;
-	return ((r << 16) + (g << 8) + b);
-}
-
-float					light_angelamerkel(t_hit hit, t_light_ray light_ray)
-{
-	float				cos_angela;
-	float				angela;
-
-	cos_angela = dot_vect(light_ray.dir, hit.normale) / (norme_vect(light_ray.dir) * norme_vect(hit.normale));
-	angela = acos(cos_angela) * RAD2DEG;
-	//printf("%f\n", angela);
-	return (angela);
-}
-
 t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 {
 	unsigned int			i = 0;
@@ -258,9 +223,11 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	}
 	else if (hit.type == 2)
 	{
-		res = dot_vect(scene.ray, normalize(CYLIND[hit.id].dir) * hit.dist + \
+	//	res = dot_vect(scene.ray, normalize(CYLIND[hit.id].dir) * hit.dist + \
 			dot_vect(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, normalize(CYLIND[hit.id].dir)));
-		res = (hit.pos - CYLIND[hit.id].pos) - (normalize(CYLIND[hit.id].dir) * res);
+	//	res = (hit.pos - CYLIND[hit.id].pos) - (normalize(CYLIND[hit.id].dir) * res);
+		res = hit.pos - CYLIND[hit.id].pos;
+		res.x = 0;
 	}
 	else if (hit.type == 4) // bizarrement on fait l'inverse de ce qu'on peut voir dans le code d'autres personnes
 	{
@@ -272,40 +239,6 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
 	return (normalize(res));
-}
-
-
-unsigned int			light(t_hit hit, t_scene scene)
-{
-	int					i = -1;
-	float				angle = 0;
-	t_light_ray			light_ray;
-	t_hit				light_hit;
-	unsigned int		obj_color = get_obj_hue(scene, hit);
-	unsigned int		ambient_color = blend_ambiant(obj_color);
-	unsigned int		res_color = 0;
-	unsigned int		tmp_color = 0;
-
-	//	printf("%u\n", obj_color);
-	while (++i < PARAM->n_lights)
-	{
-		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = norme_vect(light_ray.dir);
-		light_ray.dir = normalize(light_ray.dir);
-		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-		;//	printf("%f\n", light_hit.dist);
-		else
-		{
-			angle = light_angelamerkel(hit, light_ray);
-			if ((tmp_color = light_angle(angle, obj_color, scene)) < ambient_color)
-				tmp_color = ambient_color;
-			res_color = blend_add(res_color, tmp_color);
-		}
-	}
-	if (res_color == 0)
-		res_color = ambient_color;
-	return (res_color);
 }
 
 unsigned int			phong(t_hit hit, t_scene scene)
@@ -414,34 +347,8 @@ calcul simplifié
 	return(normalize(cam_ray));
 }
 
-__kernel void	ray_trace(__global char *output,
-						  t_param param,
-						  __constant t_cam *cameras,
-						  __constant t_cone *cones,
-						  __constant t_cylinder *cylinders,
-						  __constant t_light *lights,
-						  __constant t_plane *planes,
-						  __constant t_sphere *spheres)
+t_hit		hit_activeobj(t_scene scene, x, y)
 {
-	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
-	int			x = get_global_id(0);
-	int			y = get_global_id(1);
-	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
-	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
-	OUTPUTE = get_pixel_color(scene);
-	//if (x == PARAM->mou_x && y == PARAM->mou_y) mettre id et type a la fin d'outpute
-
-}
-
-__kernel void			hit_activeobj(__global t_hit *output, t_param param,
-						  __constant t_cam *cameras,
-						  __constant t_cone *cones,
-						  __constant t_cylinder *cylinders,
-						  __constant t_light *lights,
-						  __constant t_plane *planes,
-						  __constant t_sphere *spheres, int x, int y)
-{
-	t_scene				scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 	float3				ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	float3				origin = ACTIVECAM.pos + PARAM->mvt;
 	unsigned int		i = 0;
@@ -486,5 +393,30 @@ __kernel void			hit_activeobj(__global t_hit *output, t_param param,
 			}
 		i++;
 	}
-	output[0] = hit;
+	return (hit);
+}
+
+__kernel void	ray_trace(__global char *output,
+						  t_param param,
+						  __constant t_cam *cameras,
+						  __constant t_cone *cones,
+						  __constant t_cylinder *cylinders,
+						  __constant t_light *lights,
+						  __constant t_plane *planes,
+						  __constant t_sphere *spheres)
+{
+	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
+	int			x = get_global_id(0);
+	int			y = get_global_id(1);
+	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	if (x == PARAM->mou_x && y == PARAM->mou_y)
+	{
+		t_hit	hit;
+		hit = hit_activeobj(scene, PARAM->mou_x, PARAM->mou_y);
+	//	printf("OCL | type = %d //// id = %d\n", hit.type, hit.id);
+		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = hit.type;
+		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = hit.id;
+	}
+	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
+	OUTPUTE = get_pixel_color(scene);
 }
