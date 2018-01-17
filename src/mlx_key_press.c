@@ -124,7 +124,7 @@ int				mlx_key_press(int key, t_env *e)
 		ft_putnbr(key);
 		ft_putchar('\n');
 	}
-	e->run = 1;
+//	e->run = 1;
 	(key == K_F12 ? e->keys.k_f12 = 1 : 0);
 	(key == K_F13 ? e->keys.k_f13 = 1 : 0);
 	(key == K_F14 ? e->keys.k_f14 = 1 : 0);

@@ -55,12 +55,10 @@ typedef struct			s_cylinder
 {
 	float3				pos;
 	float3				dir;
+	float3				base_dir;
 	float				radius;
 	int					color;
 	float				height;
-	float				pitch;
-	float				yaw;
-	float				roll;
 	float3				diff;
 	float3				spec;
 }						t_cylinder;
@@ -93,6 +91,7 @@ typedef struct			s_sphere
 	float3				spec;
 }						t_sphere;
 
+
 typedef struct			s_param
 {
 	unsigned int		n_cams;
@@ -104,9 +103,11 @@ typedef struct			s_param
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	float				bloom;
 	float3				mvt;
 	float3				ambient;
+	t_hit				target_obj;
+	int					mou_x;
+	int					mou_y;
 }						t_param;
 
 typedef struct			s_scene

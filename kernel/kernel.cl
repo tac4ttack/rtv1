@@ -4,7 +4,7 @@
 #include "kernel_vector.h"
 #include "kernel_debug.h"
 
-float3						rotat_vect(float3 vect, float pitch, float yaw, float roll)
+float3						rotat_zyx(float3 vect, float pitch, float yaw, float roll)
 {
 	float3					res;
 	float					rad_pitch = pitch * DEG2RAD;
@@ -14,6 +14,19 @@ float3						rotat_vect(float3 vect, float pitch, float yaw, float roll)
 	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
 	res.y = vect.x * sin(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_roll) * cos(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (cos(rad_roll) * -sin(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
 	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) + vect.z * cos(rad_yaw) * cos(rad_pitch);
+	return (res);
+}
+
+float3						rotat_xyz(float3 vect, float pitch, float yaw, float roll)
+{
+	float3					res;
+	float					rad_pitch = pitch * DEG2RAD;
+	float					rad_yaw = yaw * DEG2RAD;
+	float					rad_roll = roll * DEG2RAD;
+
+	res.x = vect.x * cos(rad_yaw) * cos(rad_roll) + vect.y * cos(rad_yaw) * -sin(rad_roll) + vect.z * sin(rad_yaw);
+	res.y = vect.x * (-sin(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + cos(rad_pitch) * sin(rad_roll)) + vect.y * (-sin(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + cos(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * -sin(rad_pitch);
+	res.z = vect.x * (cos(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + sin(rad_pitch) * sin(rad_roll)) + vect.y * (cos(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + sin(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * cos(rad_pitch);
 	return (res);
 }
 
@@ -63,8 +76,9 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 {
 	float3				abc;
 	float				d;
-	float				res1;
-	float				res2;
+	float				res1 = 0;
+	float				res2 = 0;
+	float				m;
 
 	origin -= cylind.pos;
 	abc = get_cylinder_abc(cylind.radius, rotat_vect(fast_normalize(cylind.dir), cylind.pitch, cylind.yaw, cylind.roll), ray, origin);
@@ -72,9 +86,12 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 	if (d < 0)
 		return (0);
 	if (d == 0)
-		return ((-abc[1]) / (2 * abc[0]));
-	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+		res1 = (-abc[1]) / (2 * abc[0]);
+	else
+	{
+		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	}
 	if (res1 < 0 && res2 < 0)
 		return (0);
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
@@ -205,11 +222,19 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	}
 	else if (hit.type == 2)
 	{
+<<<<<<< HEAD
 //		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
 //			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
 //		res = hit.pos - CYLIND[hit.id].pos - fast_normalize(CYLIND[hit.id].dir) * res;
 		res = hit.pos - CYLIND[hit.id].pos;
 		res.z = 0;	// fonctionne pour cylindre aligné en Z
+=======
+	//	res = dot_vect(scene.ray, normalize(CYLIND[hit.id].dir) * hit.dist + \
+			dot_vect(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, normalize(CYLIND[hit.id].dir)));
+	//	res = (hit.pos - CYLIND[hit.id].pos) - (normalize(CYLIND[hit.id].dir) * res);
+		res = hit.pos - CYLIND[hit.id].pos;
+		res.x = 0;
+>>>>>>> chaton
 	}
 	else if (hit.type == 4)
 	{
@@ -220,7 +245,11 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	}
 	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
+<<<<<<< HEAD
 	return (fast_normalize(res));
+=======
+	return (normalize(res));
+>>>>>>> chaton
 }
 
 unsigned int			phong(t_hit hit, t_scene scene)
@@ -229,8 +258,12 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	unsigned int		obj_color = get_obj_hue(scene, hit);
 	unsigned int		ambient_color = get_ambient(obj_color, scene);
 	unsigned int		res_color = ambient_color;
+<<<<<<< HEAD
 	float				tmp;
 	float3				reflect = 0;
+=======
+	float				tmp = 0;
+>>>>>>> chaton
 	t_light_ray			light_ray;
 	t_hit				light_hit;
 
@@ -244,6 +277,7 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		;
 		else
 		{
+<<<<<<< HEAD
 			tmp = dot(hit.normale, light_ray.dir);
 			if (tmp > 0)
 				res_color = color_diffuse(hit, scene, res_color, tmp);
@@ -251,6 +285,17 @@ unsigned int			phong(t_hit hit, t_scene scene)
 			tmp = dot(reflect, -scene.ray);
 			if (tmp > 0)
 				res_color = color_specular(hit, scene, res_color, tmp);
+=======
+		tmp = dot_vect(hit.normale, light_ray.dir);
+		if (tmp > 0)
+			res_color = color_diffuse(hit, scene, res_color, tmp);
+		tmp = -dot_vect(hit.normale, -light_ray.dir);
+		if (tmp > 0)
+			res_color = color_specular(hit, scene, res_color, tmp, i);
+//		tmp = light_angelamerkel(hit, light_ray);
+//		if (tmp < 16)
+//			res_color = 0x00FFFFFF;
+>>>>>>> chaton
 		}
 	}
 
@@ -281,8 +326,76 @@ float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
 	cam_ray.x = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
 	cam_ray.y = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((cam.fov / 2) * DEG2RAD));
 	cam_ray.z = 1;
+<<<<<<< HEAD
 	cam_ray = rotat_vect(cam_ray, cam.pitch, cam.yaw, 0);
 	return(fast_normalize(cam_ray));
+=======
+/*  rotation XYZ
+	cam_ray.x = xx * cos(yaw) * cos(roll) + yy * cos(yaw) * -sin(roll) + sin(yaw);
+	cam_ray.y = xx * (-sin(pitch) * -sin(yaw) * cos(roll) + cos(pitch) * sin(roll)) + yy * (-sin(pitch) * -sin(yaw) * -sin(roll) + cos(pitch) * cos(roll)) + cos(yaw) * -sin(pitch);
+	cam_ray.z = xx * (cos(pitch) * -sin(yaw) * cos(roll) + sin(pitch) * sin(roll)) + yy * (cos(pitch) * -sin(yaw) * -sin(roll) + sin(pitch) * cos(roll)) + cos(yaw) * cos(pitch);
+
+// rotation ZYX
+	cam_ray.x = xx * cos(roll) * cos(yaw) + yy * (cos(pitch) * -sin(roll) + cos(roll) * sin(yaw) * sin(pitch)) + (-sin(roll) * -sin(pitch) + cos(roll) * sin(yaw) * cos(pitch));
+	cam_ray.y = xx * sin(roll) * cos(yaw) + yy * (cos(roll) * cos(pitch) + sin(roll) * sin(yaw) * sin(pitch)) + (cos(roll) * -sin(pitch) + sin(roll) * sin(yaw) * cos(pitch));
+	cam_ray.z = xx * -sin(yaw) + yy * cos(yaw) * sin(pitch) + cos(yaw) * cos(pitch);
+calcul simplifié
+	cam_ray.x = xx * cos(yaw) + yy * (sin(yaw) * sin(pitch)) + (sin(yaw) * cos(pitch));
+	cam_ray.y = yy * cos(pitch) + -sin(pitch);
+	cam_ray.z = xx * -sin(yaw) + yy * cos(yaw) * sin(pitch) + cos(yaw) * cos(pitch);
+*/
+	cam_ray = rotat_zyx(cam_ray, cam.pitch, cam.yaw, 0);
+	return(normalize(cam_ray));
+>>>>>>> chaton
+}
+
+t_hit		hit_activeobj(t_scene scene, x, y)
+{
+	float3				ray = get_ray_cam(ACTIVECAM, scene, x ,y);
+	float3				origin = ACTIVECAM.pos + PARAM->mvt;
+	unsigned int		i = 0;
+	int					max = get_max_obj(PARAM);
+	t_hit				hit;
+	float				dist = 0;
+
+	hit.dist = 0;
+	hit.type = 0;
+	hit.id = 0;
+	hit.pos = 0;
+	hit.normale = 0;
+	while (i < max)
+	{
+		if (i < PARAM->n_cones)
+			if (((dist = inter_cone(CONES[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 1;
+				hit.id = i;
+			}
+		if (i < PARAM->n_cylinders)
+			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 2;
+				hit.id = i;
+			}
+		if (i < PARAM->n_planes)
+			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 4;
+				hit.id = i;
+			}
+		if (i < PARAM->n_spheres)
+			if (((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			{
+				hit.dist = dist;
+				hit.type = 5;
+				hit.id = i;
+			}
+		i++;
+	}
+	return (hit);
 }
 
 __kernel void	ray_trace(__global char *output,
@@ -294,10 +407,25 @@ __kernel void	ray_trace(__global char *output,
 						  __constant t_plane *planes,
 						  __constant t_sphere *spheres)
 {
+<<<<<<< HEAD
 	t_scene scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 	int		x = get_global_id(0);
 	int		y = get_global_id(1);
 	int		id = x + (PARAM->win_w * y);
+=======
+	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
+	int			x = get_global_id(0);
+	int			y = get_global_id(1);
+	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	if (x == PARAM->mou_x && y == PARAM->mou_y)
+	{
+		t_hit	hit;
+		hit = hit_activeobj(scene, PARAM->mou_x, PARAM->mou_y);
+	//	printf("OCL | type = %d //// id = %d\n", hit.type, hit.id);
+		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = hit.type;
+		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = hit.id;
+	}
+>>>>>>> chaton
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);
 }

@@ -31,6 +31,7 @@ int			opencl_builderrors(t_env *e, int err)
 
 int			opencl_allocate_scene_memory(t_env *e)
 {
+
 	if (NCAM > 0)
 		if (!(e->cameras_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_cam) * NCAM, e->cameras, NULL)))
@@ -58,19 +59,18 @@ int			opencl_allocate_scene_memory(t_env *e)
 	return (0);
 }
 
-int			opencl_build(t_env *e)
+int			opencl_build(t_env *e, unsigned int count)
 {
 	int		err;
 
 	if ((err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/", \
 				NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5));
-	if (!(e->kernel = clCreateKernel(e->program, "ray_trace", &err)) \
+	if (!(e->kernel_raytrace = clCreateKernel(e->program, "ray_trace", &err)) \
 		|| err != CL_SUCCESS)
 		return (opencl_builderrors(e, 6));
-	e->count = e->win_w * e->win_h;
-	if (!(e->output = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
-		e->count * 4, NULL, NULL)))
+	if (!(e->output_ptr = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
+		count + 8, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
 	opencl_allocate_scene_memory(e);
 	return (0);
@@ -99,7 +99,7 @@ void		load_kernel(t_env *e)
 	close(fd);
 }
 
-int			opencl_init(t_env *e)
+int			opencl_init(t_env *e, unsigned int count)
 {
 	int		err;
 
@@ -110,12 +110,12 @@ int			opencl_init(t_env *e)
 	if (!(e->context = clCreateContext(0, 1, &e->device_id, \
 				NULL, NULL, &err)))
 		return (opencl_builderrors(e, 2));
-	if (!(e->commands = clCreateCommandQueue(e->context, \
+	if (!(e->commands_raytrace = clCreateCommandQueue(e->context, \
 				e->device_id, 0, &err)))
 		return (opencl_builderrors(e, 3));
 	if (!(e->program = clCreateProgramWithSource(e->context, 1, \
 				(const char **)&e->kernel_src, NULL, &err)))
 		return (opencl_builderrors(e, 4));
-	opencl_build(e);
+	opencl_build(e, count);
 	return (0);
 }

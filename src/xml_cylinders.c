@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/06 15:55:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/17 13:30:02 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,13 +106,11 @@ void		xml_allocate_cyl(t_env *e)
 void		xml_push_cyl(t_env *e, t_node *list)
 {
 	e->cylinders[list->id].pos = list->pos;
-	e->cylinders[list->id].dir = list->dir;
+	e->cylinders[list->id].base_dir = normalize_vect(list->dir);
+	e->cylinders[list->id].dir = normalize_vect(list->dir);
 	e->cylinders[list->id].radius = list->radius;
 	e->cylinders[list->id].color = list->color;
 	e->cylinders[list->id].height = list->height;
-	e->cylinders[list->id].pitch = 0;
-	e->cylinders[list->id].yaw = 0;
-	e->cylinders[list->id].roll = 0;
 	e->cylinders[list->id].diff = list->diff;
 	e->cylinders[list->id].spec = list->spec;
 }

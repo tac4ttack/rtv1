@@ -73,7 +73,9 @@ SRC_NAME =  			init.c \
 						xml_planes.c \
 						xml_scene.c \
 						xml_spheres.c \
-						xml_tools.c
+						xml_tools.c \
+						rotations.c \
+						vectors.c
 
 default: gpu
 

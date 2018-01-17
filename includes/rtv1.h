@@ -52,6 +52,15 @@
 # define NLIG					e->param.n_lights
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
+# define ACTIVEOBJ				e->param.active_obj
+# define CAM					e->cameras
+# define CONES					e->cones
+# define CYLIND					e->cylinders
+# define LIGHT					e->lights
+# define PLANE					e->planes
+# define SPHERE					e->spheres
+# define PARAM					e->param
+# define ACTIVECAM				e->cameras[e->param.active_cam]
 
 # define XML					e->xml
 # define SCN					e->scene
@@ -61,6 +70,15 @@ typedef struct			s_p2i
 	int					x;
 	int					y;
 }						t_p2i;
+
+typedef struct			s_hit
+{
+	float				dist;
+	int					type;
+	int					id;
+	cl_float3			pos;
+	cl_float3			normale;
+}						t_hit;
 
 typedef struct			s_cam
 {
@@ -87,12 +105,10 @@ typedef struct			s_cylinder
 {
 	cl_float3			pos;
 	cl_float3			dir;
+	cl_float3			base_dir;
 	cl_float			radius;
 	cl_int				color;
 	cl_float			height;
-	cl_float			pitch;
-	cl_float			yaw;
-	cl_float			roll;
 	cl_float3			diff;
 	cl_float3			spec;
 }						t_cylinder;
@@ -136,9 +152,11 @@ typedef struct			s_param
 	int					active_cam;
 	int					win_w;
 	int					win_h;
-	cl_float			bloom;
 	cl_float3			mvt;
 	cl_float3			ambient;
+	t_hit				target_obj;
+	int					mou_x;
+	int					mou_y;
 }						t_param;
 
 typedef struct			s_node
@@ -203,17 +221,15 @@ typedef	struct			s_env
 	int					sce_h;
 	int					cen_x;
 	int					cen_y;
-	int					mou_x;
-	int					mou_y;
 	int					debug;
 	t_xml				*xml;
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
-	cl_command_queue	commands;
+	cl_command_queue	commands_raytrace;
 	cl_program			program;
-	cl_kernel			kernel;
-	cl_mem				output;
+	cl_kernel			kernel_raytrace;
+	cl_mem				output_ptr;
 	int					gpu;
 	size_t				global;
 	size_t				local;
@@ -309,10 +325,19 @@ int						mlx_key_release(int key, t_env *e);
 int						mlx_key_press(int key, t_env *e);
 int						mlx_key_simple(int key, t_env *e);
 
-int						opencl_init(t_env *e);
+int						opencl_init(t_env *e, unsigned int count);
 void					opencl_close(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);
+void					opencl_set_args(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
+
+cl_float3				normalize_vect(cl_float3 v);
+cl_float3				rotz(cl_float3 dir, float roll);
+cl_float3				roty(cl_float3 dir, float yaw);
+cl_float3				rotx(cl_float3 dir, float pitch);
+cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
+cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
+cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
 
 #endif
