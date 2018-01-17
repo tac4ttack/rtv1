@@ -1,15 +1,9 @@
 TODO LIST PARSER:
 -----------------
-* refaire gestion lumières, présence OBLIGATOIRE et UNIQUE d'une lumière d'ambiance
-	-> nouveau type de noeud? sa couleur doit être à virgule (ex: [0.1 , 0.3 , 0.1])
-* rajouter noeud type 'resolution' pour définir la résolution
-* rajouter la propriété 'fov' à la caméra
-* rajouter la propriété 'specular' aux objets
-* rajouter la propriété 'diffuse' aux objets
 * rajouter la propriété 'reflexion' aux objets
 * rajouter la propriété 'refraction' aux objets
 
-* correction atof avec nombre à virgule négatifs -> OK FAIT
+* segfault quand 1 seule composante diffuse ou specular
 
 CAMERA:
 -------

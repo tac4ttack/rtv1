@@ -1,6 +1,6 @@
 #define BACKCOLOR 0x00ffffff
 
-#define MAX_DIST 1000.0
+#define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
 
 #define DEG2RAD (M_PI / 180)
 #define RAD2DEG (180 / M_PI)

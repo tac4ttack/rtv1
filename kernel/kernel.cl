@@ -2,6 +2,7 @@
 #include "kernel_color.h"
 #include "kernel_data.h"
 #include "kernel_vector.h"
+#include "kernel_debug.h"
 
 float3						rotat_zyx(float3 vect, float pitch, float yaw, float roll)
 {
@@ -33,9 +34,9 @@ float3					get_sphere_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc;
 
-	abc.x = dot_vect(ray, ray);
-	abc.y = 2 * dot_vect(ray, origin);
-	abc.z = dot_vect(origin, origin) - (radius * radius);
+	abc.x = dot(ray, ray);
+	abc.y = 2 * dot(ray, origin);
+	abc.z = dot(origin, origin) - (radius * radius);
 	return (abc);
 }
 
@@ -64,9 +65,10 @@ float3					get_cylinder_abc(float radius, float3 dir, float3 ray, float3 origin)
 {
 	float3		abc;
 
-	abc.x = dot_vect(ray, ray) - (dot_vect(ray, dir) * dot_vect(ray, dir));
-	abc.y = 2 * (dot_vect(ray, origin) - (dot_vect(ray, dir) * dot_vect(origin, dir)));
-	abc.z = dot_vect(origin, origin) - (dot_vect(origin, dir) * dot_vect(origin, dir)) - (radius * radius);
+	// SEMBLE OK
+	abc.x = dot(ray, ray) - (dot(ray, dir) * dot(ray, dir));
+	abc.y = 2 * (dot(ray, origin) - (dot(ray, dir) * dot(origin, dir)));
+	abc.z = dot(origin, origin) - (dot(origin, dir) * dot(origin, dir)) - (radius * radius);
 	return (abc);
 }
 
@@ -94,13 +96,14 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 		return (0);
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 	{
-		if ((m = dot_vect(normalize(ray), normalize(cylind.dir) * res1) + dot_vect(origin, normalize(cylind.dir)) <= 0 && cylind.height != 0))
-			;
-		else if (cylind.height == 0 || ((norme_vect(normalize(cylind.dir) * m) < cylind.height)))
+		if (cylind.height == 0 || (dot(ray, fast_normalize(cylind.dir) * res1 +
+			dot(origin, fast_normalize(cylind.dir))) < cylind.height && dot(ray, fast_normalize(cylind.dir) * res1 +
+			dot(origin, fast_normalize(cylind.dir))) > 0))
 			return (res1);
 	}
-	m = dot_vect(normalize(ray), normalize(cylind.dir) * res2) + dot_vect(origin, normalize(cylind.dir));
-	if (cylind.height == 0 || ((norme_vect(normalize(cylind.dir) * m)) < cylind.height))
+	if (cylind.height ==  0 || (dot(ray, fast_normalize(cylind.dir) * res2 +
+			dot(origin, fast_normalize(cylind.dir))) < cylind.height && dot(ray, fast_normalize(cylind.dir) * res2 +
+			dot(origin, fast_normalize(cylind.dir))) > 0))
 		return (res2);
 	else
 		return (0);
@@ -108,16 +111,16 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 
 float3					get_cone_abc(t_cone cone, float3 ray, float3 origin)
 {
-	float3		abc;
+	float3		abc = 0;
 	float		k = cone.angle * DEG2RAD;
 	k = tan(k);
 	k = 1 + k * k;
 
-	abc.x = dot_vect(ray, ray) - (k * (dot_vect(ray, cone.dir) * dot_vect(ray, cone.dir)));
-	abc.y = 2 * (dot_vect(ray, origin) - (k * \
-			(dot_vect(ray, cone.dir) * dot_vect(origin, cone.dir))));
-	abc.z = (dot_vect(origin, origin) - \
-			(k * (dot_vect(origin, cone.dir) * dot_vect(origin, cone.dir))));
+	abc.x = dot(ray, ray) - (k * (dot(ray, cone.dir) * dot(ray, cone.dir)));
+	abc.y = 2 * (dot(ray, origin) - (k * \
+			(dot(ray, cone.dir) * dot(origin, cone.dir))));
+	abc.z = (dot(origin, origin) - \
+			(k * (dot(origin, cone.dir) * dot(origin, cone.dir))));
 	return (abc);
 }
 
@@ -149,9 +152,9 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 {
 	float				t;
 
-	if ((t = dot_vect(normalize(ray), normalize(plane.normale))) == 0)
+	if ((t = dot(fast_normalize(ray), fast_normalize(plane.normale))) == 0)
 		return (0);
-	t = (dot_vect(plane.pos - origin, normalize(plane.normale))) / t;
+	t = (dot(plane.pos - origin, fast_normalize(plane.normale))) / t;
 		if (t < 0.001)
 		return (0);
 	return (t);
@@ -169,7 +172,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 	hit.id = 0;
 	hit.pos = (0, 0, 0);
 	hit.normale = (0, 0, 0);
-//	printf("dist = %i\n", PARAM->n_cones);
 	while (i < max)
 	{
 		if (i < PARAM->n_cones)
@@ -192,7 +194,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 				hit.dist = dist;
 				hit.type = 4;
 				hit.id = i;
-		//		printf("weeeee");
 			}
 		if (i < PARAM->n_spheres)
 			if (((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
@@ -215,11 +216,9 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		float k = CONES[hit.id].angle * DEG2RAD;
 		k = tan(k);
 		k = 1 + k * k;
-		res = dot_vect(scene.ray, normalize(CONES[hit.id].dir)) * \
-			hit.dist - dot_vect(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, normalize(CONES[hit.id].dir));
-		res = (hit.pos - normalize(CONES[hit.id].pos)) - (k * normalize(CONES[hit.id].dir) * res);
-	//	if (dot_vect(CONES[hit.id].pos - hit.pos, normalize(CONES[hit.id].dir)) > 0)
-			res = -res;
+		res = dot(-scene.ray, fast_normalize(CONES[hit.id].dir)) * \
+			hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
+		res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
 	}
 	else if (hit.type == 2)
 	{
@@ -229,16 +228,16 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		res = hit.pos - CYLIND[hit.id].pos;
 		res.x = 0;
 	}
-	else if (hit.type == 4) // bizarrement on fait l'inverse de ce qu'on peut voir dans le code d'autres personnes
+	else if (hit.type == 4)
 	{
-		if (dot_vect(PLANE[hit.id].normale, scene.ray) < 0)
-			res = PLANE[hit.id].normale;
-		else
+		if (dot(PLANE[hit.id].normale, -scene.ray) < 0)
 			res = -PLANE[hit.id].normale;
+		else
+			res = PLANE[hit.id].normale;
 	}
 	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
-	return (normalize(res));
+	return (fast_normalize(res));
 }
 
 unsigned int			phong(t_hit hit, t_scene scene)
@@ -248,78 +247,48 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	unsigned int		ambient_color = get_ambient(obj_color, scene);
 	unsigned int		res_color = ambient_color;
 	float				tmp = 0;
+	float3				reflect = 0;
 	t_light_ray			light_ray;
 	t_hit				light_hit;
 
-	float				angle = 0;
-	unsigned int		tmp_color = 0;
-
-	//	printf("%u\n", obj_color);
 	while (++i < PARAM->n_lights)
 	{
 		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = norme_vect(light_ray.dir);
-		light_ray.dir = normalize(light_ray.dir);
+		light_ray.dist = fast_length(light_ray.dir);
+		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
 		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-		;//	printf("%f\n", light_hit.dist);
+		;
 		else
 		{
-		tmp = dot_vect(hit.normale, light_ray.dir);
-		if (tmp > 0)
-			res_color = color_diffuse(hit, scene, res_color, tmp);
-		tmp = -dot_vect(hit.normale, -light_ray.dir);
-		if (tmp > 0)
-			res_color = color_specular(hit, scene, res_color, tmp, i);
-//		tmp = light_angelamerkel(hit, light_ray);
-//		if (tmp < 16)
-//			res_color = 0x00FFFFFF;
+			tmp = dot(hit.normale, light_ray.dir);
+			if (tmp > 0)
+				res_color = color_diffuse(hit, scene, res_color, tmp);
+			reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
+			tmp = dot(reflect, -scene.ray);
+			if (tmp > 0)
+				res_color = color_specular(hit, scene, res_color, tmp);
 		}
 	}
-//	SANS EFFET
-//	if (res_color == 0)
-//		res_color = ambient_color;
-	
+
 	return (res_color);
 }
 
 unsigned int	get_pixel_color(t_scene scene)
 {
 	t_hit		hit;
-	float		bias = 0.000001;
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
-//	if (hit.dist > 0)
-	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee
+	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
 		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
-//		if (hit.type == 4)
-//			hit.pos = hit.pos + ((bias + hit.dist / 5) * hit.normale);
-//		else
-			hit.pos = hit.pos + ((/*bias +  BIAS INUTILE MAINTENANT?*/hit.dist / 100) * hit.normale);
-//		return (light(hit, scene));
+		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
 		return (phong(hit, scene));
 	}
-//	return (BACKCOLOR);
-//	return (((unsigned int)PARAM->ambient.x << 16) + \
-			((unsigned int)PARAM->ambient.y << 8) +  \
-			(unsigned int)PARAM->ambient.z); 
-	return (get_ambient(BACKCOLOR, scene)); // renvoie la couleur de fond selon lumiere ambiante
+	return (get_ambient(BACKCOLOR, scene));
 }
-
-// OLD CAN BE DELETED
-/*float3					get_ray_cam(t_cam cam, t_scene scene, int x, int y)
-{
-	float3				ray;
-	float3				h = mult_fvect(modh_vect(x, PARAM->win_w), cam.fov / 100 * 2);
-	float3				v = mult_fvect(modv_vect(y, PARAM->win_h, PARAM->win_w), cam.fov / 100 * 2);
-
-	ray = normalize(cam.dir) + v + h;
-	return (normalize(ray));
-}*/
-
 
 
 float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)

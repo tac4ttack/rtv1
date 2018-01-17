@@ -1,4 +1,4 @@
-float3			sub_vect(float3 v1, float3 v2)
+/*float3			sub_vect(float3 v1, float3 v2)
 {
 	float3		res;
 
@@ -37,7 +37,7 @@ float3			normalize_vect(float3 v)
 float			dot_vect(float3 v1, float3 v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
-}
+} */
 
 float3			mult_fvect(float m, float3 v)
 {

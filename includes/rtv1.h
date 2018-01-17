@@ -109,6 +109,9 @@ typedef struct			s_cylinder
 	cl_float			radius;
 	cl_int				color;
 	cl_float			height;
+	cl_float			pitch;
+	cl_float			yaw;
+	cl_float			roll;
 	cl_float3			diff;
 	cl_float3			spec;
 }						t_cylinder;
