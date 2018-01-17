@@ -222,11 +222,11 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	}
 	else if (hit.type == 2)
 	{
-	//	res = dot_vect(scene.ray, normalize(CYLIND[hit.id].dir) * hit.dist + \
-			dot_vect(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, normalize(CYLIND[hit.id].dir)));
-	//	res = (hit.pos - CYLIND[hit.id].pos) - (normalize(CYLIND[hit.id].dir) * res);
+//		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
+//			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
+//		res = hit.pos - CYLIND[hit.id].pos - fast_normalize(CYLIND[hit.id].dir) * res;
 		res = hit.pos - CYLIND[hit.id].pos;
-		res.x = 0;
+		res.z = 0;	// fonctionne pour cylindre aligné en Z
 	}
 	else if (hit.type == 4)
 	{
@@ -248,6 +248,7 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	unsigned int		res_color = ambient_color;
 	float				tmp;
 	float3				reflect = 0;
+
 	t_light_ray			light_ray;
 	t_hit				light_hit;
 

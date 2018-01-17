@@ -50,6 +50,8 @@ void			mlx_keyboard_repeated(t_env *e)
 			obj_rot(e, 2, 1 * DEG2RAD);
 		if (KP_O)
 			obj_rot(e, 2, -1 * DEG2RAD);
+
+		opencl_allocate_scene_memory(e);
 	}	
 	if (KP_T)
 		printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->param.mou_x, e->param.mou_y);
