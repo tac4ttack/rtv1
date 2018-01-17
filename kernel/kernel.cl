@@ -276,7 +276,10 @@ unsigned int			phong(t_hit hit, t_scene scene)
 
 unsigned int	get_pixel_color(t_scene scene)
 {
-	t_hit		hit;
+	t_hit			hit;
+	int				i = PARAM->depth;
+	float3			reflex = 0;
+	int				color  = 0;
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
@@ -285,8 +288,37 @@ unsigned int	get_pixel_color(t_scene scene)
 		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
 		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
-		return (phong(hit, scene));
+
+		t_hit			old_hit;
+// 		copie de hit vers old_hit a la main car le old_hit = hit march po!
+//		old_hit.dist = hit.dist;
+//		old_hit.type = hit.type;
+//		old_hit.id = hit.id;
+//		old_hit.pos = hit.pos;
+//		old_hit.normale = hit.normale;
+//		old_hit = hit;
+//		ya un soucis avec les hit mais je vais trouver
+
+
+		color = phong(hit, scene);
+		while (i > 0)
+		{
+		//	printf("IM REFLECTING!\n");
+			reflex = fast_normalize(scene.ray - mult_fvect((2 * dot(hit.normale, scene.ray)), hit.normale));
+			hit = ray_hit(old_hit.pos, reflex, scene);
+			if (hit.dist > 0 && hit.dist < MAX_DIST)
+			{
+				hit.pos = mult_fvect(hit.dist, reflex) + old_hit.pos;
+				hit.normale = get_hit_normale(scene, hit);
+				hit.pos = old_hit.pos + ((hit.dist / 100) * hit.normale);
+				color *= phong(hit, scene);
+			}
+			// c'est la que on va refleter  I−2(N⋅I)N
+			i--;
+		}
+		return (color);
 	}
+
 	return (get_ambient(BACKCOLOR, scene));
 }
 
