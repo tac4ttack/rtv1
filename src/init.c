@@ -55,8 +55,6 @@ void		frame_init(t_env *e)
 	if (!(e->frame->pix = mlx_get_data_addr(e->frame->ptr, \
 							&(bpp), &(row), &(endian))))
 		s_error("\x1b[2;31mCan't create image address\x1b[0m", e);
-//	if (!(e->kernel_output = (char *)malloc(e->count * 4 + 8)))
-//		s_error("\x1b[2;31mCan't create kernel_output\x1b[0m", e); // pour le retour du kernel + activeobj, messages a check
 	e->frame->bpp = bpp;
 	e->frame->row = row;
 	e->frame->endian = endian;
@@ -77,7 +75,6 @@ void		init(t_env *e, int ac, char *av)
 	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
 	e->run = 0; //TMP ou pas?
-//	xml_init(e, ac, av);
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))

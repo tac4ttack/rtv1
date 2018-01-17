@@ -36,8 +36,15 @@ cl_float3           rotcam(cl_float3 vect, float rad_pitch, float rad_yaw)
 	float			rad_roll;
 
 	rad_roll = 0;
-	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
-	res.y = vect.x * sin(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_roll) * cos(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) + vect.z * (cos(rad_roll) * -sin(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * cos(rad_pitch));
-	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) + vect.z * cos(rad_yaw) * cos(rad_pitch);
+	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) \
+            * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) \
+            + vect.z  * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) \
+            * sin(rad_yaw) * cos(rad_pitch));
+	res.y = vect.x * sin(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_roll) \
+            * cos(rad_pitch) + sin(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) \
+            + vect.z * (cos(rad_roll) * -sin(rad_pitch) + sin(rad_roll) \
+            * sin(rad_yaw) * cos(rad_pitch));
+	res.z = vect.x * -sin(rad_yaw) + vect.y * cos(rad_yaw) * sin(rad_pitch) \
+            + vect.z * cos(rad_yaw) * cos(rad_pitch);
 	return (normalize_vect(res));
 }

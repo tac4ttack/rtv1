@@ -31,10 +31,10 @@ int			get_imgptr(t_env *e)
 			(e->count * 4), e->frame->pix, 0, NULL, NULL);
 	if (e->run == 1)
 	{
-		err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, CL_FALSE, e->count * 4, \
-				4, &e->param.target_obj.type, 0, NULL, NULL);
-		err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, CL_FALSE, (e->count * 4) + 4, \
-				4, &e->param.target_obj.id, 0, NULL, NULL);
+		err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, \
+		CL_FALSE, e->count * 4, 4, &e->param.target_obj.type, 0, NULL, NULL);
+		err = clEnqueueReadBuffer(e->commands_raytrace, e->output_ptr, \
+		CL_FALSE, e->count * 4 + 4, 4, &e->param.target_obj.id, 0, NULL, NULL);
 		e->run = 0;
 	}
 	if (err != CL_SUCCESS)
@@ -54,18 +54,12 @@ int			draw(t_env *e)
 	opencl_set_args(e);
 	err = clGetKernelWorkGroupInfo(e->kernel_raytrace, e->device_id, \
 			CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL);
-//	e->local = 1024 | e->count = 2073600
-//	CL_KERNEL_WORK_GROUP_SIZE = 4528
-//	printf("CL_KERNEL_WORK_GROUP_SIZE = %d\n", CL_KERNEL_WORK_GROUP_SIZE);
-//	printf("e->local = %zu | e->count = %u\n", e->local, e->count);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
 		ft_putchar('\n');
 		s_error("Error: Failed to retrieve kernel work group info!", e);
 	}
-//	e->global = (size_t)e->count;
-	//e->local = 256;
 	err = clEnqueueNDRangeKernel(e->commands_raytrace, e->kernel_raytrace, 2, NULL, \
 			g, NULL, 0, NULL, NULL);
 	if (err)
