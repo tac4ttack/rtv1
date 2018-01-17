@@ -6,56 +6,89 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/17 16:07:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/17 16:42:11 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-cl_float3		*get_target_dir(t_env *e)
+static cl_float3		*get_target_dir(t_env *e)
 {
-	cl_float3	*res;
+	cl_float3			*res;
 	
 	res = NULL;
 	if (ACTIVEOBJ.type != 0)
 	{
 		if (ACTIVEOBJ.type == 1)
-		{
-			printf("obj = %p | ", &CONES[ACTIVEOBJ.id].dir);
 			res = &CONES[ACTIVEOBJ.id].dir;
-		}
 		else if (ACTIVEOBJ.type == 2)
-		{			
-			printf("obj = %p | ", &CYLIND[ACTIVEOBJ.id].dir);
 			res = &CYLIND[ACTIVEOBJ.id].dir;
-		}
 		else if (ACTIVEOBJ.type == 4)
-		{
-			printf("obj = %p | ", &PLANE[ACTIVEOBJ.id].normale);
 			res = &PLANE[ACTIVEOBJ.id].normale;
-		}
 		else
-		{
-			printf("obj = %p | ", &SPHERE[ACTIVEOBJ.id].dir);
 			res = &SPHERE[ACTIVEOBJ.id].dir;
-		}
 	}
-	printf("res = %p\n", res);
 	return (res);
 }
 
-void			obj_rot(t_env *e, short unsigned int mode, float angle)
+static cl_float3		*get_target_pos(t_env *e)
 {
-	cl_float3	*target_dir;
+	cl_float3			*res;
+	
+	res = NULL;
+	if (ACTIVEOBJ.type != 0)
+	{
+		if (ACTIVEOBJ.type == 1)
+			res = &CONES[ACTIVEOBJ.id].pos;
+		else if (ACTIVEOBJ.type == 2)
+			res = &CYLIND[ACTIVEOBJ.id].pos;
+		else if (ACTIVEOBJ.type == 4)
+			res = &PLANE[ACTIVEOBJ.id].pos;
+		else
+			res = &SPHERE[ACTIVEOBJ.id].pos;
+	}
+	return (res);
+}
+
+void					obj_rot(t_env *e, short unsigned int mode, float angle)
+{
+	cl_float3			*target_dir;
 	
 	target_dir = NULL;
-	printf("target_dir1 = %p | ", target_dir);
 	target_dir = get_target_dir(e);
-	printf("target_dir2 = %p\n", target_dir);
-	if (mode == 0)
-		rotx(*target_dir, angle);
-	else if (mode == 1)
-		roty(*target_dir, angle);
+	if (target_dir)
+	{
+		if (mode == 0)
+			*target_dir = rotx(*target_dir, angle);
+		else if (mode == 1)
+			*target_dir = roty(*target_dir, angle);
+		else
+			*target_dir = rotz(*target_dir, angle);
+	}
+}
+
+void					obj_ui(t_env *e)
+{
+	cl_float3 *target;
+
+	target = NULL;
+	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
+		target = get_target_dir(e);
 	else
-		rotz(*target_dir, angle);
+		target = get_target_pos(e);
+	if (target)
+	{
+		(KP_I ? *target = rotx(*target, 1 * DEG2RAD) : *target);
+		(KP_K ? *target = rotx(*target, -1 * DEG2RAD) : *target);
+		(KP_J ? *target = roty(*target, 1 * DEG2RAD) : *target);
+		(KP_L ? *target = roty(*target, -1 * DEG2RAD) : *target);
+		(KP_U ? *target = rotz(*target, 1 * DEG2RAD) : *target);
+		(KP_O ? *target = rotz(*target, -1 * DEG2RAD) : *target);
+		(KP_N4 ? target->x -= 0.1 : 0);
+		(KP_N6 ? target->x += 0.1 : 0);
+		(KP_N8 ? target->y -= 0.1 : 0);
+		(KP_N5 ? target->y += 0.1 : 0);
+		(KP_N7 ? target->z -= 0.1 : 0);
+		(KP_N9 ? target->z += 0.1 : 0);
+	}
 }

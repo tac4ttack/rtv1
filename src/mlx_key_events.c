@@ -36,23 +36,9 @@ void			mlx_keyboard_repeated(t_env *e)
 	}
 	if (KP_Z)
 		e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
-	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
-	{
-		if (KP_I)
-			obj_rot(e, 0, 1 * DEG2RAD);
-		if (KP_K)
-			obj_rot(e, 0, -1 * DEG2RAD);
-		if (KP_J)
-			obj_rot(e, 1, 1 * DEG2RAD);			
-		if (KP_L)
-			obj_rot(e, 1, -1 * DEG2RAD);
-		if (KP_U)
-			obj_rot(e, 2, 1 * DEG2RAD);
-		if (KP_O)
-			obj_rot(e, 2, -1 * DEG2RAD);
-
-		opencl_allocate_scene_memory(e);
-	}	
+	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O || \
+		KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9)
+		obj_ui(e);
 	if (KP_T)
 		printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->param.mou_x, e->param.mou_y);
 	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9)
