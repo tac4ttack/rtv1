@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/17 16:42:11 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/17 16:43:32 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,6 @@ static cl_float3		*get_target_pos(t_env *e)
 			res = &SPHERE[ACTIVEOBJ.id].pos;
 	}
 	return (res);
-}
-
-void					obj_rot(t_env *e, short unsigned int mode, float angle)
-{
-	cl_float3			*target_dir;
-	
-	target_dir = NULL;
-	target_dir = get_target_dir(e);
-	if (target_dir)
-	{
-		if (mode == 0)
-			*target_dir = rotx(*target_dir, angle);
-		else if (mode == 1)
-			*target_dir = roty(*target_dir, angle);
-		else
-			*target_dir = rotz(*target_dir, angle);
-	}
 }
 
 void					obj_ui(t_env *e)

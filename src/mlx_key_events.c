@@ -41,14 +41,5 @@ void			mlx_keyboard_repeated(t_env *e)
 		obj_ui(e);
 	if (KP_T)
 		printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->param.mou_x, e->param.mou_y);
-	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9)
-	{
-		(KP_N4 ? e->lights[0].pos.x -= 0.1 : 0);
-		(KP_N6 ? e->lights[0].pos.x += 0.1 : 0);
-		(KP_N8 ? e->lights[0].pos.y -= 0.1 : 0);
-		(KP_N5 ? e->lights[0].pos.y += 0.1 : 0);
-		(KP_N7 ? e->lights[0].pos.z -= 0.1 : 0);
-		(KP_N9 ? e->lights[0].pos.z += 0.1 : 0);
-	}
 	opencl_allocate_scene_memory(e);
 }
