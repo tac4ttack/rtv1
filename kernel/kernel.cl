@@ -246,7 +246,7 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	unsigned int		obj_color = get_obj_hue(scene, hit);
 	unsigned int		ambient_color = get_ambient(obj_color, scene);
 	unsigned int		res_color = ambient_color;
-	float				tmp = 0;
+	float				tmp;
 	float3				reflect = 0;
 	t_light_ray			light_ray;
 	t_hit				light_hit;
@@ -270,7 +270,6 @@ unsigned int			phong(t_hit hit, t_scene scene)
 				res_color = color_specular(hit, scene, res_color, tmp);
 		}
 	}
-
 	return (res_color);
 }
 

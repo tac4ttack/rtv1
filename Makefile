@@ -57,9 +57,12 @@ SRC_NAME =  			init.c \
 						mlx_key_events.c \
 						mlx_main_loop.c \
 						mlx_mouse.c \
+						obj_ui.c \
 						opencl_compute.c \
 						opencl_init.c \
+						rotations.c \
 						tools.c \
+						vectors.c \
 						xml.c \
 						xml_cameras.c \
 						xml_cones.c \
@@ -73,9 +76,7 @@ SRC_NAME =  			init.c \
 						xml_planes.c \
 						xml_scene.c \
 						xml_spheres.c \
-						xml_tools.c \
-						rotations.c \
-						vectors.c
+						xml_tools.c	
 
 default: gpu
 

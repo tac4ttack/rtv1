@@ -52,7 +52,7 @@
 # define NLIG					e->param.n_lights
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
-# define ACTIVEOBJ				e->param.active_obj
+# define ACTIVEOBJ				e->param.target_obj
 # define CAM					e->cameras
 # define CONES					e->cones
 # define CYLIND					e->cylinders
@@ -261,7 +261,7 @@ typedef	struct			s_env
 
 void					init(t_env *e, int ac, char *av);
 void					set_hooks(t_env *e);
-
+void					obj_rot(t_env *e, short unsigned int mode, float angle);
 void					xml_allocate_cam(t_env *e);
 void					xml_allocate_cone(t_env *e);
 void					xml_allocate_cyl(t_env *e);

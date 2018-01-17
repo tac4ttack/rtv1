@@ -1,34 +1,13 @@
 #include "rtv1.h"
 
-void	reset_cam_pos(t_env *e)
-{
-	if (e)
-	{
-		e->param.mvt.x = 0;
-		e->param.mvt.y = 0;
-		e->param.mvt.z = 0;
-//		e->rtx = 0;
-//		e->rty = 0;
-//		e->rtz = 0;
-	}
-}
-
 void			mlx_keyboard_repeated(t_env *e)
 {
 	if (!e)
 		exit(EXIT_FAILURE);
 	(KP_ESC ? quit(e) : 0);
-	//(KP_S ? e->param.mvt.z -= 1 : 0);
-	//(KP_A ? e->param.mvt.x -= 1 : 0);
-	//(KP_D ? e->param.mvt.x += 1 : 0);
-	(KP_SPC ? e->param.mvt.y += 1 : 0);
-	//(KP_C ? e->param.mvt.y -= 1 : 0);	
-//	(KP_R ? reset_cam_pos(e) : 0);
-	if (KP_T)
-		printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->param.mou_x, e->param.mou_y);
-	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9 \
-		|| KP_I || KP_K || KP_J || KP_L || KP_U || KP_O || KP_LA || KP_UA || KP_RA || KP_DA || KP_W || KP_D || KP_C || KP_A || KP_S)
+	if (KP_W || KP_S || KP_A || KP_D || KP_C || KP_SPC)
 	{
+		(KP_SPC ? e->param.mvt.y += 1 : 0);
 		if (KP_W)
 			e->cameras[0].pos = add_cl_float(rotcam(e->cameras[0].dir, e->cameras[0].pitch * DEG2RAD, e->cameras[0].yaw * DEG2RAD), e->cameras[0].pos);
 		if (KP_S)
@@ -39,57 +18,49 @@ void			mlx_keyboard_repeated(t_env *e)
 			e->cameras[0].pos = add_cl_float(rotcam(e->cameras[0].dir, 0, (e->cameras[0].yaw + 90) * DEG2RAD), e->cameras[0].pos);
 		if (KP_A)
 			e->cameras[0].pos = add_cl_float(rotcam(e->cameras[0].dir, 0, (e->cameras[0].yaw - 90) * DEG2RAD), e->cameras[0].pos);
-
-
-	
-
-		(KP_DA ? e->cameras[0].pitch += 2 : 0);
-		if (e->cameras[0].pitch == 360)
-			e->cameras[0].pitch = 0;
-		(KP_UA ? e->cameras[0].pitch -= 2 : 0);
-		if (e->cameras[0].pitch == -1)
-			e->cameras[0].pitch = 359;
-		(KP_LA ? e->cameras[0].yaw -= 2 : 0);
-		if (e->cameras[0].yaw == 360)
-			e->cameras[0].yaw = 0;
-		(KP_RA ? e->cameras[0].yaw += 2 : 0);
-		if (e->cameras[0].yaw == -1)
-			e->cameras[0].yaw = 359;
-		if (NCYL > 0)
-		{
-			if (KP_I)
-			{
-				e->cylinders[0].dir = rotx(e->cylinders[0].dir, 1 * DEG2RAD);
-			}
-			if (KP_K)
-			{
-				e->cylinders[0].dir = rotx(e->cylinders[0].dir, -1 * DEG2RAD);
-			}
-			if (KP_J)
-			{
-				e->cylinders[0].dir = roty(e->cylinders[0].dir, 1 * DEG2RAD);
-			}
-			if (KP_L)
-			{
-				e->cylinders[0].dir = roty(e->cylinders[0].dir, -1 * DEG2RAD);
-			}
-			if (KP_U)
-			{
-				e->cylinders[0].dir = rotz(e->cylinders[0].dir, 1 * DEG2RAD);
-			}
-			if (KP_O)
-			{
-				e->cylinders[0].dir = rotz(e->cylinders[0].dir, -1 * DEG2RAD);
-			}
-		}
+	}
+	if (KP_DA || KP_UA || KP_LA || KP_RA)
+	{
+		(KP_DA ? ACTIVECAM.pitch += 2 : 0);
+		if (ACTIVECAM.pitch == 360)
+			ACTIVECAM.pitch = 0;
+		(KP_UA ? ACTIVECAM.pitch -= 2 : 0);
+		if (ACTIVECAM.pitch == -1)
+			ACTIVECAM.pitch = 359;
+		(KP_LA ? ACTIVECAM.yaw -= 2 : 0);
+		if (ACTIVECAM.yaw == 360)
+			ACTIVECAM.yaw = 0;
+		(KP_RA ? ACTIVECAM.yaw += 2 : 0);
+		if (ACTIVECAM.yaw == -1)
+			ACTIVECAM.yaw = 359;
+	}
+	if (KP_Z)
+		e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
+	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
+	{
+		if (KP_I)
+			obj_rot(e, 0, 1 * DEG2RAD);
+		if (KP_K)
+			obj_rot(e, 0, -1 * DEG2RAD);
+		if (KP_J)
+			obj_rot(e, 1, 1 * DEG2RAD);			
+		if (KP_L)
+			obj_rot(e, 1, -1 * DEG2RAD);
+		if (KP_U)
+			obj_rot(e, 2, 1 * DEG2RAD);
+		if (KP_O)
+			obj_rot(e, 2, -1 * DEG2RAD);
+	}	
+	if (KP_T)
+		printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->param.mou_x, e->param.mou_y);
+	if (KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9)
+	{
 		(KP_N4 ? e->lights[0].pos.x -= 0.1 : 0);
 		(KP_N6 ? e->lights[0].pos.x += 0.1 : 0);
 		(KP_N8 ? e->lights[0].pos.y -= 0.1 : 0);
 		(KP_N5 ? e->lights[0].pos.y += 0.1 : 0);
 		(KP_N7 ? e->lights[0].pos.z -= 0.1 : 0);
 		(KP_N9 ? e->lights[0].pos.z += 0.1 : 0);
-		if (KP_Z)
-			e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
-		opencl_allocate_scene_memory(e);
 	}
+	opencl_allocate_scene_memory(e);
 }
