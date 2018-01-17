@@ -259,8 +259,8 @@ typedef	struct			s_env
 void					init(t_env *e, int ac, char *av);
 void					set_hooks(t_env *e);
 
-void					obj_rot(t_env *e, short unsigned int mode, float angle);
-void					obj_ui(t_env *e);
+void					ui_cam(t_env *e);
+void					ui_obj(t_env *e);
 
 void					xml_allocate_cam(t_env *e);
 void					xml_allocate_cone(t_env *e);

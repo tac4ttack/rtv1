@@ -57,11 +57,12 @@ SRC_NAME =  			init.c \
 						mlx_key_events.c \
 						mlx_main_loop.c \
 						mlx_mouse.c \
-						obj_ui.c \
 						opencl_compute.c \
 						opencl_init.c \
 						rotations.c \
 						tools.c \
+						ui_obj.c \
+						ui_cam.c \
 						vectors.c \
 						xml.c \
 						xml_cameras.c \
