@@ -5,6 +5,7 @@ void		ui_cam(t_env *e)
 		(KP_SPC ? e->param.mvt.y += 1 : 0);
 		if (KP_W)
 			ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, ACTIVECAM.pitch * DEG2RAD, ACTIVECAM.yaw * DEG2RAD), ACTIVECAM.pos);
+			
 		if (KP_S)
 			ACTIVECAM.pos = sub_cl_float(ACTIVECAM.pos, rotcam(ACTIVECAM.dir, ACTIVECAM.pitch * DEG2RAD, ACTIVECAM.yaw * DEG2RAD));
 		if (KP_C)
@@ -26,4 +27,3 @@ void		ui_cam(t_env *e)
 		if (KP_Z)
 			e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
 }
-

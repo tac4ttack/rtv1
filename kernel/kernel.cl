@@ -295,6 +295,7 @@ float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
 {
 	float3					cam_ray = 0;
 	float					ratio = (float)PARAM->win_w / (float)PARAM->win_h;
+
 	cam_ray.x = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
 	cam_ray.y = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((cam.fov / 2) * DEG2RAD));
 	cam_ray.z = 1;
@@ -316,55 +317,6 @@ calcul simplifié
 	return(normalize(cam_ray));
 }
 
-t_hit		hit_activeobj(t_scene scene, x, y)
-{
-	float3				ray = get_ray_cam(ACTIVECAM, scene, x ,y);
-	float3				origin = ACTIVECAM.pos + PARAM->mvt;
-	unsigned int		i = 0;
-	int					max = get_max_obj(PARAM);
-	t_hit				hit;
-	float				dist = 0;
-
-	hit.dist = 0;
-	hit.type = 0;
-	hit.id = 0;
-	hit.pos = 0;
-	hit.normale = 0;
-	while (i < max)
-	{
-		if (i < PARAM->n_cones)
-			if (((dist = inter_cone(CONES[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 1;
-				hit.id = i;
-			}
-		if (i < PARAM->n_cylinders)
-			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 2;
-				hit.id = i;
-			}
-		if (i < PARAM->n_planes)
-			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 4;
-				hit.id = i;
-			}
-		if (i < PARAM->n_spheres)
-			if (((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-			{
-				hit.dist = dist;
-				hit.type = 5;
-				hit.id = i;
-			}
-		i++;
-	}
-	return (hit);
-}
-
 __kernel void	ray_trace(__global char *output,
 						  t_param param,
 						  __constant t_cam *cameras,
@@ -380,9 +332,7 @@ __kernel void	ray_trace(__global char *output,
 	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 	if (x == PARAM->mou_x && y == PARAM->mou_y)
 	{
-		t_hit	hit;
-		hit = hit_activeobj(scene, PARAM->mou_x, PARAM->mou_y);
-	//	printf("OCL | type = %d //// id = %d\n", hit.type, hit.id);
+		t_hit	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), get_ray_cam(ACTIVECAM, scene, PARAM->mou_x, PARAM->mou_y), scene);
 		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = hit.type;
 		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = hit.id;
 	}
