@@ -123,7 +123,7 @@ float3			get_obj_speculos(t_scene scene, t_hit hit)
 	return (speculos);
 }
 
-unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, float coef, int i)
+unsigned int			color_specular(t_hit hit, t_scene scene, unsigned int color, float coef)
 {
 	float3			speculos = get_obj_speculos(scene, hit);
 	float			old_coef = coef;
