@@ -13,5 +13,11 @@ void			mlx_keyboard_repeated(t_env *e)
 		ui_obj(e);
 	if (KP_T)
 		printf("type : %d, id ; %d, x : %d, y : %d\n", e->param.target_obj.type, e->param.target_obj.id, e->param.mou_x, e->param.mou_y);
+	if (KP_NPLU)
+		PARAM.depth++;
+	if (KP_NMIN)
+		(PARAM.depth > 0 ? PARAM.depth-- : 0);
+	if (KP_NSTR)
+		PARAM.refra++;
 	opencl_allocate_scene_memory(e);
 }

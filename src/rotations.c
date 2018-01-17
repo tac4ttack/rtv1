@@ -4,6 +4,7 @@ cl_float3           rotx(cl_float3 dir, float pitch) // dir doit être normalis�
 {
     cl_float3       newdir;
 
+    dir = normalize_vect(dir);
     newdir.x = dir.x;
     newdir.y = dir.y * cos(pitch) + dir.z * -sin(pitch);
     newdir.z = dir.y * sin(pitch) + dir.z * cos(pitch);
@@ -14,6 +15,7 @@ cl_float3           roty(cl_float3 dir, float yaw) // dir doit être normalisé,
 {
     cl_float3       newdir;
 
+    dir = normalize_vect(dir);
     newdir.x = dir.x * cos(yaw) + dir.z * sin(yaw);
     newdir.y = dir.y;
     newdir.z = dir.x * -sin(yaw) + dir.z * cos(yaw);
@@ -24,6 +26,7 @@ cl_float3           rotz(cl_float3 dir, float roll) // dir doit être normalisé
 {
     cl_float3       newdir;
 
+    dir = normalize_vect(dir);
     newdir.x = dir.x * cos(roll) + dir.y * -sin(roll);
     newdir.y = dir.x * sin(roll) + dir.y * cos(roll);
     newdir.z = dir.z;
@@ -35,7 +38,8 @@ cl_float3           rotcam(cl_float3 vect, float rad_pitch, float rad_yaw)
 	cl_float3			res;
 	float			rad_roll;
 
-	rad_roll = 0;
+    rad_roll = 0;
+    vect = normalize_vect(vect);
 	res.x = vect.x * cos(rad_roll) * cos(rad_yaw) + vect.y * (cos(rad_pitch) \
             * -sin(rad_roll) + cos(rad_roll) * sin(rad_yaw) * sin(rad_pitch)) \
             + vect.z  * (-sin(rad_roll) * -sin(rad_pitch) + cos(rad_roll) \

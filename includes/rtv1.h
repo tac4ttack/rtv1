@@ -157,6 +157,8 @@ typedef struct			s_param
 	t_hit				target_obj;
 	int					mou_x;
 	int					mou_y;
+	unsigned int		depth;
+	unsigned int		refra : 1;
 }						t_param;
 
 typedef struct			s_node
