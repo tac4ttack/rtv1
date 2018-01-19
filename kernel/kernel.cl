@@ -274,6 +274,40 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	return (res_color);
 }
 
+unsigned int			phong2(t_hit hit, t_scene scene)
+{
+	int					i = -1;
+	unsigned int		obj_color = get_obj_hue(scene, hit);
+	unsigned int		ambient_color = get_ambient(obj_color, scene);
+	unsigned int		res_color = ambient_color;
+	float				tmp = 0;
+	float3				reflect = 0;
+
+	t_light_ray			light_ray;
+	t_hit				light_hit;
+
+	while (++i < PARAM->n_lights)
+	{
+		light_ray.dir = LIGHT[i].pos - hit.pos;
+		light_ray.dist = fast_length(light_ray.dir);
+		light_ray.dir = fast_normalize(light_ray.dir);
+		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
+		;
+		else
+		{
+			tmp = dot(hit.normale, light_ray.dir);
+			if (tmp > 0)
+				res_color = color_diffuse(hit, scene, res_color, tmp);
+			reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
+			tmp = dot(reflect, -scene.ray);
+			if (tmp > 0)
+				res_color = color_specular(hit, scene, res_color, tmp);
+		}
+	}
+	return (res_color);
+}
+
 unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 {
 	unsigned int	color = 0;
@@ -290,9 +324,8 @@ unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 			new_hit.pos = mult_fvect(new_hit.dist, reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-		//	color = phong(new_hit, scene);
+			color += 0.1 * phong2(new_hit, scene);
 		}
-		// c'est la que on va refleter  I−2(N⋅I)N
 		depth--;
 	}
 	return (color);
@@ -314,7 +347,8 @@ unsigned int	get_pixel_color(t_scene scene)
 		color = phong(hit, scene);
 		if (depth > 0)
 			bounce_color = bounce(scene, hit, depth);
-		return (color + (bounce_color * 0.1));
+//		return (color + bounce_color);
+		return (blend_add(color, 0.8*bounce_color));
 	}
 	return (get_ambient(BACKCOLOR, scene));
 }

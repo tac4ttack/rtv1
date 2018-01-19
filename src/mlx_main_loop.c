@@ -5,22 +5,31 @@ void	display_hud(t_env *e)
 	char *mvtx;
 	char *mvty;
 	char *mvtz;
+	char *pitch;
+	char *yaw;
+	char *roll;
 	char *refl;
 	
 	mvtx = ft_ftoa(e->cameras[0].pos.x + e->param.mvt.x);
 	mvty = ft_ftoa(e->cameras[0].pos.y + e->param.mvt.y);
 	mvtz = ft_ftoa(e->cameras[0].pos.z + e->param.mvt.z);
+	pitch = ft_ftoa(e->cameras[0].pitch);
+	yaw = ft_ftoa(e->cameras[0].yaw);
+	roll = ft_ftoa(e->cameras[0].roll);
 	refl = ft_strjoin_frs2("depth = ", ft_itoa(PARAM.depth));
 	mlx_string_put(e->mlx, e->win, 10, 10, 0x00ffffff, mvtx);
 	mlx_string_put(e->mlx, e->win, 10, 25, 0x00ffffff, mvty);
 	mlx_string_put(e->mlx, e->win, 10, 40, 0x00ffffff, mvtz);
-	mlx_string_put(e->mlx, e->win, 10, 70, 0x00ffffff, ft_ftoa(e->cameras[0].pitch));
-	mlx_string_put(e->mlx, e->win, 10, 85, 0x00ffffff, ft_ftoa(e->cameras[0].yaw));
-	mlx_string_put(e->mlx, e->win, 10, 100, 0x00ffffff, ft_ftoa(e->cameras[0].roll));
+	mlx_string_put(e->mlx, e->win, 10, 70, 0x00ffffff, pitch);
+	mlx_string_put(e->mlx, e->win, 10, 85, 0x00ffffff, yaw);
+	mlx_string_put(e->mlx, e->win, 10, 100, 0x00ffffff, roll);
 	mlx_string_put(e->mlx, e->win, 10, 115, 0x00ffffff, refl);
 	free(mvtx);
 	free(mvty);
 	free(mvtz);
+	free(pitch);
+	free(yaw);
+	free(roll);
 	free(refl);
 }
 

@@ -30,12 +30,12 @@ int			get_imgptr(t_env *e)
 	 // the "CL_TRUE" flag blocks the read operation until all work items have finished their computation
 	err = clEnqueueReadBuffer(e->raytrace_queue, e->frame_buffer, CL_TRUE, 0, \
 			(e->count * 4), e->frame->pix, 0, NULL, NULL);
-//	if (e->run == 1)
-//	{
+	if (e->run == 1)
+	{
 		err = clEnqueueReadBuffer(e->raytrace_queue, e->target_obj, \
-		CL_TRUE, 0, sizeof(t_hit), &e->param.target_obj, 0, NULL, NULL);
+		CL_FALSE, 0, sizeof(t_hit), &e->param.target_obj, 0, NULL, NULL);
 		e->run = 0;
-//	}
+	}
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
@@ -70,6 +70,7 @@ int			draw(t_env *e)
 void		opencl_close(t_env *e)
 {
 	clReleaseMemObject(e->frame_buffer);
+	clReleaseMemObject(e->target_obj);
 	clReleaseProgram(e->program);
 	clReleaseKernel(e->kernel_rt);
 	clReleaseCommandQueue(e->raytrace_queue);
