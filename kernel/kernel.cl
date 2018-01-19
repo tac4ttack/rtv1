@@ -246,7 +246,7 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	unsigned int		obj_color = get_obj_hue(scene, hit);
 	unsigned int		ambient_color = get_ambient(obj_color, scene);
 	unsigned int		res_color = ambient_color;
-	float				tmp;
+	float				tmp = 0;
 	float3				reflect = 0;
 
 	t_light_ray			light_ray;
@@ -278,9 +278,8 @@ unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 {
 	unsigned int	color = 0;
 	float3			reflex = 0;
-	int				i = depth;
 	t_hit			new_hit;
-	while (i > 0)
+	while (depth > 0)
 	{
 //		printf("IM REFLECTING!\n");
 		reflex = fast_normalize(scene.ray - mult_fvect((2 * dot(old_hit.normale, scene.ray)), old_hit.normale));
@@ -291,10 +290,10 @@ unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 			new_hit.pos = mult_fvect(new_hit.dist, reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color = phong(new_hit, scene);
+		//	color = phong(new_hit, scene);
 		}
 		// c'est la que on va refleter  I−2(N⋅I)N
-		i--;
+		depth--;
 	}
 	return (color);
 }
@@ -362,11 +361,7 @@ __kernel void	ray_trace(__global		char		*output,
 	int			y = get_global_id(1);
 	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 	if (x == PARAM->mou_x && y == PARAM->mou_y)
-	{
 		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), get_ray_cam(ACTIVECAM, scene, PARAM->mou_x, PARAM->mou_y), scene);
-//		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = obj_hit.type;
-//		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = obj_hit.id;
-	}
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);
 }

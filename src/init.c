@@ -64,9 +64,12 @@ void		frame_init(t_env *e)
 void		init(t_env *e, int ac, char *av)
 {
 	ft_bzero(e, sizeof(t_env));
-	ft_bzero(&e->param, sizeof(t_param));
-	ft_bzero(&e->param.target_obj, sizeof(t_hit)); // peut-etre il faut le virer
 
+	ft_bzero(&e->param, sizeof(t_param));
+	ft_bzero(&e->param.target_obj, sizeof(t_hit));
+
+
+	
 	xml_init(e, ac, av);
 	e->param.depth = 0;
 	e->debug = DBUG;
