@@ -17,7 +17,7 @@ void			mlx_keyboard_repeated(t_env *e)
 		PARAM.depth++;
 	if (KP_NMIN)
 		(PARAM.depth > 0 ? PARAM.depth-- : 0);
-	if (KP_NSTR)
-		PARAM.refra++;
+//	if (KP_NSTR)
+//		PARAM.refra++;
 	opencl_allocate_scene_memory(e);
 }
