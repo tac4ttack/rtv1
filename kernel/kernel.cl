@@ -347,14 +347,15 @@ calcul simplifié
 	return(normalize(cam_ray));
 }
 
-__kernel void	ray_trace(__global char *output,
-						  t_param param,
-						  __constant t_cam *cameras,
-						  __constant t_cone *cones,
-						  __constant t_cylinder *cylinders,
-						  __constant t_light *lights,
-						  __constant t_plane *planes,
-						  __constant t_sphere *spheres)
+__kernel void	ray_trace(__global		char		*output,
+						  				t_param		param,
+						  __constant	t_cam		*cameras,
+						  __constant	t_cone		*cones,
+						  __constant	t_cylinder	*cylinders,
+						  __constant	t_light		*lights,
+						  __constant	t_plane		*planes,
+						  __constant	t_sphere	*spheres,
+						  __global		t_hit		*target_obj)
 {
 	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 	int			x = get_global_id(0);
@@ -362,9 +363,9 @@ __kernel void	ray_trace(__global char *output,
 	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 	if (x == PARAM->mou_x && y == PARAM->mou_y)
 	{
-		t_hit	obj_hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), get_ray_cam(ACTIVECAM, scene, PARAM->mou_x, PARAM->mou_y), scene);
-		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = obj_hit.type;
-		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = obj_hit.id;
+		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), get_ray_cam(ACTIVECAM, scene, PARAM->mou_x, PARAM->mou_y), scene);
+//		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = obj_hit.type;
+//		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = obj_hit.id;
 	}
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);

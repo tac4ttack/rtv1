@@ -228,10 +228,11 @@ typedef	struct			s_env
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
-	cl_command_queue	commands_raytrace;
+	cl_command_queue	raytrace_queue;
 	cl_program			program;
-	cl_kernel			kernel_raytrace;
-	cl_mem				output_ptr;
+	cl_kernel			kernel_rt;
+	cl_mem				frame_buffer;
+	cl_mem				target_obj;
 	int					gpu;
 	size_t				global;
 	size_t				local;
