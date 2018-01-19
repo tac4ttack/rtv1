@@ -274,36 +274,36 @@ unsigned int			phong(t_hit hit, t_scene scene)
 	return (res_color);
 }
 
-unsigned int	bounce(t_scene scene, t_hit new_hit, t_hit old_hit, float3 reflex)
+unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 {
-	unsigned int color = 0;
-
-			while (i > 0)
+	unsigned int	color = 0;
+	float3			reflex = 0;
+	int				i = depth;
+	t_hit			new_hit;
+	while (i > 0)
+	{
+//		printf("IM REFLECTING!\n");
+		reflex = fast_normalize(scene.ray - mult_fvect((2 * dot(old_hit.normale, scene.ray)), old_hit.normale));
+		new_hit.dist = MAX_DIST;
+		new_hit = ray_hit(old_hit.pos, reflex, scene);
+		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
-	//		printf("IM REFLECTING!\n");
-			reflex = fast_normalize(scene.ray - mult_fvect((2 * dot(hit.normale, scene.ray)), hit.normale));
-			
-			new_hit = ray_hit(hit.pos, reflex, scene);
-			if (hit.dist > 0 && hit.dist < MAX_DIST)
-			{
-				hit.pos = mult_fvect(hit.dist, reflex) + hit.pos;
-				hit.normale = get_hit_normale(scene, hit);
-				hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
-				tmp_color = phong(hit, scene);
-			}
-			// c'est la que on va refleter  I−2(N⋅I)N
-			i--;
+			new_hit.pos = mult_fvect(new_hit.dist, reflex) + old_hit.pos;
+			new_hit.normale = get_hit_normale(scene, new_hit);
+			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
+			color = phong(new_hit, scene);
 		}
-	
-
+		// c'est la que on va refleter  I−2(N⋅I)N
+		i--;
+	}
 	return (color);
 }
 unsigned int	get_pixel_color(t_scene scene)
 {
 	t_hit			hit;
-	int				i = PARAM->depth;
-	float3			reflex = 0;
-	int				color  = 0;
+	int				depth = PARAM->depth;
+	unsigned int	color  = 0;
+	unsigned int	bounce_color = 0;
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
@@ -313,9 +313,10 @@ unsigned int	get_pixel_color(t_scene scene)
 		hit.normale = get_hit_normale(scene, hit);
 		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
 		color = phong(hit, scene);
-		return (color);
+		if (depth > 0)
+			bounce_color = bounce(scene, hit, depth);
+		return (color + (bounce_color * 0.1));
 	}
-
 	return (get_ambient(BACKCOLOR, scene));
 }
 
@@ -361,9 +362,9 @@ __kernel void	ray_trace(__global char *output,
 	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 	if (x == PARAM->mou_x && y == PARAM->mou_y)
 	{
-		t_hit	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), get_ray_cam(ACTIVECAM, scene, PARAM->mou_x, PARAM->mou_y), scene);
-		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = hit.type;
-		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = hit.id;
+		t_hit	obj_hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), get_ray_cam(ACTIVECAM, scene, PARAM->mou_x, PARAM->mou_y), scene);
+		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w] = obj_hit.type;
+		((__global unsigned int *)output)[PARAM->win_h * PARAM->win_w + 1] = obj_hit.id;
 	}
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
 	OUTPUTE = get_pixel_color(scene);
