@@ -61,6 +61,9 @@ typedef struct			s_cylinder
 	float				height;
 	float3				diff;
 	float3				spec;
+	float				pitch;
+	float				yaw;
+	float				roll;
 }						t_cylinder;
 
 typedef struct			s_light
