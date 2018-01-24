@@ -30,6 +30,15 @@ float3						rotat_xyz(float3 vect, float pitch, float yaw, float roll)
 	return (res);
 }
 
+float3					rotate_obj(float3 v, float pitch, float yaw, float roll)
+{
+	float3				res;
+
+	res = rotat_zyx(v, pitch, yaw, roll);
+
+	return (fast_normalize(res));
+}
+
 float3					get_sphere_abc(float radius, float3 ray, float3 origin)
 {
 	float3		abc;
@@ -72,16 +81,17 @@ float3					get_cylinder_abc(float radius, float3 dir, float3 ray, float3 origin)
 	return (abc);
 }
 
-float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
+float					inter_cylinder(float height, float3 dir, float radius, float3 pos, float3 ray, float3 origin)
 {
 	float3				abc;
+	//float3				dir = rotate_obj(cyl.dir, cyl.pitch, cyl.yaw, 0);
 	float				d;
 	float				res1 = 0;
 	float				res2 = 0;
 	float				m;
 
-	origin -= cylind.pos;
-	abc = get_cylinder_abc(cylind.radius, normalize(cylind.dir), ray, origin);
+	origin -= pos;
+	abc = get_cylinder_abc(radius, dir, ray, origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);
@@ -96,14 +106,14 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 		return (0);
 	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
 	{
-		if (cylind.height == 0 || (dot(ray, fast_normalize(cylind.dir) * res1 +
-			dot(origin, fast_normalize(cylind.dir))) < cylind.height && dot(ray, fast_normalize(cylind.dir) * res1 +
-			dot(origin, fast_normalize(cylind.dir))) > 0))
+		if (height == 0 || (dot(ray, dir) * res1 +
+			dot(origin, dir) < height && dot(ray, dir) * res1 +
+			dot(origin, dir) > 0))
 			return (res1);
 	}
-	if (cylind.height ==  0 || (dot(ray, fast_normalize(cylind.dir) * res2 +
-			dot(origin, fast_normalize(cylind.dir))) < cylind.height && dot(ray, fast_normalize(cylind.dir) * res2 +
-			dot(origin, fast_normalize(cylind.dir))) > 0))
+	if (height ==  0 || (dot(ray, dir) * res2 +
+			dot(origin, dir) < height && dot(ray, dir) * res2 +
+			dot(origin, dir) > 0))
 		return (res2);
 	else
 		return (0);
@@ -182,7 +192,7 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 				hit.id = i;
 			}
 		if (i < PARAM->n_cylinders)
-			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_cylinder(CYLIND[i].height, rotate_obj(CYLIND[i].dir, CYLIND[i].pitch, CYLIND[i].yaw, 0), CYLIND[i].radius, CYLIND[i].pos, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 2;
@@ -214,6 +224,35 @@ float3			rotate_matrix(float angle, float3 v)
 	res.x = v.x;
 	res.y = (cos(angle) * v.y) - (sin(angle) * v.z);
 	res.z = (sin(angle) * v.y) + (cos(angle) * v.z);
+	return (res);
+}
+
+float16			trans_matrix(float3 dir, float angle)
+{
+	float16		res = 0;
+	float3		rot = 0;
+
+	rot = rotate_obj(dir, 0, angle, 0);
+	res[0] = rot.x;
+	res[1] = rot.y;
+	res[2] = rot.z;
+	rot = rotate_obj(dir, -angle, 0, 0);
+	res[4] = rot.x;
+	res[5] = rot.y;
+	res[6] = rot.z;
+	res[8] = dir.x;
+	res[9] = dir.y;
+	res[10] = dir.z;
+	return (res);
+}
+
+float3			apply_matrix(float16 mat, float3 v)
+{
+	float3		res = 0;
+
+	res.x = mat[0] * v.x + mat[4] * v.y + mat[8] * v.z;
+	res.y = mat[1] * v.x + mat[5] * v.y + mat[9] * v.z;
+	res.z = mat[2] * v.x + mat[6] * v.y + mat[10] * v.z;
 	return (res);
 }
 
@@ -256,24 +295,25 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 			res -= fast_normalize(CYLIND[hit.id].dir);
 			res.z += 1;
 		}*/
-
-		float3	x = fast_normalize(CYLIND[hit.id].dir);
-		float3	y = x;
-		float3	base = 0;
-
-		base.z = 1;
-		x.y = 0;
-		x.z = 0;
-		y.x = 0;
-		y.z = 0;
-		x = fast_normalize(x);
-		y = fast_normalize(y);
-		float pitch = acos(dot(x, base));
-		float yaw = acos(dot(y, base));
-		res = rotat_zyx(hit.pos, pitch * DEG2RAD, yaw * DEG2RAD, 0);
-		res -= rotat_zyx(CYLIND[hit.id].pos, pitch * DEG2RAD, yaw * DEG2RAD, 0);
+		int		i = hit.id;
+		float3	dir = rotate_obj(CYLIND[i].dir, CYLIND[i].pitch, CYLIND[i].yaw, 0);
+		float16 ok = trans_matrix(dir, 90);
+		//printf("the first\n0 : %f, 1 : %f, 2 : %f\n4 : %f, 5 : %f, 6 : %f\n8 : %f, 9 : %f, 10 : %f\n\n", ok[0], ok[1], ok[2], ok[4], ok[5], ok[6], ok[8], ok[9], ok[10]);
+		res = apply_matrix(ok, hit.pos) - CYLIND[i].pos;
 		res.z = 0;
-		res = rotat_zyx(hit.pos, -pitch * DEG2RAD, -yaw * DEG2RAD, 0);
+		//ok = trans_matrix(dir, -90);
+		//printf("the second\n0 : %f, 1 : %f, 2 : %f\n4 : %f, 5 : %f, 6 : %f\n8 : %f, 9 : %f, 10 : %f\n\n", ok[0], ok[1], ok[2], ok[4], ok[5], ok[6], ok[8], ok[9], ok[10]);
+		res = apply_matrix(-ok, res);
+		/*res = trans_matrix(dir, hit.pos);
+		res = res - CYLIND[i].pos;
+		res.z = 0;*/
+		//res = trans_matrix(dir, res;
+		/*
+		nbase.dist = inter_cylinder(CYLIND[i].height, CYLIND[i].dir, CYLIND[i].radius, CYLIND[i].pos,  rotate_obj(scene.ray, -CYLIND[i].pitch, CYLIND[i].yaw, 0), (ACTIVECAM.pos + PARAM->mvt));
+		nbase.pos = (ACTIVECAM.pos + PARAM->mvt) + fast_normalize((rotate_obj(scene.ray, -CYLIND[i].pitch, -CYLIND[i].yaw, 0)) * nbase.dist);
+		res = nbase.pos - CYLIND[i].pos;
+		res.z = 0;
+		res = rotate_obj(fast_normalize(res), CYLIND[i].pitch, CYLIND[i].yaw, 0);*/
 	}
 	else if (hit.type == 4)
 	{
@@ -286,6 +326,15 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		res = hit.pos - SPHERE[hit.id].pos;
 	return (fast_normalize(res));
 }
+
+
+
+
+/*
+if (a == 1 && a == 2 && a == 3)
+{
+	printf("c est cool\n");
+}*/
 
 unsigned int			phong(t_hit hit, t_scene scene)
 {
@@ -441,8 +490,8 @@ __kernel void	ray_trace(__global		char		*output,
 	int			x = get_global_id(0);
 	int			y = get_global_id(1);
 	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
-	if (x == PARAM->mou_x && y == PARAM->mou_y)
-		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), get_ray_cam(ACTIVECAM, scene, PARAM->mou_x, PARAM->mou_y), scene);
 	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
+	if (x == PARAM->mou_x && y == PARAM->mou_y)
+		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
 	OUTPUTE = get_pixel_color(scene);
 }

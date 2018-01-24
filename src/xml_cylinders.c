@@ -113,4 +113,7 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].height = list->height;
 	e->cylinders[list->id].diff = list->diff;
 	e->cylinders[list->id].spec = list->spec;
+	e->cylinders[list->id].pitch = 0;
+	e->cylinders[list->id].yaw = 0;
+	e->cylinders[list->id].roll = 0;
 }
