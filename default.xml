@@ -80,6 +80,7 @@ Object informations have to be filled strictly like showed below:
 			color="0, 255, 0, 0"
 			diff="0.42, 0.42, 0.42"
 			spec="0, 0, 0"
+			reflex="0"
 			/>
 	<light 	id="0"
 			type="0"
@@ -95,6 +96,7 @@ Object informations have to be filled strictly like showed below:
 			color="0, 120, 90, 200"
 			diff="0.42, 0.42, 0.42"
 			spec="1, 1, 1"
+			reflex="0.42"
 			/>
 	<!--<light 	id="1"
 			type="1"
@@ -117,6 +119,7 @@ Object informations have to be filled strictly like showed below:
 			color="0, 255, 255, 255"
 			diff="0.42"
 			spec="0.42"
+			reflex="0.42"
 			/>
 -->
 <!--<sphere id="1"
@@ -126,6 +129,7 @@ Object informations have to be filled strictly like showed below:
 			color="0, 125, 200, 0"
 			diff="0.42"
 			spec="0.42"
+			reflex="0.42"
 			/>-->
 	<cylinder id="0"
 		pos="10, -10, 0"
@@ -135,6 +139,7 @@ Object informations have to be filled strictly like showed below:
 		height="0"
 		diff="0.42, 0.42, 0.42"
 		spec="0.42, 0.42, 0.42"
+		reflex="0.42"
 		/>
 		<cylinder id="1"
 		pos="-10, 10, 0"
@@ -144,6 +149,7 @@ Object informations have to be filled strictly like showed below:
 		height="0"
 		diff="0.42, 0.42, 0.42"
 		spec="0.42, 0.42, 0.42"
+		reflex="0"
 		/>
 
 </scene>

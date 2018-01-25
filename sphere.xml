@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<scene res="1024, 768" ambient="0.1, 0.5, 0.1">
+<scene res="1024, 768" ambient="0.1, 0.1, 0.1">
 <cam 	id="0"
 			pos="0, -5, -20"
 			dir="0, 0, 1"
@@ -10,8 +10,9 @@
 			dir="0, 0, 0"
 			radius="2"
 			color="0, 0, 255, 0"
-					diff="0.42"
-		spec="0.42"
+			diff="0.42, 0.42, 0.42"
+			spec="0.42, 0.42, 0.42"
+			reflex="0.42"
 			/>
 	<light 	id="0"
 			type="0"
