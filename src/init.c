@@ -66,7 +66,7 @@ void		init(t_env *e, int ac, char *av)
 	ft_bzero(e, sizeof(t_env));
 
 	ft_bzero(&e->param, sizeof(t_param));
-	ft_bzero(&e->param.target_obj, sizeof(t_hit));
+	ft_bzero(&e->target_obj, sizeof(t_hit));
 
 
 	

@@ -73,7 +73,7 @@ int			opencl_build(t_env *e, unsigned int count)
 		count, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
 ///////
-	if (!(e->target_obj = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
+	if (!(e->target_obj_buf = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		sizeof(t_hit), NULL, NULL)))
 		return (opencl_builderrors(e, 7));
 //////

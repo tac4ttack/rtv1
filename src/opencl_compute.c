@@ -13,7 +13,7 @@ void		opencl_set_args(t_env *e)
 	err |= clSetKernelArg(e->kernel_rt, 5, sizeof(cl_mem), &e->lights_mem);
 	err |= clSetKernelArg(e->kernel_rt, 6, sizeof(cl_mem), &e->planes_mem);
 	err |= clSetKernelArg(e->kernel_rt, 7, sizeof(cl_mem), &e->spheres_mem);
-	err |= clSetKernelArg(e->kernel_rt, 8, sizeof(cl_mem), &e->target_obj);
+	err |= clSetKernelArg(e->kernel_rt, 8, sizeof(cl_mem), &e->target_obj_buf);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
@@ -32,8 +32,8 @@ int			get_imgptr(t_env *e)
 			(e->count * 4), e->frame->pix, 0, NULL, NULL);
 	if (e->run == 1)
 	{
-		err = clEnqueueReadBuffer(e->raytrace_queue, e->target_obj, \
-		CL_FALSE, 0, sizeof(t_hit), &e->param.target_obj, 0, NULL, NULL);
+		err = clEnqueueReadBuffer(e->raytrace_queue, e->target_obj_buf, \
+		CL_FALSE, 0, sizeof(t_hit), &e->target_obj, 0, NULL, NULL);
 		e->run = 0;
 	}
 	if (err != CL_SUCCESS)
@@ -70,7 +70,7 @@ int			draw(t_env *e)
 void		opencl_close(t_env *e)
 {
 	clReleaseMemObject(e->frame_buffer);
-	clReleaseMemObject(e->target_obj);
+	clReleaseMemObject(e->target_obj_buf);
 	clReleaseProgram(e->program);
 	clReleaseKernel(e->kernel_rt);
 	clReleaseCommandQueue(e->raytrace_queue);
