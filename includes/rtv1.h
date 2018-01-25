@@ -52,7 +52,7 @@
 # define NLIG					e->param.n_lights
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
-# define ACTIVEOBJ				e->param.target_obj
+# define ACTIVEOBJ				e->target_obj
 # define CAM					e->cameras
 # define CONES					e->cones
 # define CYLIND					e->cylinders
@@ -85,7 +85,6 @@ typedef struct			s_cam
 	cl_float3			pos;
 	cl_float3			dir;
 	cl_float			fov;
-//	cl_float3			ray;   DAFUQ IS THIS SHIT?
 	cl_float			pitch;
 	cl_float			yaw;
 	cl_float			roll;
@@ -99,6 +98,7 @@ typedef struct			s_cone
 	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -114,6 +114,7 @@ typedef struct			s_cylinder
 	cl_float			pitch;
 	cl_float			yaw;
 	cl_float			roll;
+	cl_float			reflex;
 }						t_cylinder;
 
 typedef struct			s_light
@@ -132,6 +133,7 @@ typedef struct			s_plane
 	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -142,6 +144,7 @@ typedef struct			s_sphere
 	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 }						t_sphere;
 
 typedef struct			s_param
@@ -157,11 +160,9 @@ typedef struct			s_param
 	int					win_h;
 	cl_float3			mvt;
 	cl_float3			ambient;
-	t_hit				target_obj;
 	int					mou_x;
 	int					mou_y;
 	int					depth;
-//	int					refra : 1;
 }						t_param;
 
 typedef struct			s_node
@@ -180,6 +181,7 @@ typedef struct			s_node
 	cl_float			height;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 	struct s_node		*next;
 }						t_node;
 
@@ -235,7 +237,8 @@ typedef	struct			s_env
 	cl_program			program;
 	cl_kernel			kernel_rt;
 	cl_mem				frame_buffer;
-	cl_mem				target_obj;
+	cl_mem				target_obj_buf;
+	t_hit				target_obj;
 	int					gpu;
 	size_t				global;
 	size_t				local;
@@ -293,6 +296,8 @@ void					xml_data_normale(t_env *e, char **attributes, \
 void					xml_data_pos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_radius(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_reflex(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_speculos(t_env *e, char **attributes, \
 										int *i, t_node *node);										

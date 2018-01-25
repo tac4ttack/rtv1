@@ -49,6 +49,7 @@ typedef struct			s_cone
 	int					color;
 	float3				diff;
 	float3				spec;
+	float				reflex;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -64,6 +65,7 @@ typedef struct			s_cylinder
 	float				pitch;
 	float				yaw;
 	float				roll;
+	float				reflex;
 }						t_cylinder;
 
 typedef struct			s_light
@@ -82,6 +84,7 @@ typedef struct			s_plane
 	int					color;
 	float3				diff;
 	float3				spec;
+	float				reflex;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -92,6 +95,7 @@ typedef struct			s_sphere
 	int					color;
 	float3				diff;
 	float3				spec;
+	float				reflex;
 }						t_sphere;
 
 
@@ -108,11 +112,9 @@ typedef struct			s_param
 	unsigned int		win_h;
 	float3				mvt;
 	float3				ambient;
-	t_hit				target_obj;
 	int					mou_x;
 	int					mou_y;
 	int					depth;
-//	int					refra : 1;
 }						t_param;
 
 typedef struct			s_scene
@@ -120,14 +122,9 @@ typedef struct			s_scene
 	t_param				*param;
 	t_cam				__constant *cameras;
 	t_cone				__constant *cones;
-	float				*cones_dst;
 	t_cylinder			__constant *cylinders;
-	float				*cylinders_dst;
 	t_light				__constant *lights;
-	float				*lights_dst;
 	t_plane				__constant *planes;
-	float				*planes_dst;
 	t_sphere			__constant *spheres;
-	float				*spheres_dst;
 	float3				ray;
 }						t_scene;
