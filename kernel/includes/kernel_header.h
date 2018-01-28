@@ -1,4 +1,4 @@
-#define BACKCOLOR 0x00ffffff
+#define BACKCOLOR 0x00010101
 
 #define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
 

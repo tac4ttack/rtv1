@@ -70,6 +70,27 @@ float					inter_sphere(t_sphere sphere, float3 ray, float3 origin)
 	return (res2);
 }
 
+float					inter_light(t_light light, float3 ray, float3 origin)
+{
+	float3				abc;
+	float				d;
+	float				res1;
+	float				res2;
+
+	origin -= light.pos;
+	abc = get_sphere_abc(0.21, ray, origin);
+	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
+	if (d < 0)
+		return (0);
+	if (d == 0)
+		return ((-abc[1]) / (2 * abc[0]));
+	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
+	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+		return (res1);
+	return (res2);
+}
+
 float3					get_cylinder_abc(float radius, float3 dir, float3 ray, float3 origin)
 {
 	float3		abc;
@@ -173,9 +194,9 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 {
 	unsigned int			i = 0;
-	int			max = get_max_obj(PARAM);
-	t_hit		hit = hit_init();
-	float		dist = 0;
+	int						max = get_max_obj(PARAM);
+	t_hit					hit = hit_init();
+	float					dist = 0;
 
 	while (i < max)
 	{
@@ -193,6 +214,13 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 				hit.type = 2;
 				hit.id = i;
 			}
+//		if (i < PARAM->n_lights)
+//			if (((dist = inter_light(LIGHT[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+//			{
+//				hit.dist = dist;
+//				hit.type = 3;
+//				hit.id = i;
+//			}
 		if (i < PARAM->n_planes)
 			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
@@ -341,11 +369,16 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		light_ray.dist = length(light_ray.dir);
 		light_ray.dir = normalize(light_ray.dir);
 		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
+		light_hit.id = i;
+		light_hit.type = 3;
 		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
 		;
 		else
 		{
 			tmp = dot(hit.normale, light_ray.dir);
+		//	if ((scene.pix.x == 175 || scene.pix.x == 525 || scene.pix.x == 845) && scene.pix.y == 370)
+		//		printf("light.id = %d | light.color = %08x\n", light_hit.id, LIGHT[light_hit.id].color);
+		//		printf("l_hit.id = %d l_hit.type = %d l_hit.dist = %f\n", light_hit.id, light_hit.type, light_hit.dist);
 			if (tmp > 0)
 				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
 			reflect = normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
