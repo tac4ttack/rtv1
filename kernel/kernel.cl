@@ -411,6 +411,7 @@ unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 	t_hit			new_hit;
 	while (depth > 0)
 	{
+//		printf("IM REFLECTING!\n");
 		reflex = fast_normalize(scene.ray - mult_fvect((2 * dot(old_hit.normale, scene.ray)), old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(old_hit.pos, reflex, scene);
@@ -439,12 +440,11 @@ unsigned int	get_pixel_color(t_scene scene)
 		hit.pos = mult_fvect(hit.dist, scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
 		hit.normale = get_hit_normale(scene, hit);
 		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
-		if ((scene.pi
 		color = phong(hit, scene);
-//		if (depth > 0)
-//			bounce_color = bounce(scene, hit, depth);
-		return (color + bounce_color);
-//		return (blend_add(color, 0.8*bounce_color));
+		if (depth > 0)
+			bounce_color = bounce(scene, hit, depth);
+//		return (color + bounce_color);
+		return (blend_add(color, 0.8*bounce_color));
 	}
 	return (get_ambient(BACKCOLOR, scene));
 }
