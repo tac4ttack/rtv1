@@ -36,7 +36,7 @@ float3					rotate_obj(float3 v, float pitch, float yaw, float roll)
 
 	res = rotat_zyx(v, pitch, yaw, roll);
 
-	return (fast_normalize(res));
+	return (normalize(res));
 }
 
 float3					get_sphere_abc(float radius, float3 ray, float3 origin)
@@ -162,9 +162,9 @@ float					inter_plan(t_plane plane, float3 ray, float3 origin)
 {
 	float				t;
 
-	if ((t = dot(fast_normalize(ray), fast_normalize(plane.normale))) == 0)
+	if ((t = dot(normalize(ray), normalize(plane.normale))) == 0)
 		return (0);
-	t = (dot(plane.pos - origin, fast_normalize(plane.normale))) / t;
+	t = (dot(plane.pos - origin, normalize(plane.normale))) / t;
 		if (t < 0.001)
 		return (0);
 	return (t);
@@ -174,14 +174,9 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 {
 	unsigned int			i = 0;
 	int			max = get_max_obj(PARAM);
-	t_hit		hit;
+	t_hit		hit = hit_init();
 	float		dist = 0;
 
-	hit.dist = 0;
-	hit.type = 0;
-	hit.id = 0;
-	hit.pos = (0, 0, 0);
-	hit.normale = (0, 0, 0);
 	while (i < max)
 	{
 		if (i < PARAM->n_cones)
@@ -265,9 +260,9 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		float k = CONES[hit.id].angle * DEG2RAD;
 		k = tan(k);
 		k = 1 + k * k;
-		res = dot(-scene.ray, fast_normalize(CONES[hit.id].dir)) * \
-			hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
-		res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
+		res = dot(-scene.ray, normalize(CONES[hit.id].dir)) * \
+			hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, normalize(CONES[hit.id].dir));
+		res = ((hit.pos - normalize(CONES[hit.id].pos)) - (k * normalize(CONES[hit.id].dir) * res)) * -1;
 	}
 	else if (hit.type == 2)
 	{
@@ -279,20 +274,20 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		base = rotate_matrix(-45 * DEG2RAD, base);
 		res = rotate_matrix(-45 * DEG2RAD, res);
 		res -= base;*/
-//		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
-//			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
-//		res = hit.pos - CYLIND[hit.id].pos - fast_normalize(CYLIND[hit.id].dir) * res;
+//		res = dot(-scene.ray, normalize(CYLIND[hit.id].dir) * hit.dist + \
+//			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, normalize(CYLIND[hit.id].dir)));
+//		res = hit.pos - CYLIND[hit.id].pos - normalize(CYLIND[hit.id].dir) * res;
 	
-	/*	res = fast_normalize(hit.pos - CYLIND[hit.id].pos);
+	/*	res = normalize(hit.pos - CYLIND[hit.id].pos);
 	// fonctionne pour cylindre aligné en Z
-		if (dot(fast_normalize(CYLIND[hit.id].dir), res) < 0)
+		if (dot(normalize(CYLIND[hit.id].dir), res) < 0)
 		{
-			res += fast_normalize(CYLIND[hit.id].dir);
+			res += normalize(CYLIND[hit.id].dir);
 			res.z += 1;
 		}
 		else
 		{
-			res -= fast_normalize(CYLIND[hit.id].dir);
+			res -= normalize(CYLIND[hit.id].dir);
 			res.z += 1;
 		}*/
 		int		i = hit.id;
@@ -310,10 +305,10 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		//res = trans_matrix(dir, res;
 		/*
 		nbase.dist = inter_cylinder(CYLIND[i].height, CYLIND[i].dir, CYLIND[i].radius, CYLIND[i].pos,  rotate_obj(scene.ray, -CYLIND[i].pitch, CYLIND[i].yaw, 0), (ACTIVECAM.pos + PARAM->mvt));
-		nbase.pos = (ACTIVECAM.pos + PARAM->mvt) + fast_normalize((rotate_obj(scene.ray, -CYLIND[i].pitch, -CYLIND[i].yaw, 0)) * nbase.dist);
+		nbase.pos = (ACTIVECAM.pos + PARAM->mvt) + normalize((rotate_obj(scene.ray, -CYLIND[i].pitch, -CYLIND[i].yaw, 0)) * nbase.dist);
 		res = nbase.pos - CYLIND[i].pos;
 		res.z = 0;
-		res = rotate_obj(fast_normalize(res), CYLIND[i].pitch, CYLIND[i].yaw, 0);*/
+		res = rotate_obj(normalize(res), CYLIND[i].pitch, CYLIND[i].yaw, 0);*/
 	}
 	else if (hit.type == 4)
 	{
@@ -324,35 +319,27 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	}
 	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
-	return (fast_normalize(res));
+	return (normalize(res));
 }
-
-
-
-
-/*
-if (a == 1 && a == 2 && a == 3)
-{
-	printf("c est cool\n");
-}*/
 
 unsigned int			phong(t_hit hit, t_scene scene)
 {
 	int					i = -1;
-	unsigned int		obj_color = get_obj_hue(scene, hit);
-	unsigned int		ambient_color = get_ambient(obj_color, scene);
-	unsigned int		res_color = ambient_color;
-	float				tmp = 0;
+//	unsigned int		obj_color = get_obj_hue(scene, hit);
+//	unsigned int		ambient_color = get_ambient(get_obj_hue(scene, hit), scene);
+	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
+	float				tmp;
 	float3				reflect = 0;
 
 	t_light_ray			light_ray;
-	t_hit				light_hit;
+	t_hit				light_hit = hit_init();
 
 	while (++i < PARAM->n_lights)
 	{
+		tmp = 0;
 		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = fast_length(light_ray.dir);
-		light_ray.dir = fast_normalize(light_ray.dir);
+		light_ray.dist = length(light_ray.dir);
+		light_ray.dir = normalize(light_ray.dir);
 		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
 		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
 		;
@@ -360,11 +347,11 @@ unsigned int			phong(t_hit hit, t_scene scene)
 		{
 			tmp = dot(hit.normale, light_ray.dir);
 			if (tmp > 0)
-				res_color = color_diffuse(hit, scene, res_color, tmp);
-			reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
+				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
+			reflect = normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
 			tmp = dot(reflect, -scene.ray);
 			if (tmp > 0)
-				res_color = color_specular(hit, scene, res_color, tmp);
+				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
 		}
 	}
 	return (res_color);
@@ -373,9 +360,7 @@ unsigned int			phong(t_hit hit, t_scene scene)
 unsigned int			phong2(t_hit hit, t_scene scene)
 {
 	int					i = -1;
-	unsigned int		obj_color = get_obj_hue(scene, hit);
-	unsigned int		ambient_color = get_ambient(obj_color, scene);
-	unsigned int		res_color = ambient_color;
+	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
 	float				tmp = 0;
 	float3				reflect = 0;
 
@@ -385,8 +370,8 @@ unsigned int			phong2(t_hit hit, t_scene scene)
 	while (++i < PARAM->n_lights)
 	{
 		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = fast_length(light_ray.dir);
-		light_ray.dir = fast_normalize(light_ray.dir);
+		light_ray.dist = length(light_ray.dir);
+		light_ray.dir = normalize(light_ray.dir);
 		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
 		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
 		;
@@ -394,11 +379,11 @@ unsigned int			phong2(t_hit hit, t_scene scene)
 		{
 			tmp = dot(hit.normale, light_ray.dir);
 			if (tmp > 0)
-				res_color = color_diffuse(hit, scene, res_color, tmp);
-			reflect = fast_normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
+				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
+			reflect = normalize(mult_fvect(2.0 * dot(hit.normale, light_ray.dir), hit.normale) - light_ray.dir);
 			tmp = dot(reflect, -scene.ray);
 			if (tmp > 0)
-				res_color = color_specular(hit, scene, res_color, tmp);
+				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
 		}
 	}
 	return (res_color);
@@ -411,8 +396,7 @@ unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 	t_hit			new_hit;
 	while (depth > 0)
 	{
-//		printf("IM REFLECTING!\n");
-		reflex = fast_normalize(scene.ray - mult_fvect((2 * dot(old_hit.normale, scene.ray)), old_hit.normale));
+		reflex = normalize(scene.ray - mult_fvect((2 * dot(old_hit.normale, scene.ray)), old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(old_hit.pos, reflex, scene);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
@@ -426,6 +410,7 @@ unsigned int		bounce(t_scene scene, t_hit old_hit, int depth)
 	}
 	return (color);
 }
+
 unsigned int	get_pixel_color(t_scene scene)
 {
 	t_hit			hit;
@@ -443,10 +428,10 @@ unsigned int	get_pixel_color(t_scene scene)
 		color = phong(hit, scene);
 		if (depth > 0)
 			bounce_color = bounce(scene, hit, depth);
-//		return (color + bounce_color);
-		return (blend_add(color, 0.8*bounce_color));
+		return (color + bounce_color);
+//		return (blend_add(color, 0.8*bounce_color));
 	}
-	return (get_ambient(BACKCOLOR, scene));
+	return (get_ambient(scene, BACKCOLOR));
 }
 
 
@@ -487,11 +472,11 @@ __kernel void	ray_trace(__global		char		*output,
 						  __global		t_hit		*target_obj)
 {
 	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
-	int			x = get_global_id(0);
-	int			y = get_global_id(1);
-	int			id = x + (PARAM->win_w * y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
-	scene.ray = get_ray_cam(ACTIVECAM, scene, x ,y);
-	if (x == PARAM->mou_x && y == PARAM->mou_y)
+	scene.pix.x = get_global_id(0);
+	scene.pix.y = get_global_id(1);
+	int			id = scene.pix.x + (PARAM->win_w * scene.pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	scene.ray = get_ray_cam(ACTIVECAM, scene, scene.pix.x ,scene.pix.y);
+	if (scene.pix.x == PARAM->mou_x && scene.pix.y == PARAM->mou_y)
 		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
 	OUTPUTE = get_pixel_color(scene);
 }

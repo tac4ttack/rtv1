@@ -18,6 +18,18 @@ result.param = &param;
 return (result);
 }
 
+t_hit			hit_init()
+{
+	t_hit		hit;
+
+	hit.dist = 0.0;
+	hit.type = 0;
+	hit.id = 0;
+	hit.pos = 0.0;
+	hit.normale = 0.0;
+	return (hit);
+}
+
 int				get_max_obj(t_param *param)
 {
 	unsigned int			res = param->n_cones;

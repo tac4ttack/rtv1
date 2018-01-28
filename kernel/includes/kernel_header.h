@@ -127,4 +127,5 @@ typedef struct			s_scene
 	t_plane				__constant *planes;
 	t_sphere			__constant *spheres;
 	float3				ray;
+	int2				pix;
 }						t_scene;
