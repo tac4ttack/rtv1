@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/17 17:17:41 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/28 12:30:29 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void					ui_obj(t_env *e)
 			CYLIND[ACTIVEOBJ.id].yaw = (CYLIND[ACTIVEOBJ.id].yaw + 1 < 360 ? CYLIND[ACTIVEOBJ.id].yaw + 1 : 0);
 		if (KP_J)
 			CYLIND[ACTIVEOBJ.id].yaw = (CYLIND[ACTIVEOBJ.id].yaw - 1 >= 0 ? CYLIND[ACTIVEOBJ.id].yaw - 1 : 359);
-		printf("pitch : %f, yaw : %f, roll : %f", CYLIND[ACTIVEOBJ.id].pitch, CYLIND[ACTIVEOBJ.id].yaw, CYLIND[ACTIVEOBJ.id].roll);
+	//	printf("pitch : %f, yaw : %f, roll : %f", CYLIND[ACTIVEOBJ.id].pitch, CYLIND[ACTIVEOBJ.id].yaw, CYLIND[ACTIVEOBJ.id].roll);
 	}
 	//if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
 	//	target = get_target_dir(e);
@@ -125,5 +125,5 @@ void					ui_obj(t_env *e)
 		(KP_N7 ? target->z -= 0.1 : 0);
 		(KP_N9 ? target->z += 0.1 : 0);
 	}
-	printf("%f\n", (float)CYLIND[ACTIVEOBJ.id].yaw);
+//	printf("%f\n", (float)CYLIND[ACTIVEOBJ.id].yaw);
 }
