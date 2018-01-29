@@ -60,8 +60,6 @@ unsigned int			get_obj_hue(t_scene scene, t_hit hit)
 		color = PLANE[hit.id].color;
 	if (hit.type == 5)
 		color = SPHERE[hit.id].color;
-//	if ((scene.pix.x == 175 || scene.pix.x == 525 || scene.pix.x == 845) && scene.pix.y == 370)
-//		printf("color = %08x\n", color);
 	return (color);
 }
 
@@ -96,6 +94,7 @@ float3			get_obj_diffuse(t_scene scene, t_hit hit)
 unsigned int			color_diffuse(t_scene scene, t_hit hit, t_hit light_hit, unsigned int color, float coef)
 {
 	float3			diffuse = get_obj_diffuse(scene, hit);
+	float			brightness = LIGHT[light_hit.id].brightness;		
 	unsigned int	col_r = (color & 0x00FF0000) >> 16;
 	unsigned int	col_g = (color & 0x0000FF00) >> 8;
 	unsigned int	col_b = (color & 0x000000FF);
@@ -106,9 +105,9 @@ unsigned int			color_diffuse(t_scene scene, t_hit hit, t_hit light_hit, unsigned
 	unsigned int	l_g = (get_obj_hue(scene, light_hit) & 0x0000FF00) >> 8;
 	unsigned int	l_b = (get_obj_hue(scene, light_hit) & 0x000000FF);
 
-	col_r += (l_r / (LIGHT[light_hit.id].intensity * 10)) * obj_r * coef * diffuse.x;
-	col_g += (l_g / (LIGHT[light_hit.id].intensity * 10)) * obj_g * coef * diffuse.y;
-	col_b += (l_b / (LIGHT[light_hit.id].intensity * 10)) * obj_b * coef * diffuse.z;
+	col_r += (l_r * brightness / 255) * obj_r * coef * diffuse.x;
+	col_g += (l_g * brightness / 255) * obj_g * coef * diffuse.y;
+	col_b += (l_b * brightness / 255) * obj_b * coef * diffuse.z;
 	(col_r > 255 ? col_r = 255 : 0);
 	(col_g > 255 ? col_g = 255 : 0);
 	(col_b > 255 ? col_b = 255 : 0);

@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/17 16:11:13 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/29 16:27:36 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 	else
 		xml_data_dir(e, att, i, light_node);
 	printf("dir x = %f | y = %f | z = %f\n", light_node->dir.x, light_node->dir.y, light_node->dir.z);
+	if (ft_strncmp(att[*i], "brightness=\"", 12) != 0)
+		s_error("\x1b[2;31mError in light BRIGHTNESS expected in #4\x1b[0m", e);
+	else
+		xml_data_brightness(e, att, i, light_node);
+	printf("brightness = %f\n", light_node->brightness);
 	if (ft_strncmp(att[*i], "intensity=\"",	11) != 0)
 		s_error("\x1b[2;31mError in light, INTENSITY expected in #4\x1b[0m", e);
 	else
@@ -92,6 +97,7 @@ void		xml_push_light(t_env *e, t_node *list)
 	e->lights[list->id].type = list->light;
 	e->lights[list->id].pos = list->pos;
 	e->lights[list->id].dir = list->dir;
+	e->lights[list->id].brightness = list->brightness;
 	e->lights[list->id].intensity = list->intensity;
 	e->lights[list->id].color = list->color;
 }

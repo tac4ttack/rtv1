@@ -1,4 +1,4 @@
-#define BACKCOLOR 0x00010101
+#define BACKCOLOR 0x00999999
 
 #define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
 
@@ -74,6 +74,7 @@ typedef struct			s_light
 	float3				pos;
 	float3				dir;
 	float				intensity;
+	float				brightness;
 	int					color;
 }						t_light;
 

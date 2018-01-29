@@ -123,6 +123,7 @@ typedef struct			s_light
 	cl_float3			pos;
 	cl_float3			dir;
 	cl_float			intensity;
+	cl_float			brightness;
 	cl_int				color;
 }						t_light;
 
@@ -178,6 +179,7 @@ typedef struct			s_node
 	cl_int				color;
 	cl_int				light;
 	cl_float			intensity;
+	cl_float			brightness;
 	cl_float			height;
 	cl_float3			diff;
 	cl_float3			spec;
@@ -280,7 +282,9 @@ void					xml_allocate_sphere(t_env *e);
 int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);
 void					xml_data_angle(t_env *e, char **attributes, \
-										int *i, t_node *node);									
+										int *i, t_node *node);
+void					xml_data_brightness(t_env *e, char **attributes, \
+										int *i, t_node *node);
 void					xml_data_color(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_diffiouse(t_env *e, char **attributes, \
