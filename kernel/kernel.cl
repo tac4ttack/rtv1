@@ -214,13 +214,6 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 				hit.type = 2;
 				hit.id = i;
 			}
-//		if (i < PARAM->n_lights)
-//			if (((dist = inter_light(LIGHT[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
-//			{
-//				hit.dist = dist;
-//				hit.type = 3;
-//				hit.id = i;
-//			}
 		if (i < PARAM->n_planes)
 			if (((dist = inter_plan(PLANE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
@@ -353,8 +346,6 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 unsigned int			phong(t_hit hit, t_scene scene)
 {
 	int					i = -1;
-//	unsigned int		obj_color = get_obj_hue(scene, hit);
-//	unsigned int		ambient_color = get_ambient(get_obj_hue(scene, hit), scene);
 	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
 	float				tmp;
 	float3				reflect = 0;
