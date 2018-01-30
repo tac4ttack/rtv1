@@ -80,7 +80,7 @@
 			type="1"
 			pos="5, 8, 9"
 			dir="0, 0, 0"
-			intensity="42"
+			shrink="42"
 			color="0, 0, 255, 0"
 			/>
 -->
@@ -89,7 +89,7 @@
 			type="1"
 			pos="6, 0, 0"
 			dir="0, 0, 0"
-			intensity="100"
+			shrink="100"
 			color="0, 255, 255, 255"
 			/>
 

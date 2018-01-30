@@ -41,7 +41,7 @@ Object informations have to be filled strictly like showed below:
 		type="0" 		0 = ambient | 1 = spot | 2 = directional
 		pos="0, 0, 0"
 		dir="0, 0, 0"
-		intensity="42"
+		shrink="42"
 		color="0, 255, 255, 255"
 		/>
 
@@ -86,7 +86,7 @@ Object informations have to be filled strictly like showed below:
 			type="0"
 			pos="0, 15, 0"
 			dir="0, 0, 0"
-			intensity="42"
+			shrink="42"
 			color="0, 255, 255, 255"
 			/>
 	<sphere id="0"
@@ -102,14 +102,14 @@ Object informations have to be filled strictly like showed below:
 			type="1"
 			pos="5, -5, 0"
 			dir="0, 0, 0"
-			intensity="100"
+			shrink="100"
 			color="0, 255, 255, 255"
 			/>-->
 <!--	<light 	id="1"
 			type="1"
 			pos="0, 5, -5"
 			dir="0, 0, 0"
-			intensity="2"
+			shrink="2"
 			color="0, 255, 255, 255"
 			/> -->
 <!--	<cone id="0"
