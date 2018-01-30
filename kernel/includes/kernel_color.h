@@ -70,9 +70,9 @@ unsigned int	get_ambient(t_scene scene, unsigned int obj_color)
 	r = (obj_color & 0x00FF0000) >> 16;
 	g = (obj_color & 0x0000FF00) >> 8;
 	b = (obj_color & 0x000000FF);
-	r = (r * PARAM->ambient.x > 255 ? 255 : r * PARAM->ambient.x);
-	g = (g * PARAM->ambient.y > 255 ? 255 : g * PARAM->ambient.y);
-	b = (b * PARAM->ambient.z > 255 ? 255 : b * PARAM->ambient.z);
+	r = (0.01 + r * PARAM->ambient.x > 255 ? 255 : 0.01 + r * PARAM->ambient.x);
+	g = (0.01 + g * PARAM->ambient.y > 255 ? 255 : 0.01 + g * PARAM->ambient.y);
+	b = (0.01 + b * PARAM->ambient.z > 255 ? 255 : 0.01 + b * PARAM->ambient.z);
 	return ((r << 16) + (g << 8) + b);
 }
 
@@ -120,9 +120,9 @@ unsigned int			color_diffuse(t_scene scene, t_hit hit, t_hit light_hit, unsigned
 	unsigned int	l_g = (get_obj_hue(scene, light_hit) & 0x0000FF00) >> 8;
 	unsigned int	l_b = (get_obj_hue(scene, light_hit) & 0x000000FF);
 
-	col_r += (l_r * brightness / 255) * obj_r * coef * diffuse.x;
-	col_g += (l_g * brightness / 255) * obj_g * coef * diffuse.y;
-	col_b += (l_b * brightness / 255) * obj_b * coef * diffuse.z;
+	col_r += ((l_r * brightness) + obj_r) * coef * diffuse.x;
+	col_g += ((l_g * brightness) + obj_g) * coef * diffuse.y;
+	col_b += ((l_b * brightness) + obj_b) * coef * diffuse.z;
 	(col_r > 255 ? col_r = 255 : 0);
 	(col_g > 255 ? col_g = 255 : 0);
 	(col_b > 255 ? col_b = 255 : 0);
