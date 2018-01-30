@@ -86,6 +86,7 @@ Object informations have to be filled strictly like showed below:
 			type="0"
 			pos="0, 15, 0"
 			dir="0, 0, 0"
+			brightness="0.51"
 			shrink="42"
 			color="0, 255, 255, 255"
 			/>

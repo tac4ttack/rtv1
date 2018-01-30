@@ -9,6 +9,7 @@
 			type="0"
 			pos="0, -10, 5"
 			dir="0, 0, 0"
+			brightness="0.51"
 			shrink="42"
 			color="0, 255, 255, 255"
 			/>
