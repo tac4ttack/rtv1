@@ -70,27 +70,6 @@ float					inter_sphere(t_sphere sphere, float3 ray, float3 origin)
 	return (res2);
 }
 
-float					inter_light(t_light light, float3 ray, float3 origin)
-{
-	float3				abc;
-	float				d;
-	float				res1;
-	float				res2;
-
-	origin -= light.pos;
-	abc = get_sphere_abc(0.21, ray, origin);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
-		return (0);
-	if (d == 0)
-		return ((-abc[1]) / (2 * abc[0]));
-	res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-	res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-		return (res1);
-	return (res2);
-}
-
 float3					get_cylinder_abc(float radius, float3 dir, float3 ray, float3 origin)
 {
 	float3		abc;
