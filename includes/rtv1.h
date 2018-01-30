@@ -122,7 +122,7 @@ typedef struct			s_light
 	cl_int				type;
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float			intensity;
+	cl_float			shrink;
 	cl_float			brightness;
 	cl_int				color;
 }						t_light;
@@ -178,7 +178,7 @@ typedef struct			s_node
 	cl_float			angle;
 	cl_int				color;
 	cl_int				light;
-	cl_float			intensity;
+	cl_float			shrink;
 	cl_float			brightness;
 	cl_float			height;
 	cl_float3			diff;
@@ -293,8 +293,6 @@ void					xml_data_dir(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_data_intens(t_env *e, char **attributes, \
-										int *i, t_node *node);
 void					xml_data_normale(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_pos(t_env *e, char **attributes, \
@@ -302,6 +300,8 @@ void					xml_data_pos(t_env *e, char **attributes, \
 void					xml_data_radius(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_reflex(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_shrink(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_speculos(t_env *e, char **attributes, \
 										int *i, t_node *node);										

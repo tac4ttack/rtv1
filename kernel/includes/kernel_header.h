@@ -73,7 +73,7 @@ typedef struct			s_light
 	int					type;
 	float3				pos;
 	float3				dir;
-	float				intensity;
+	float				shrink;
 	float				brightness;
 	int					color;
 }						t_light;

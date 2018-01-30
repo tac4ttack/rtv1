@@ -76,6 +76,21 @@ unsigned int	get_ambient(t_scene scene, unsigned int obj_color)
 	return ((r << 16) + (g << 8) + b);
 }
 
+float3			get_obj_speculos(t_scene scene, t_hit hit)
+{
+	float3	speculos = 0;
+	
+	if (hit.type == 1)
+		speculos = CONES[hit.id].spec;
+	if (hit.type == 2)
+		speculos = CYLIND[hit.id].spec;
+	if (hit.type == 4)
+		speculos = PLANE[hit.id].spec;
+	if (hit.type == 5)
+		speculos = SPHERE[hit.id].spec;
+	return (speculos);
+}
+
 float3			get_obj_diffuse(t_scene scene, t_hit hit)
 {
 	float3	diffuse = 0;
@@ -114,21 +129,6 @@ unsigned int			color_diffuse(t_scene scene, t_hit hit, t_hit light_hit, unsigned
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
 
-float3			get_obj_speculos(t_scene scene, t_hit hit)
-{
-	float3	speculos = 0;
-	
-	if (hit.type == 1)
-		speculos = CONES[hit.id].spec;
-	if (hit.type == 2)
-		speculos = CYLIND[hit.id].spec;
-	if (hit.type == 4)
-		speculos = PLANE[hit.id].spec;
-	if (hit.type == 5)
-		speculos = SPHERE[hit.id].spec;
-	return (speculos);
-}
-
 unsigned int			color_specular(t_scene scene, t_hit hit, t_hit light_hit, unsigned int color, float coef)
 {
 	float3			speculos = get_obj_speculos(scene, hit);
@@ -137,14 +137,9 @@ unsigned int			color_specular(t_scene scene, t_hit hit, t_hit light_hit, unsigne
 	unsigned int	col_g = (color & 0x0000FF00) >> 8;
 	unsigned int	col_b = (color & 0x000000FF);
 
-
-
-	coef = ((LIGHT[light_hit.id].color & 0x00FF0000) >> 16) * pow(old_coef, LIGHT[light_hit.id].intensity) * speculos.x;
-	col_r += coef;
-	coef = ((LIGHT[light_hit.id].color & 0x0000FF00) >> 8) * pow(old_coef, LIGHT[light_hit.id].intensity) * speculos.y;
-	col_g += coef;
-	coef = (LIGHT[light_hit.id].color & 0x000000FF) * pow(old_coef, LIGHT[light_hit.id].intensity) * speculos.z;
-	col_b += coef;
+	col_r += ((LIGHT[light_hit.id].color & 0x00FF0000) >> 16) * pow(old_coef, LIGHT[light_hit.id].shrink) * speculos.x;
+	col_g += ((LIGHT[light_hit.id].color & 0x0000FF00) >> 8) * pow(old_coef, LIGHT[light_hit.id].shrink) * speculos.y;
+	col_b += (LIGHT[light_hit.id].color & 0x000000FF) * pow(old_coef, LIGHT[light_hit.id].shrink) * speculos.z;
 	(col_r > 255 ? col_r = 255 : 0);
 	(col_g > 255 ? col_g = 255 : 0);
 	(col_b > 255 ? col_b = 255 : 0);

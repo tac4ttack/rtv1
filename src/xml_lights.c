@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/29 16:27:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/30 09:24:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 	else
 		xml_data_brightness(e, att, i, light_node);
 	printf("brightness = %f\n", light_node->brightness);
-	if (ft_strncmp(att[*i], "intensity=\"",	11) != 0)
-		s_error("\x1b[2;31mError in light, INTENSITY expected in #4\x1b[0m", e);
+	if (ft_strncmp(att[*i], "shrink=\"", 8) != 0)
+		s_error("\x1b[2;31mError in light, SHRINK expected in #4\x1b[0m", e);
 	else
-		xml_data_intens(e, att, i, light_node);
-	printf("intensity = %f\n", light_node->intensity);
+		xml_data_shrink(e, att, i, light_node);
+	printf("shrink = %f\n", light_node->shrink);
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
 		s_error("\x1b[2;31mError in light, COLOR expected in #5\x1b[0m", e);
 	else
@@ -98,6 +98,6 @@ void		xml_push_light(t_env *e, t_node *list)
 	e->lights[list->id].pos = list->pos;
 	e->lights[list->id].dir = list->dir;
 	e->lights[list->id].brightness = list->brightness;
-	e->lights[list->id].intensity = list->intensity;
+	e->lights[list->id].shrink = list->shrink;
 	e->lights[list->id].color = list->color;
 }
