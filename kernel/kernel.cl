@@ -39,9 +39,9 @@ float3					rotate_obj(float3 v, float pitch, float yaw, float roll)
 	return (normalize(res));
 }
 
-float3					get_sphere_abc(float radius, float3 ray, float3 origin)
+float3					get_sphere_abc(const float radius, const float3 ray, const float3 origin)
 {
-	float3		abc;
+	float3		abc = 0;
 
 	abc.x = dot(ray, ray);
 	abc.y = 2 * dot(ray, origin);
@@ -49,15 +49,17 @@ float3					get_sphere_abc(float radius, float3 ray, float3 origin)
 	return (abc);
 }
 
-float					inter_sphere(t_sphere sphere, float3 ray, float3 origin)
-{
-	float3				abc;
-	float				d;
-	float				res1;
-	float				res2;
 
-	origin -= sphere.pos;
-	abc = get_sphere_abc(sphere.radius, ray, origin);
+float					inter_sphere(const t_scene scene, const int id, const float3 ray, const float3 origin)
+{
+	float3				abc = 0;
+	float				d = 0;
+	float				res1 = 0;
+	float				res2 = 0;
+	float3				pos = 0;
+
+	pos = origin - SPHERE[id].pos;
+	abc = get_sphere_abc(SPHERE[id].radius, ray, pos);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);
@@ -201,7 +203,7 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 				hit.id = i;
 			}
 		if (i < PARAM->n_spheres)
-			if (((dist = inter_sphere(SPHERE[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_sphere(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 5;
