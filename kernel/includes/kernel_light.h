@@ -1,4 +1,4 @@
-unsigned int			phong(t_hit hit, t_scene scene)
+unsigned int			phong(const t_hit hit, const t_scene scene)
 {
 	int					i = -1;
 	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
