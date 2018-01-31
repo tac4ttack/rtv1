@@ -1,6 +1,6 @@
 
 
-float3						get_ray_cam(t_cam cam, t_scene scene, int x, int y)
+float3						get_ray_cam(const t_cam cam, const t_scene scene, const int x, const int y)
 {
 	float3					cam_ray = 0;
 	float					ratio = (float)PARAM->win_w / (float)PARAM->win_h;
