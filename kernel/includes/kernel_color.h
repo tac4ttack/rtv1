@@ -1,4 +1,4 @@
-unsigned int	blend_multiply(unsigned int c1, unsigned int c2)
+unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -14,7 +14,7 @@ unsigned int	blend_multiply(unsigned int c1, unsigned int c2)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int	blend_add(unsigned int c1, unsigned int c2)
+unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -33,7 +33,7 @@ unsigned int	blend_add(unsigned int c1, unsigned int c2)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int	blend_ambiant(unsigned int c1)
+unsigned int	blend_ambiant(const unsigned int c1)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -46,7 +46,7 @@ unsigned int	blend_ambiant(unsigned int c1)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			get_obj_hue(t_scene scene, t_hit hit)
+unsigned int			get_obj_hue(const t_scene scene, const t_hit hit)
 {
 	unsigned int		color = 0;
 
@@ -63,7 +63,7 @@ unsigned int			get_obj_hue(t_scene scene, t_hit hit)
 	return (color);
 }
 
-unsigned int	get_ambient(t_scene scene, unsigned int obj_color)
+unsigned int	get_ambient(const t_scene scene, const unsigned int obj_color)
 {
 	unsigned int r, g, b;
 
@@ -76,7 +76,7 @@ unsigned int	get_ambient(t_scene scene, unsigned int obj_color)
 	return ((r << 16) + (g << 8) + b);
 }
 
-float3			get_obj_speculos(t_scene scene, t_hit hit)
+float3			get_obj_speculos(const t_scene scene, const t_hit hit)
 {
 	float3	speculos = 0;
 	
@@ -91,7 +91,7 @@ float3			get_obj_speculos(t_scene scene, t_hit hit)
 	return (speculos);
 }
 
-float3			get_obj_diffuse(t_scene scene, t_hit hit)
+float3			get_obj_diffuse(const t_scene scene, const t_hit hit)
 {
 	float3	diffuse = 0;
 	
@@ -106,7 +106,8 @@ float3			get_obj_diffuse(t_scene scene, t_hit hit)
 	return (diffuse);
 }
 
-unsigned int			color_diffuse(t_scene scene, t_hit hit, t_hit light_hit, unsigned int color, float coef)
+unsigned int			color_diffuse(const t_scene scene, const t_hit hit, \
+										const t_hit light_hit, const unsigned int color, const float coef)
 {
 	float3			diffuse = get_obj_diffuse(scene, hit);
 	float			brightness = LIGHT[light_hit.id].brightness;		
@@ -129,7 +130,8 @@ unsigned int			color_diffuse(t_scene scene, t_hit hit, t_hit light_hit, unsigned
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
 
-unsigned int			color_specular(t_scene scene, t_hit hit, t_hit light_hit, unsigned int color, float coef)
+unsigned int			color_specular(const t_scene scene, const t_hit hit, \
+										const t_hit light_hit, const unsigned int color, const float coef)
 {
 	float3			speculos = get_obj_speculos(scene, hit);
 	float			old_coef = coef;
