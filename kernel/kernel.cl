@@ -169,7 +169,7 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	return (normalize(res));
 }
 
-unsigned int			phong(const t_hit hit, const t_scene scene)
+static unsigned int			phong(const t_hit hit, const t_scene scene)
 {
 	int					i = -1;
 	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
@@ -236,7 +236,7 @@ unsigned int			phong2(t_hit hit, t_scene scene)
 	return (res_color);
 }
 
-unsigned int		bounce(const t_scene scene, const t_hit old_hit, const int depth)
+static unsigned int		bounce(const t_scene scene, const t_hit old_hit, const int depth)
 {
 	int				i = depth;
 	unsigned int	color = 0;
@@ -259,7 +259,7 @@ unsigned int		bounce(const t_scene scene, const t_hit old_hit, const int depth)
 	return (color);
 }
 
-unsigned int	get_pixel_color(const t_scene scene)
+static unsigned int	get_pixel_color(const t_scene scene)
 {
 	t_hit			hit;
 	int				depth = PARAM->depth;
@@ -281,10 +281,6 @@ unsigned int	get_pixel_color(const t_scene scene)
 	}
 	return (get_ambient(scene, BACKCOLOR));
 }
-
-//	if ((scene.pix.x == 175 || scene.pix.x == 525 || scene.pix.x == 845) && scene.pix.y == 370)
-//		printf("light.id = %d | light.color = %08x\n", light_hit.id, LIGHT[light_hit.id].color);
-//		printf("l_hit.id = %d l_hit.type = %d l_hit.dist = %f\n", light_hit.id, light_hit.type, light_hit.dist);
 
 __kernel void	ray_trace(__global		char		*output,
 						  				t_param		param,
