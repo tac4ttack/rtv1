@@ -18,7 +18,7 @@ float3					rotate_obj(float3 v, float pitch, float yaw, float roll)
 	return (normalize(res));
 }
 
-t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
+t_hit			ray_hit(const float3 origin, const float3 ray, const t_scene scene)
 {
 	unsigned int			i = 0;
 	int						max = get_max_obj(PARAM);
