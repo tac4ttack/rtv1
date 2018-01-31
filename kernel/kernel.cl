@@ -28,7 +28,7 @@ t_hit			ray_hit(float3 origin, float3 ray, t_scene scene)
 	while (i < max)
 	{
 		if (i < PARAM->n_cones)
-			if (((dist = inter_cone(CONES[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_cone(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 1;
