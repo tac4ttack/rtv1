@@ -1,4 +1,4 @@
-float3						rotat_zyx(float3 vect, float pitch, float yaw, float roll)
+float3						rotat_zyx(const float3 vect, const float pitch, const float yaw, const float roll)
 {
 	float3					res;
 	float					rad_pitch = pitch * DEG2RAD;
@@ -11,7 +11,7 @@ float3						rotat_zyx(float3 vect, float pitch, float yaw, float roll)
 	return (res);
 }
 
-float3						rotat_xyz(float3 vect, float pitch, float yaw, float roll)
+float3						rotat_xyz(const float3 vect, const float pitch, const float yaw, const float roll)
 {
 	float3					res;
 	float					rad_pitch = pitch * DEG2RAD;
