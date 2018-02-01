@@ -13,6 +13,14 @@ void		ui_cam(t_env *e)
 			ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, 0, (ACTIVECAM.yaw + 90) * DEG2RAD), ACTIVECAM.pos);
 		if (KP_A)
 			ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, 0, (ACTIVECAM.yaw - 90) * DEG2RAD), ACTIVECAM.pos);
+	
+	//	(KP_DA ? ACTIVECAM.dir = rotx(ACTIVECAM.dir, 1 * DEG2RAD) : ACTIVECAM.dir);
+	//	(KP_UA ? ACTIVECAM.dir = rotx(ACTIVECAM.dir, -1 * DEG2RAD) : ACTIVECAM.dir);
+	//	(KP_LA ? ACTIVECAM.dir = roty(ACTIVECAM.dir, 1 * DEG2RAD) : ACTIVECAM.dir);
+	//	(KP_DA ? ACTIVECAM.dir = roty(ACTIVECAM.dir, -1 * DEG2RAD) : ACTIVECAM.dir);
+	//	(KP_DEL ? ACTIVECAM.dir = rotz(ACTIVECAM.dir, 1 * DEG2RAD) : ACTIVECAM.dir);
+	//	(KP_PGD ? ACTIVECAM.dir = rotz(ACTIVECAM.dir, -1 * DEG2RAD) : ACTIVECAM.dir);
+		
 		(KP_DA ? ACTIVECAM.pitch += 2 : 0);
 		(KP_UA ? ACTIVECAM.pitch -= 2 : 0);
 		(KP_LA ? ACTIVECAM.yaw -= 2 : 0);
