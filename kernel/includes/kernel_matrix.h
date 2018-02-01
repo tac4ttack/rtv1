@@ -23,3 +23,36 @@ float3						rotat_xyz(const float3 vect, const float pitch, const float yaw, con
 	res.z = vect.x * (cos(rad_pitch) * -sin(rad_yaw) * cos(rad_roll) + sin(rad_pitch) * sin(rad_roll)) + vect.y * (cos(rad_pitch) * -sin(rad_yaw) * -sin(rad_roll) + sin(rad_pitch) * cos(rad_roll)) + vect.z * cos(rad_yaw) * cos(rad_pitch);
 	return (res);
 }
+
+float3						rotat_x(const float3 vect, const float angle)
+{
+	float3 					res = 0;
+	float					teta = angle * DEG2RAD;
+
+	res.x = (vect.x * 1) + (vect.y * 0) + (vect.z * 0);
+	res.y = (vect.x * 0) + (vect.y * cos(teta)) + (vect.z * -sin(teta));
+	res.z = (vect.x * 0) + (vect.y * sin(teta)) + (vect.z * cos(teta));
+	return (res);
+}
+
+float3						rotat_y(const float3 vect, const float angle)
+{
+	float3 					res = 0;
+	float					teta = angle * DEG2RAD;
+
+	res.x = (vect.x * cos(teta)) + (vect.y * 0) + (vect.z * sin(teta));
+	res.y = (vect.x * 0) + (vect.y * 1) + (vect.z * 0);
+	res.z = (vect.x * -sin(teta)) + (vect.y * 0) + (vect.z * cos(teta));
+	return (res);
+}
+
+float3						rotat_z(const float3 vect, const float angle)
+{
+	float3 					res = 0;
+	float					teta = angle * DEG2RAD;
+
+	res.x = (vect.x * cos(teta)) + (vect.y * -sin(teta)) + (vect.z * 0);
+	res.y = (vect.x * sin(teta)) + (vect.y * cos(teta)) + (vect.z * 0);
+	res.z = (vect.x * 0) + (vect.y * 0) + (vect.z * 1);
+	return (res);
+}
