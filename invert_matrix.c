@@ -22,7 +22,7 @@ int main()
 		}
 	}
 	d = determinant(a, k);
-	printf("det = %f\n", d);
+	printf("\ndeterminant = %f\n", d);
 	if (d == 0)
 		printf("\nInverse of Entered Matrix is not possible\n");
 	else
