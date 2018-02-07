@@ -115,8 +115,11 @@ float3			get_hit_normale(const t_scene scene, const t_hit hit)
 	}
 	if (hit.type == 2)
 	{
+//		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
+//			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
+//		res = hit.pos - CYLIND[hit.id].pos - fast_normalize(CYLIND[hit.id].dir) * res;
 		res = hit.pos - CYLIND[hit.id].pos;
-		res.z = 0.0;
+		res.z = 0;	// fonctionne pour cylindre aligné en Z
 	}
 	if (hit.type == 4)
 	{
