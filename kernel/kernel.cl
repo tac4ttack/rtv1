@@ -35,7 +35,8 @@ static t_hit			ray_hit(const float3 origin, const float3 ray, const t_scene scen
 				hit.id = i;
 			}
 		if (i < PARAM->n_cylinders)
-			if (((dist = inter_cylinder(CYLIND[i].height, rotate_obj(CYLIND[i].dir, CYLIND[i].pitch, CYLIND[i].yaw, 0), CYLIND[i].radius, CYLIND[i].pos, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+		//	if (((dist = inter_cylinder(CYLIND[i].height, rotate_obj(CYLIND[i].dir, CYLIND[i].pitch, CYLIND[i].yaw, 0), CYLIND[i].radius, CYLIND[i].pos, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 2;
