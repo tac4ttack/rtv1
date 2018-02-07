@@ -12,7 +12,6 @@ static float3	get_cylinder_abc(const float radius, const float3 dir, const float
 float			inter_cylinder(const float height, const float3 dir, const float radius, const float3 pos, const float3 ray, float3 origin)
 {
 	float3		abc = 0;
-//	float3		dir = rotate_obj(cyl.dir, cyl.pitch, cyl.yaw, 0);
 	float		d = 0;
 	float		res1 = 0;
 	float		res2 = 0;
