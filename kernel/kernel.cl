@@ -100,37 +100,74 @@ float3			apply_matrix(float16 mat, float3 v)
 	return (res);
 }
 
-float3			get_hit_normale(const t_scene scene, const t_hit hit)
+float3			get_hit_normale(t_scene scene, t_hit hit)
 {
-	float3		res = 0;
-	float		k = 0;
+	float3		res;
 
 	if (hit.type == 1)
 	{
-		k = CONES[hit.id].angle * DEG2RAD;
+		float k = CONES[hit.id].angle * DEG2RAD;
 		k = tan(k);
 		k = 1 + k * k;
-		res = dot(-scene.ray, normalize(CONES[hit.id].dir)) * hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, normalize(CONES[hit.id].dir));
-		res = ((hit.pos - normalize(CONES[hit.id].pos)) - (k * normalize(CONES[hit.id].dir) * res)) * -1;
+		res = dot(-scene.ray, fast_normalize(CONES[hit.id].dir)) * \
+			hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
+		res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
 	}
-	if (hit.type == 2)
+	else if (hit.type == 2)
 	{
-//		res = dot(-scene.ray, fast_normalize(CYLIND[hit.id].dir) * hit.dist + \
-//			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, fast_normalize(CYLIND[hit.id].dir)));
-//		res = hit.pos - CYLIND[hit.id].pos - fast_normalize(CYLIND[hit.id].dir) * res;
-		res = hit.pos - CYLIND[hit.id].pos;
-		res.z = 0;	// fonctionne pour cylindre aligné en Z
+/*float3	base = CYLIND[hit.id].pos;
+		res = hit.pos;
+		res = rotate_matrix(45 * DEG2RAD, res);
+		base.z = res.z;
+		base = rotate_matrix(-45 * DEG2RAD, base);
+		res = rotate_matrix(-45 * DEG2RAD, res);
+		res -= base;*/
+//		res = dot(-scene.ray, normalize(CYLIND[hit.id].dir) * hit.dist + \
+//			dot(ACTIVECAM.pos + PARAM->mvt - CYLIND[hit.id].pos, normalize(CYLIND[hit.id].dir)));
+//		res = hit.pos - CYLIND[hit.id].pos - normalize(CYLIND[hit.id].dir) * res;
+	
+	/*	res = normalize(hit.pos - CYLIND[hit.id].pos);
+	// fonctionne pour cylindre aligné en Z
+		if (dot(normalize(CYLIND[hit.id].dir), res) < 0)
+		{
+			res += normalize(CYLIND[hit.id].dir);
+			res.z += 1;
+		}
+		else
+		{
+			res -= normalize(CYLIND[hit.id].dir);
+			res.z += 1;
+		}*/
+		int		i = hit.id;
+		float3	dir = rotate_obj(CYLIND[i].dir, CYLIND[i].pitch, CYLIND[i].yaw, 0);
+		float16 ok = trans_matrix(dir, 90);
+		//printf("the first\n0 : %f, 1 : %f, 2 : %f\n4 : %f, 5 : %f, 6 : %f\n8 : %f, 9 : %f, 10 : %f\n\n", ok[0], ok[1], ok[2], ok[4], ok[5], ok[6], ok[8], ok[9], ok[10]);
+		res = apply_matrix(ok, hit.pos) - CYLIND[i].pos;
+		res.z = 0;
+		//ok = trans_matrix(dir, -90);
+		//printf("the second\n0 : %f, 1 : %f, 2 : %f\n4 : %f, 5 : %f, 6 : %f\n8 : %f, 9 : %f, 10 : %f\n\n", ok[0], ok[1], ok[2], ok[4], ok[5], ok[6], ok[8], ok[9], ok[10]);
+		res = apply_matrix(-ok, res);
+		/*res = trans_matrix(dir, hit.pos);
+		res = res - CYLIND[i].pos;
+		res.z = 0;*/
+		//res = trans_matrix(dir, res;
+		/*
+		nbase.dist = inter_cylinder(CYLIND[i].height, CYLIND[i].dir, CYLIND[i].radius, CYLIND[i].pos,  rotate_obj(scene.ray, -CYLIND[i].pitch, CYLIND[i].yaw, 0), (ACTIVECAM.pos + PARAM->mvt));
+		nbase.pos = (ACTIVECAM.pos + PARAM->mvt) + normalize((rotate_obj(scene.ray, -CYLIND[i].pitch, -CYLIND[i].yaw, 0)) * nbase.dist);
+		res = nbase.pos - CYLIND[i].pos;
+		res.z = 0;
+		res = rotate_obj(normalize(res), CYLIND[i].pitch, CYLIND[i].yaw, 0);*/
 	}
-	if (hit.type == 4)
+	else if (hit.type == 4)
 	{
 		if (dot(PLANE[hit.id].normale, -scene.ray) < 0)
 			res = -PLANE[hit.id].normale;
 		else
 			res = PLANE[hit.id].normale;
 	}
-	if (hit.type == 5)
+	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
-	return (normalize(res));
+	return (fast_normalize(res));
 }
 
 static unsigned int			phong(const t_hit hit, const t_scene scene)
