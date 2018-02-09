@@ -213,7 +213,7 @@ static unsigned int		bounce(const t_scene scene, const t_hit old_hit, const int 
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color += 0.1 * phong2(new_hit, scene);
+			color += 0.1 * phong(new_hit, scene);
 		}
 		i--;
 	}
