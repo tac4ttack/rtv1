@@ -3,7 +3,7 @@ float3			compute_cone_normal(const t_scene scene, const t_hit hit)
 	float3		normal = 0;
 	float		k = 0;
 	
-	k = CONES[hit.id].angle * DEG2RAD;
+	k = radians(CONES[hit.id].angle);
 	k = tan(k);
 	k = 1 + k * k;
 	normal = dot(-scene.ray, normalize(CONES[hit.id].dir)) * hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, normalize(CONES[hit.id].dir));

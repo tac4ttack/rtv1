@@ -5,8 +5,8 @@ float3						get_ray_cam(const t_cam cam, const t_scene scene, const int x, const
 	float3					cam_ray = 0;
 	float					ratio = (float)PARAM->win_w / (float)PARAM->win_h;
 
-	cam_ray.x = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan((cam.fov / 2) * DEG2RAD));
-	cam_ray.y = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan((cam.fov / 2) * DEG2RAD));
+	cam_ray.x = ((2 * ((x + 0.5) / PARAM->win_w)) - 1) * ratio * (tan(radians(cam.fov / 2)));
+	cam_ray.y = ((1 - (2 * ((y + 0.5) / PARAM->win_h))) * tan(radians(cam.fov / 2)));
 	cam_ray.z = 1;
 /*  rotation XYZ
 	cam_ray.x = xx * cos(yaw) * cos(roll) + yy * cos(yaw) * -sin(roll) + sin(yaw);

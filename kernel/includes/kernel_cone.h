@@ -1,7 +1,7 @@
 static float3	get_cone_abc(const t_cone cone, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
-	float		k = cone.angle * DEG2RAD;
+	float		k = radians(cone.angle);
 
 	k = tan(k);
 	k = 1 + k * k;
