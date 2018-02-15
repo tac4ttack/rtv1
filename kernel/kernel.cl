@@ -100,23 +100,55 @@ float3			apply_matrix(float16 mat, float3 v)
 	return (res);
 }
 
+float3			get_cylinder_normal(const t_scene scene, const t_hit hit)
+{
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
+	float3 cyl_dir = 0;
+	float doty = 0;
+
+	cyl_dir = normalize(CYLIND[hit.id].dir);
+	v = hit.pos - CYLIND[hit.id].pos;
+	doty = dot(v, cyl_dir);
+	project = doty * cyl_dir;
+	res = v - project;
+	return (normalize(res));
+}
+
+float3			get_cone_normale(const t_scene scene, const t_hit hit)
+{
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
+	float3 cone_dir = 0;
+	float doty = 0;
+
+	cone_dir = normalize(CONES[hit.id].dir);
+	v = hit.pos - CONES[hit.id].pos;
+	doty = dot(v, CONES[hit.id].dir);
+	project = doty * cone_dir;
+	res = v - project;
+	return (normalize(res));
+}
+
 float3			get_hit_normale(t_scene scene, t_hit hit)
 {
 	float3		res;
 
 	if (hit.type == 1)
 	{
-		float k = radians(CONES[hit.id].angle);
-		k = tan(k);
-		k = 1 + k * k;
-		res = dot(-scene.ray, fast_normalize(CONES[hit.id].dir)) * \
-			hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
-		res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
+		res = get_cone_normale(scene, hit);
+	//	float k = radians(CONES[hit.id].angle);
+	//	k = tan(k);
+	//	k = 1 + k * k;
+	//	res = dot(-scene.ray, fast_normalize(CONES[hit.id].dir)) * \
+	//		hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
+	//	res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
 	}
 	else if (hit.type == 2)
 	{
-		res = hit.pos - scene.cylinders[hit.id].pos;
-		res.z = 0;
+		res = get_cylinder_normal(scene, hit);
 	}
 	else if (hit.type == 4)
 	{
@@ -213,7 +245,7 @@ static unsigned int		bounce(const t_scene scene, const t_hit old_hit, const int 
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color += 0.1 * phong(new_hit, scene);
+			color += 0.1 * phong2(new_hit, scene);
 		}
 		i--;
 	}
