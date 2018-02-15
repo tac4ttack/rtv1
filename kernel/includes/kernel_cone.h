@@ -34,3 +34,17 @@ float			inter_cone(const t_scene scene, const int id, const float3 ray, const fl
 		return (res1);
 	return (res2);
 }
+
+float3			get_cone_normale(const t_scene scene, const t_hit hit)
+{
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
+	float doty = 0;
+
+	v = hit.pos - CONES[hit.id].pos;
+	doty = dot(v, CONES[hit.id].dir);
+	project = doty * normalize(CONES[hit.id].dir);
+	res = v - project;
+	return (normalize(res));
+}

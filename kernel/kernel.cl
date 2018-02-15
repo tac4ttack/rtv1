@@ -100,38 +100,6 @@ float3			apply_matrix(float16 mat, float3 v)
 	return (res);
 }
 
-float3			get_cylinder_normal(const t_scene scene, const t_hit hit)
-{
-	float3 res = 0;
-	float3 v = 0;
-	float3 project = 0;
-	float3 cyl_dir = 0;
-	float doty = 0;
-
-	cyl_dir = normalize(CYLIND[hit.id].dir);
-	v = hit.pos - CYLIND[hit.id].pos;
-	doty = dot(v, cyl_dir);
-	project = doty * cyl_dir;
-	res = v - project;
-	return (normalize(res));
-}
-
-float3			get_cone_normale(const t_scene scene, const t_hit hit)
-{
-	float3 res = 0;
-	float3 v = 0;
-	float3 project = 0;
-	float3 cone_dir = 0;
-	float doty = 0;
-
-	cone_dir = normalize(CONES[hit.id].dir);
-	v = hit.pos - CONES[hit.id].pos;
-	doty = dot(v, CONES[hit.id].dir);
-	project = doty * cone_dir;
-	res = v - project;
-	return (normalize(res));
-}
-
 float3			get_hit_normale(t_scene scene, t_hit hit)
 {
 	float3		res;

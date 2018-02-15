@@ -46,39 +46,16 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 		return (0);
 }
 
-/*float			inter_cylinder(const float height, const float3 dir, const float radius, const float3 pos, const float3 ray, float3 origin)
+float3			get_cylinder_normal(const t_scene scene, const t_hit hit)
 {
-	float3		abc = 0;
-	float		d = 0;
-	float		res1 = 0;
-	float		res2 = 0;
-	float		m = 0;
+	float3 res = 0;
+	float3 v = 0;
+	float3 project = 0;
+	float doty = 0;
 
-	origin -= pos;
-	abc = get_cylinder_abc(radius, dir, ray, origin);
-	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
-	if (d < 0)
-		return (0);
-	if (d == 0)
-		res1 = (-abc[1]) / (2 * abc[0]);
-	else
-	{
-		res1 = (((-abc[1]) + sqrt(d)) / (2 * abc[0]));
-		res2 = (((-abc[1]) - sqrt(d)) / (2 * abc[0]));
-	}
-	if (res1 < 0 && res2 < 0)
-		return (0);
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
-	{
-		if (height == 0 || (dot(ray, dir) * res1 +
-			dot(origin, dir) < height && dot(ray, dir) * res1 +
-			dot(origin, dir) > 0))
-			return (res1);
-	}
-	if (height ==  0 || (dot(ray, dir) * res2 +
-			dot(origin, dir) < height && dot(ray, dir) * res2 +
-			dot(origin, dir) > 0))
-		return (res2);
-	else
-		return (0);
-}*/
+	v = hit.pos - CYLIND[hit.id].pos;
+	doty = dot(v, normalize(CYLIND[hit.id].dir));
+	project = doty * normalize(CYLIND[hit.id].dir);
+	res = v - project;
+	return (normalize(res));
+}
