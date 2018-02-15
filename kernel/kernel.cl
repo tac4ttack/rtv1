@@ -105,19 +105,9 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	float3		res;
 
 	if (hit.type == 1)
-	{
 		res = get_cone_normale(scene, hit);
-	//	float k = radians(CONES[hit.id].angle);
-	//	k = tan(k);
-	//	k = 1 + k * k;
-	//	res = dot(-scene.ray, fast_normalize(CONES[hit.id].dir)) * \
-	//		hit.dist - dot(ACTIVECAM.pos + PARAM->mvt - CONES[hit.id].pos, fast_normalize(CONES[hit.id].dir));
-	//	res = ((hit.pos - fast_normalize(CONES[hit.id].pos)) - (k * fast_normalize(CONES[hit.id].dir) * res)) * -1;
-	}
 	else if (hit.type == 2)
-	{
 		res = get_cylinder_normal(scene, hit);
-	}
 	else if (hit.type == 4)
 	{
 		if (dot(PLANE[hit.id].normale, -scene.ray) < 0)
