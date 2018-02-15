@@ -6,6 +6,7 @@ log
 .vscode
 dumpcl
 docs/exe
+docs/inspi
 .DS_Store
 
 # Prerequisites
