@@ -50,6 +50,7 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
 SRC_NAME =  			init.c \
+						hud.c \
 						main.c \
 						mlx_image_draw.c \
 						mlx_key_press.c \
