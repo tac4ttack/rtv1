@@ -44,7 +44,7 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 		return (res2);
 	else
 		return (0);
-}
+} 
 
 float3			get_cylinder_normal(const t_scene scene, const t_hit hit)
 {
@@ -53,7 +53,14 @@ float3			get_cylinder_normal(const t_scene scene, const t_hit hit)
 	float3 project = 0;
 	float doty = 0;
 
+//	v = hit.pos - CYLIND[hit.id].pos;
+//	doty = dot(v, normalize(CYLIND[hit.id].dir));
+//	project = doty * normalize(CYLIND[hit.id].dir);
+//	res = v - project;
+
 	v = hit.pos - CYLIND[hit.id].pos;
+	DIBUG
+		printf("toto caca");
 	doty = dot(v, normalize(CYLIND[hit.id].dir));
 	project = doty * normalize(CYLIND[hit.id].dir);
 	res = v - project;
