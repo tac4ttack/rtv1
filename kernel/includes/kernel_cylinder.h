@@ -46,7 +46,7 @@ float					inter_cylinder(t_cylinder cylind, float3 ray, float3 origin)
 		return (0);
 } 
 
-float3			get_cylinder_normal(const t_scene scene, const t_hit hit)
+float3			get_cylinder_normal(t_scene scene, t_hit hit)
 {
 	float3 res = 0;
 	float3 v = 0;
@@ -59,8 +59,9 @@ float3			get_cylinder_normal(const t_scene scene, const t_hit hit)
 //	res = v - project;
 
 	v = hit.pos - CYLIND[hit.id].pos;
-	DIBUG
-		printf("toto caca");
+//	if (scene.pix.x == scene.param->win_w / 2 && scene.pix.y == scene.param->win_h / 2)
+//		printf("toto caca");
+//	printf("%d %d\n", scene.pix.x, scene.pix.y);
 	doty = dot(v, normalize(CYLIND[hit.id].dir));
 	project = doty * normalize(CYLIND[hit.id].dir);
 	res = v - project;
