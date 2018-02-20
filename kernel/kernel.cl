@@ -245,7 +245,6 @@ __kernel void	ray_trace(__global		char		*output,
 	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 	scene.pix.x = get_global_id(0);
 	scene.pix.y = get_global_id(1);
-	printf("%d %d\n", scene.pix.x, scene.pix.y);
 	int			id = scene.pix.x + (PARAM->win_w * scene.pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 	scene.ray = get_ray_cam(ACTIVECAM, scene, scene.pix.x ,scene.pix.y);
 	if (scene.pix.x == PARAM->mou_x && scene.pix.y == PARAM->mou_y)
