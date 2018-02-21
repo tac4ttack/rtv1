@@ -120,6 +120,31 @@ typedef struct			s_param
 	int					depth;
 }						t_param;
 
+
+typedef struct			s_scen
+{
+	t_cam				__constant *cameras;
+	t_cone				__constant *cones;
+	t_cylinder			__constant *cylinders;
+	t_light				__constant *lights;
+	t_plane				__constant *planes;
+	t_sphere			__constant *spheres;
+	unsigned int		n_cams;
+	unsigned int		n_cones;
+	unsigned int		n_cylinders;
+	unsigned int		n_lights;
+	unsigned int		n_planes;
+	unsigned int		n_spheres;
+	unsigned int		active_cam;
+	unsigned int		win_w;
+	unsigned int		win_h;
+	float3				mvt;
+	float3				ambient;
+	int					mou_x;
+	int					mou_y;
+	int					depth;
+}						t_scen;
+
 typedef struct			s_scene
 {
 	t_param				*param;

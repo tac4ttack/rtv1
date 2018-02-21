@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/25 12:26:00 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/21 17:18:30 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void		xml_node_cylinder(t_env *e, char *node)
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
 	NCYL++;
+	e->scene->n_cylinders++; // WIP
 	cyl_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;

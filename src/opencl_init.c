@@ -72,11 +72,12 @@ int			opencl_build(t_env *e, unsigned int count)
 	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		count, NULL, NULL)))
 		return (opencl_builderrors(e, 7));
-///////
 	if (!(e->target_obj_buf = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		sizeof(t_hit), NULL, NULL)))
 		return (opencl_builderrors(e, 7));
-//////
+	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_WRITE | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_scene), e->scene, NULL)))
+			return (opencl_builderrors(e, 7));
 	opencl_allocate_scene_memory(e);
 	return (0);
 }

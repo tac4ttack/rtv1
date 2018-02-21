@@ -14,7 +14,9 @@ static void xml_scene_res(t_env *e, char **att, int *i)
 		else
 		{
 			e->param.win_w = (w < 0 ? -w : w);
+			e->scene->win_w = (w < 0 ? -w : w); // WIP
 			e->param.win_h = (h < 0 ? -h : h);
+			e->scene->win_h = (h < 0 ? -h : h); // WIP
 		}
 	}
 	else
@@ -27,9 +29,13 @@ static void	xml_scene_ambient(t_env *e, char **att, int *i)
 	{
 		if (att[(*i)] == NULL)
 			s_error("\x1b[2;31mError reading AMBIENT scene node\x1b[0m", e);
-		e->param.ambient.x = ft_atof(att[(*i)++] + 9);
-		e->param.ambient.y = ft_atof(att[(*i)++]);
+		e->scene->ambient.x = ft_atof(att[(*i)] + 9); // WIP
+		e->param.ambient.x = ft_atof(att[(*i)++] + 9);		
+		e->scene->ambient.y = ft_atof(att[(*i)]); // WIP
+		e->param.ambient.y = ft_atof(att[(*i)++]);		
+		e->scene->ambient.z = ft_atof(att[(*i)]); // WIP
 		e->param.ambient.z = ft_atof(att[(*i)++]);
+		
 // RAJOUTER CONTROLE DE LA VALEUR QUAND ON SAURA QUELLE VALEUR CA DOIT AVOIR t(ಠ益ಠt)
 	}
 	else

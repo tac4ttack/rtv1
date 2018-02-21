@@ -240,14 +240,43 @@ __kernel void	ray_trace(__global		char		*output,
 						  __constant	t_light		*lights,
 						  __constant	t_plane		*planes,
 						  __constant	t_sphere	*spheres,
-						  __global		t_hit		*target_obj)
+						  __global		t_hit		*target_obj,
+						  __local		t_scen		*scen)
 {
-	t_scene		scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
-	scene.pix.x = get_global_id(0);
-	scene.pix.y = get_global_id(1);
-	int			id = scene.pix.x + (PARAM->win_w * scene.pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
-	scene.ray = get_ray_cam(ACTIVECAM, scene, scene.pix.x ,scene.pix.y);
-	if (scene.pix.x == PARAM->mou_x && scene.pix.y == PARAM->mou_y)
+//	if (get_local_id(0) == 0 && get_local_id(1) == 0)
+//	{
+//		printf("workitem %d %d\nworkgroup %d %d\n\n", get_local_id(0), get_local_id(1), get_group_id(0),get_group_id(1));
+		scen->cameras = cameras;
+		scen->cones = cones;
+		scen->cameras = cameras;
+		scen->cameras = cameras;
+		scen->cameras = cameras;
+		scen->cameras = cameras;
+		scen->n_cams = param.n_cams;
+		scen->n_cones = param.n_cones;
+		scen->n_cylinders = param.n_cylinders;
+		scen->n_lights = param.n_lights;
+		scen->n_planes = param.n_planes;
+		scen->n_spheres = param.n_spheres;
+		scen->active_cam = param.active_cam;
+		scen->win_w = param.win_w;
+		scen->win_h = param.win_h;
+		scen->mvt = param.mvt;
+		scen->ambient = param.ambient;
+		scen->mou_x = param.mou_x;
+		scen->mou_y = param.mou_y;
+		scen->depth = param.depth;
+	//}
+	
+	t_scene         scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
+
+	int2	pix;
+	pix.x = get_global_id(0);
+	pix.y = get_global_id(1);
+	int			id = pix.x + (scen->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	
+	scene.ray = get_ray_cam(ACTIVECAM, scene, pix.x, pix.y);
+	if (pix.x == scen->mou_x && pix.y == scen->mou_y)
 		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
 	OUTPUTE = get_pixel_color(scene);
 }

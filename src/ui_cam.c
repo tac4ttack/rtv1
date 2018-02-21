@@ -3,6 +3,7 @@
 void		ui_cam(t_env *e)
 {
 		(KP_SPC ? e->param.mvt.y += 1 : 0);
+		(KP_SPC ? e->scene->mvt.y += 1 : 0); // WIP
 		if (KP_W)
 			ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, ACTIVECAM.pitch * DEG2RAD, ACTIVECAM.yaw * DEG2RAD), ACTIVECAM.pos);
 		if (KP_S)
@@ -32,5 +33,8 @@ void		ui_cam(t_env *e)
 		(ACTIVECAM.roll >= 360 ? ACTIVECAM.roll = 0 : ACTIVECAM.roll);
 		(ACTIVECAM.roll < 0 ? ACTIVECAM.roll = 359 : ACTIVECAM.roll);
 		if (KP_Z)
+		{
 			e->param.active_cam = (e->param.active_cam + 1 < NCAM ? e->param.active_cam + 1 : 0);
+			e->scene->active_cam = (e->scene->active_cam + 1 < e->scene->n_cams ? e->scene->active_cam + 1 : 0);
+		}
 }

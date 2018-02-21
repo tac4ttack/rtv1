@@ -218,6 +218,30 @@ typedef struct			s_frame
 	int					endian;
 }						t_frame;
 
+typedef struct			s_scene
+{
+	t_cam				*cameras;
+	t_cone				*cones;
+	t_cylinder			*cylinders;
+	t_light				*lights;
+	t_plane				*planes;
+	t_sphere			*spheres;
+	unsigned int		n_cams;
+	unsigned int		n_cones;
+	unsigned int		n_cylinders;
+	unsigned int		n_lights;
+	unsigned int		n_planes;
+	unsigned int		n_spheres;
+	unsigned int		active_cam;
+	unsigned int		win_w;
+	unsigned int		win_h;
+	cl_float3			mvt;
+	cl_float3			ambient;
+	int					mou_x;
+	int					mou_y;
+	int					depth;
+}						t_scene;
+
 typedef	struct			s_env
 {
 	void				*mlx;
@@ -259,6 +283,10 @@ typedef	struct			s_env
 	cl_mem				planes_mem;
 	t_sphere			*spheres;
 	cl_mem				spheres_mem;
+
+	t_scene				*scene;
+	cl_mem				scene_mem;
+
 //	next data may be deleted after testing etc
 	char				run;
 }						t_env;

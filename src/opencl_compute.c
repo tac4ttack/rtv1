@@ -14,6 +14,7 @@ void		opencl_set_args(t_env *e)
 	err |= clSetKernelArg(e->kernel_rt, 6, sizeof(cl_mem), &e->planes_mem);
 	err |= clSetKernelArg(e->kernel_rt, 7, sizeof(cl_mem), &e->spheres_mem);
 	err |= clSetKernelArg(e->kernel_rt, 8, sizeof(cl_mem), &e->target_obj_buf);
+	err |= clSetKernelArg(e->kernel_rt, 9, sizeof(t_scene), NULL);
 	if (err != CL_SUCCESS)
 	{
 		ft_putnbr(err);
@@ -62,7 +63,10 @@ int			draw(t_env *e)
 	err = clEnqueueNDRangeKernel(e->raytrace_queue, e->kernel_rt, 2, NULL, \
 			g, NULL, 0, NULL, NULL);
 	if (err)
+	{	
+		printf("%d\n",err);
 		s_error("Error: Failed to execute kernel!\n", e);
+	}
 	get_imgptr(e);
 	return (0);
 }
