@@ -64,6 +64,7 @@ SRC_NAME =  			init.c \
 						tools.c \
 						ui_obj.c \
 						ui_cam.c \
+						update_fps.c \
 						vectors.c \
 						xml.c \
 						xml_cameras.c \

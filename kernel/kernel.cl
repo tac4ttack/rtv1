@@ -267,14 +267,14 @@ __kernel void	ray_trace(__global		char		*output,
 		scen->mou_y = param.mou_y;
 		scen->depth = param.depth;
 	//}
-	
+
 	t_scene         scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
 
 	int2	pix;
 	pix.x = get_global_id(0);
 	pix.y = get_global_id(1);
 	int			id = pix.x + (scen->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
-	
+
 	scene.ray = get_ray_cam(ACTIVECAM, scene, pix.x, pix.y);
 	if (pix.x == scen->mou_x && pix.y == scen->mou_y)
 		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);

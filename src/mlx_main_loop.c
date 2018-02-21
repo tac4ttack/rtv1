@@ -4,6 +4,7 @@ int		mlx_main_loop(t_env *e)
 {
 	if (e)
 	{
+		update_fps(&e->fps);
 		mlx_keyboard_repeated(e);
 		mlx_clear_window(e->mlx, e->win);
 		draw(e);

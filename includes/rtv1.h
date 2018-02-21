@@ -6,6 +6,7 @@
 # include <math.h>
 # include "libft.h"
 # include "mlx.h"
+# include <sys/time.h>
 
 # ifdef MAC_KEYS
 #  include "mac_keys.h"
@@ -64,6 +65,16 @@
 
 # define XML					e->xml
 # define SCN					e->scene
+
+typedef struct		s_fps
+{
+	struct timeval	step2;
+	struct timeval	step;
+	struct timeval	cur;
+	float			delta_time;
+	unsigned int	fps;
+	unsigned int	ret_fps;
+}					t_fps;
 
 typedef struct			s_p2i
 {
@@ -286,6 +297,7 @@ typedef	struct			s_env
 
 	t_scene				*scene;
 	cl_mem				scene_mem;
+	t_fps				fps;
 
 //	next data may be deleted after testing etc
 	char				run;
@@ -296,6 +308,7 @@ typedef	struct			s_env
 */
 
 void					init(t_env *e, int ac, char *av);
+void					update_fps(t_fps *fps);
 void					set_hooks(t_env *e);
 
 void					display_hud(t_env *e);
@@ -336,7 +349,7 @@ void					xml_data_reflex(t_env *e, char **attributes, \
 void					xml_data_shrink(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_speculos(t_env *e, char **attributes, \
-										int *i, t_node *node);										
+										int *i, t_node *node);
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_init(t_env *e, int ac, char *av);
