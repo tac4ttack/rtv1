@@ -229,6 +229,30 @@ typedef struct			s_frame
 	int					endian;
 }						t_frame;
 
+typedef	struct			s_scene
+{
+	t_cam				*cameras;
+	t_cone				*cones;
+	t_cylinder			*cylinders;
+	t_light				*lights;
+	t_plane				*planes;
+	t_sphere			*spheres;
+	int					n_cams;
+	int					n_cones;
+	int					n_cylinders;
+	int					n_lights;
+	int					n_planes;
+	int					n_spheres;
+	int					active_cam;
+	int					win_w;
+	int					win_h;
+	cl_float3			mvt;
+	cl_float3			ambient;
+	int					mou_x;
+	int					mou_y;
+	int					depth;
+}						t_scene;
+
 typedef	struct			s_env
 {
 	void				*mlx;
