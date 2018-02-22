@@ -1,13 +1,13 @@
-#include "kernel_header.h"
-#include "kernel_matrix.h"
-#include "kernel_cam.hl"
-#include "kernel_color.h"
-#include "kernel_cone.h"
-#include "kernel_cylinder.h"
-#include "kernel_data.h"
-#include "kernel_debug.h"
-#include "kernel_plane.h"
-#include "kernel_sphere.h"
+#include "kernel_header.hcl"
+#include "kernel_matrix.hcl"
+#include "kernel_cam.hcl"
+#include "kernel_color.hcl"
+#include "kernel_cone.hcl"
+#include "kernel_cylinder.hcl"
+#include "kernel_data.hcl"
+#include "kernel_debug.hcl"
+#include "kernel_plane.hcl"
+#include "kernel_sphere.hcl"
 
 static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const float3 ray)
 {
@@ -92,29 +92,15 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		light_hit.type = 3;
 		if (light_hit.dist < light_ray.dist  && light_hit.dist > 0)
 		{
-			uint2	pix;
-			pix.x = get_global_id(0);
-			pix.y = get_global_id(1);
-			/*if(hit.type == 4)
-				printf("x = %d y = %d\n", pix.x, pix.y);*/
-			if( pix.x == 512 && pix.y == 384)
-			{
-				printf("diff.x = %f | diff.y = %f | diff.z = %f\n", hit.normale.x, hit.normale.y, hit.normale.z);
-				printf("Light_hit.dist = %.3f\nlight_ray.dist = %.3f\n", light_hit.dist, light_ray.dist);
-				printf("obj %i\n", light_hit.type);
-			}
+			;
 		}
 		else
 		{
-
-
-
-
 		tmp = dot(hit.normale, light_ray.dir);
 		if (tmp > 0)
 			res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
 		reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-		tmp = dot(reflect, -ray);
+		tmp = dot(reflect, ray);
 		if (tmp > 0)
 			res_color = color_specular(scene, hit, light_hit, res_color, tmp);
 		}
