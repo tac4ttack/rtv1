@@ -64,7 +64,7 @@ int			opencl_allocate_scene_memory(t_env *e)
 
 int			opencl_build(t_env *e, unsigned int count)
 {
-	if ((e->err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/", \
+	if ((e->err = clBuildProgram(e->program, 0, NULL, "-g -I ./kernel/includes/", \
 				NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5, e->err));
 	if (!(e->kernel_rt = clCreateKernel(e->program, "ray_trace", &e->err)) \

@@ -250,7 +250,6 @@ __kernel void	ray_trace(	__global	char		*output,
 //	test = scene->spheres[0].pos;
 //	printf("sphere x = %f y = %f z = %f\n", test.x, test.y, test.z);
 
-
 	scene->cameras = cameras;
 	scene->cones = cones;
 	scene->cylinders = cylinders;

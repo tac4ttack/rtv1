@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_fps.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 18:22:21 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/02/21 22:36:44 by ntoniolo         ###   ########.fr       */
+/*   Updated: 2018/02/22 22:48:57 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void		update_fps(t_fps *fps)
 	if (fps->cur.tv_sec - fps->step.tv_sec)
 	{
 		fps->ret_fps = fps->fps;
-		ft_putstr("FPS [");
-		ft_putnbr(fps->ret_fps);
-		ft_putstr("]\n");
+	//	ft_putstr("FPS ["); //FPS counter moved on hud
+	//	ft_putnbr(fps->ret_fps);
+	//	ft_putstr("]\n");
 		fps->fps = 0;
 		gettimeofday(&fps->step, NULL);
 	}
