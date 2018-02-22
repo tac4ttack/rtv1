@@ -85,7 +85,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 	{
 		tmp = 0;
 		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = length(light_ray.dir);
+		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
 		light_hit.id = i;
@@ -122,7 +122,7 @@ static unsigned int			phong2(const __local t_scene *scene, const t_hit hit, cons
 	{
 		tmp = 0;
 		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = length(light_ray.dir);
+		light_ray.dist = fast_length(light_ray.dir);
 		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
 		light_hit.id = i;
