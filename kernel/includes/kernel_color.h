@@ -46,7 +46,7 @@ unsigned int	blend_ambiant(const unsigned int c1)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			get_obj_hue(__local t_scene *scene, const t_hit hit)
+unsigned int			get_obj_hue(const __local t_scene *scene, const t_hit hit)
 {
 	unsigned int		color = 0;
 
@@ -63,7 +63,7 @@ unsigned int			get_obj_hue(__local t_scene *scene, const t_hit hit)
 	return (color);
 }
 
-unsigned int	get_ambient(__local t_scene *scene, const unsigned int obj_color)
+unsigned int	get_ambient(const __local t_scene *scene, const unsigned int obj_color)
 {
 	unsigned int r, g, b;
 
@@ -76,10 +76,10 @@ unsigned int	get_ambient(__local t_scene *scene, const unsigned int obj_color)
 	return ((r << 16) + (g << 8) + b);
 }
 
-float3			get_obj_speculos(__local t_scene *scene, const t_hit hit)
+float3			get_obj_speculos(const __local t_scene *scene, const t_hit hit)
 {
 	float3	speculos = 0;
-	
+
 	if (hit.type == 1)
 		speculos = CONES[hit.id].spec;
 	if (hit.type == 2)
@@ -91,10 +91,10 @@ float3			get_obj_speculos(__local t_scene *scene, const t_hit hit)
 	return (speculos);
 }
 
-float3			get_obj_diffuse(__local t_scene *scene, const t_hit hit)
+float3			get_obj_diffuse(const __local t_scene *scene, const t_hit hit)
 {
 	float3	diffuse = 0;
-	
+
 	if (hit.type == 1)
 		diffuse = CONES[hit.id].diff;
 	if (hit.type == 2)
@@ -106,11 +106,13 @@ float3			get_obj_diffuse(__local t_scene *scene, const t_hit hit)
 	return (diffuse);
 }
 
-unsigned int			color_diffuse(__local t_scene *scene, const t_hit hit, \
+unsigned int			color_diffuse(const __local t_scene *scene, const t_hit hit, \
 										const t_hit light_hit, const unsigned int color, const float coef)
 {
 	float3			diffuse = get_obj_diffuse(scene, hit);
-	float			brightness = LIGHT[light_hit.id].brightness;		
+	float			brightness = LIGHT[light_hit.id].brightness;
+
+
 	unsigned int	col_r = (color & 0x00FF0000) >> 16;
 	unsigned int	col_g = (color & 0x0000FF00) >> 8;
 	unsigned int	col_b = (color & 0x000000FF);
@@ -130,7 +132,7 @@ unsigned int			color_diffuse(__local t_scene *scene, const t_hit hit, \
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
 
-unsigned int			color_specular(__local t_scene *scene, const t_hit hit, \
+unsigned int			color_specular(const __local t_scene *scene, const t_hit hit, \
 										const t_hit light_hit, const unsigned int color, const float coef)
 {
 	float3			speculos = get_obj_speculos(scene, hit);

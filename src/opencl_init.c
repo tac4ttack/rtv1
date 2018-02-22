@@ -56,6 +56,9 @@ int			opencl_allocate_scene_memory(t_env *e)
 		if (!(e->spheres_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_sphere) * NSPH, e->spheres, &e->err)))
 			return (opencl_builderrors(e, 7, e->err));
+	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
+		CL_MEM_COPY_HOST_PTR, sizeof(t_scene), e->scene, NULL)))
+			return (opencl_builderrors(e, 7, e->err));
 	return (0);
 }
 
@@ -73,9 +76,6 @@ int			opencl_build(t_env *e, unsigned int count)
 	if (!(e->target_obj_buf = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		sizeof(t_hit), NULL, NULL)))
 		return (opencl_builderrors(e, 7, e->err));
-	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_scene), e->scene, NULL)))
-			return (opencl_builderrors(e, 7, e->err));
 	opencl_allocate_scene_memory(e);
 	return (0);
 }

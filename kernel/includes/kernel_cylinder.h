@@ -9,7 +9,7 @@ static float3	get_cylinder_abc(const float radius, const float3 dir, const float
 	return (abc);
 }
 
-float					inter_cylinder(__local t_scene *scene, const int id, const float3 ray, const float3 origin)
+float					inter_cylinder(const __local t_scene *scene, const int id, const float3 ray, const float3 origin)
 {
 	float3				abc;
 	float3				pos;
@@ -45,9 +45,9 @@ float					inter_cylinder(__local t_scene *scene, const int id, const float3 ray,
 		return (res2);
 	else
 		return (0);
-} 
+}
 
-float3			get_cylinder_normal(__local t_scene *scene, t_hit hit)
+float3			get_cylinder_normal(const __local t_scene *scene, t_hit hit)
 {
 	float3 res = 0;
 	float3 v = 0;

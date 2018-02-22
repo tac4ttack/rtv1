@@ -10,7 +10,7 @@ t_hit			hit_init(void)
 	return (hit);
 }
 
-int				get_max_obj(__local t_scene *scene)
+int				get_max_obj(const __local t_scene *scene)
 {
 	unsigned int			res = scene->n_cones;
 
