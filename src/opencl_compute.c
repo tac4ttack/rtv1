@@ -13,12 +13,12 @@ void		opencl_set_args(t_env *e)
 	e->err |= clSetKernelArg(e->kernel_rt, 7, sizeof(cl_mem), &e->planes_mem);
 	e->err |= clSetKernelArg(e->kernel_rt, 8, sizeof(cl_mem), &e->spheres_mem);
 	e->err |= clSetKernelArg(e->kernel_rt, 9, sizeof(t_scene), NULL);
-	e->err |= clSetKernelArg(e->kernel_rt, 10, sizeof(t_cam) * NCAM, NULL);
-	e->err |= clSetKernelArg(e->kernel_rt, 11, sizeof(t_cone) * NCON, NULL);
-	e->err |= clSetKernelArg(e->kernel_rt, 12, sizeof(t_cylinder) * NCYL, NULL);
-	e->err |= clSetKernelArg(e->kernel_rt, 13, sizeof(t_light) * NLIG, NULL);
-	e->err |= clSetKernelArg(e->kernel_rt, 14, sizeof(t_plane) * NPLA, NULL);
-	e->err |= clSetKernelArg(e->kernel_rt, 15, sizeof(t_sphere) * NSPH, NULL);
+	e->err |= clSetKernelArg(e->kernel_rt, 10, sizeof(t_cam) * NCAM + 4, NULL);
+	e->err |= clSetKernelArg(e->kernel_rt, 11, sizeof(t_cone) * NCON + 4, NULL);
+	e->err |= clSetKernelArg(e->kernel_rt, 12, sizeof(t_cylinder) * NCYL + 4, NULL);
+	e->err |= clSetKernelArg(e->kernel_rt, 13, sizeof(t_light) * NLIG + 4, NULL);
+	e->err |= clSetKernelArg(e->kernel_rt, 14, sizeof(t_plane) * NPLA + 4, NULL);
+	e->err |= clSetKernelArg(e->kernel_rt, 15, sizeof(t_sphere) * NSPH + 4, NULL);
 	if (e->err != CL_SUCCESS)
 	{
 		ft_putnbr((int)e->err); // à remplacer avec une fonction print erreur opencl (fonction à foutre des qu'on a un code erreur ocl)

@@ -204,13 +204,13 @@ static unsigned int	get_pixel_color(__local t_scene *scene, float3 ray)
 
 __kernel void	ray_trace(	__global	char		*output,
 							__global	t_hit		*target_obj,
-							__constant	t_scene		*scene_data,
-							__constant	t_cam		*cameras_data,
-							__constant	t_cone		*cones_data,
-							__constant	t_cylinder	*cylinders_data,
-							__constant	t_light		*lights_data,
-							__constant	t_plane		*planes_data,
-							__constant	t_sphere	*spheres_data,
+							__global	t_scene		*scene_data,
+							__global	t_cam		*cameras_data,
+							__global	t_cone		*cones_data,
+							__global	t_cylinder	*cylinders_data,
+							__global	t_light		*lights_data,
+							__global	t_plane		*planes_data,
+							__global	t_sphere	*spheres_data,
 							__local		t_scene		*scene,
 							__local		t_cam		*cameras,  
 							__local		t_cone		*cones,
@@ -219,32 +219,45 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_plane		*planes,
 							__local		t_sphere	*spheres)
 {
- 	event_t	ev;
-	ev = async_work_group_copy(scene, scene_data, sizeof(t_cam), ev);
+/* 	event_t	ev;
+	float3	test = 0;
+	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
 	wait_group_events(1, &ev);
-//	ev = async_work_group_copy(scene->cameras, cameras_data, sizeof(t_cam) * scene->n_cams, 0);
-//	wait_group_events(1, &ev);
-//	ev = async_work_group_copy(scene->cones, cameras_data, sizeof(t_cone) * scene->n_cones, 0);
-//	wait_group_events(1, &ev);
-//	ev = async_work_group_copy(scene->cylinders, cameras_data, sizeof(t_cylinder) * scene->n_cylinders, 0);
-//	wait_group_events(1, &ev);
-//	ev = async_work_group_copy(scene->lights, cameras_data, sizeof(t_light) * scene->n_lights, 0);
-//	wait_group_events(1, &ev);
-//	ev = async_work_group_copy(scene->planes, cameras_data, sizeof(t_plane) * scene->n_planes, 0);
-//	wait_group_events(1, &ev);
-//	ev = async_work_group_copy(scene->spheres, cameras_data, sizeof(t_sphere) * scene->n_spheres, 0);
-//	wait_group_events(1, &ev);
-
-//	printf("bibi %d\n", sizeof(t_scene));
+//	printf("ww = %d\n", scene->win_w);
+	ev = async_work_group_copy((__local char *)scene->cameras, (__global char *)cameras_data, sizeof(t_cam) * scene->n_cams, 0);
+	wait_group_events(1, &ev);
+//	test = scene->cameras[0].pos;
+//	printf("cam x = %f y = %f z = %f\n", test.x, test.y, test.z);
+	ev = async_work_group_copy((__local char *)scene->cones, (__global char *)cones_data, sizeof(t_cone) * scene->n_cones, 0);
+	wait_group_events(1, &ev);
+//	test = scene->cones[0].pos;
+//	printf("cone x = %f y = %f z = %f\n", test.x, test.y, test.z);
+	ev = async_work_group_copy((__local char *)scene->cylinders, (__global char *)cylinders_data, sizeof(t_cylinder) * scene->n_cylinders, 0);
+	wait_group_events(1, &ev);
+//	test = scene->cylinders[0].pos;
+//	printf("cylinder x = %f y = %f z = %f\n", test.x, test.y, test.z);
+	ev = async_work_group_copy((__local char *)scene->lights, (__global char *)lights_data, sizeof(t_light) * scene->n_lights, 0);
+	wait_group_events(1, &ev);
+//	test = scene->lights[0].pos;
+//	printf("light x = %f y = %f z = %f\n", test.x, test.y, test.z);
+	ev = async_work_group_copy((__local char *)scene->planes, (__global char *)planes_data, sizeof(t_plane) * scene->n_planes, 0);
+	wait_group_events(1, &ev);
+//	test = scene->planes[0].pos;
+//	printf("plane x = %f y = %f z = %f\n", test.x, test.y, test.z);
+	ev = async_work_group_copy((__local char *)scene->spheres, (__global char *)spheres_data, sizeof(t_sphere) * scene->n_spheres, 0);
+	wait_group_events(1, &ev);
+//	test = scene->spheres[0].pos;
+//	printf("sphere x = %f y = %f z = %f\n", test.x, test.y, test.z);
+*/
 
 	uint2	pix;
 	pix.x = get_global_id(0);
 	pix.y = get_global_id(1);
 	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	printf("id = %d\n", id);
+//	float3	prim_ray = get_ray_cam(scene, pix);
 
-	float3	prim_ray = get_ray_cam(scene, pix);
-
-	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
-		*target_obj = ray_hit(scene, (ACTIVECAM.pos + scene->mvt), prim_ray);
-	OUTPUTE = get_pixel_color(scene, prim_ray);
+//	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
+//		*target_obj = ray_hit(scene, (ACTIVECAM.pos + scene->mvt), prim_ray);
+	OUTPUTE = 0x00ff00ff;//get_pixel_color(scene, prim_ray);
 }
