@@ -4,6 +4,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <math.h>
+# include <sys/time.h>
 # include "libft.h"
 # include "mlx.h"
 
@@ -64,6 +65,16 @@
 
 # define XML					e->xml
 # define SCN					e->scene
+
+typedef struct			s_fps
+{
+	struct timeval		step2;
+	struct timeval		step;
+	struct timeval		cur;
+	float				delta_time;
+	unsigned int		fps;
+	unsigned int		ret_fps;
+}						t_fps;
 
 typedef struct			s_p2i
 {
@@ -261,6 +272,7 @@ typedef	struct			s_env
 	cl_mem				spheres_mem;
 //	next data may be deleted after testing etc
 	char				run;
+	t_fps				fps;
 }						t_env;
 
 /*
@@ -353,6 +365,7 @@ int						opencl_allocate_scene_memory(t_env *e);
 void					opencl_set_args(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
+void					update_fps(t_fps *fps);
 
 cl_float3				normalize_vect(cl_float3 v);
 cl_float3				rotz(cl_float3 dir, float roll);

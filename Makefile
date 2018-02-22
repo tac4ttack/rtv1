@@ -62,6 +62,7 @@ SRC_NAME =  			init.c \
 						opencl_init.c \
 						rotations.c \
 						tools.c \
+						update_fps.c \
 						ui_obj.c \
 						ui_cam.c \
 						vectors.c \
