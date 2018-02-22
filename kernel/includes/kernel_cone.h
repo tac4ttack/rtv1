@@ -44,7 +44,7 @@ float3			get_cone_normale(const __local t_scene *scene, const t_hit hit)
 
 	v = hit.pos - CONES[hit.id].pos;
 	doty = dot(v, CONES[hit.id].dir);
-	project = doty * normalize(CONES[hit.id].dir);
+	project = doty * fast_normalize(CONES[hit.id].dir);
 	res = v - project;
-	return (normalize(res));
+	return (fast_normalize(res));
 }

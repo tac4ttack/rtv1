@@ -9,7 +9,7 @@ float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
 	cam_ray.y = ((1 - (2 * ((pix.y + 0.5) / scene->win_h))) * tan(radians(ACTIVECAM.fov / 2)));
 	cam_ray.z = 1;
 	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
-	return(normalize(cam_ray));
+	return(fast_normalize(cam_ray));
 }
 
 /*
@@ -36,6 +36,6 @@ float3						old_get_ray_cam(const t_cam cam, const t_scene scene, const int x, c
 //	cam_ray.z = xx * -sin(yaw) + yy * cos(yaw) * sin(pitch) + cos(yaw) * cos(pitch);
 //
 	cam_ray = rotat_zyx(cam_ray, cam.pitch, cam.yaw, 0);
-	return(normalize(cam_ray));
+	return(fast_normalize(cam_ray));
 }
 */

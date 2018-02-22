@@ -86,7 +86,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		tmp = 0;
 		light_ray.dir = LIGHT[i].pos - hit.pos;
 		light_ray.dist = length(light_ray.dir);
-		light_ray.dir = normalize(light_ray.dir);
+		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
 		light_hit.id = i;
 		light_hit.type = 3;
@@ -113,7 +113,7 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		tmp = dot(hit.normale, light_ray.dir);
 		if (tmp > 0)
 			res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-		reflect = normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
+		reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
 		tmp = dot(reflect, -ray);
 		if (tmp > 0)
 			res_color = color_specular(scene, hit, light_hit, res_color, tmp);
@@ -136,7 +136,7 @@ static unsigned int			phong2(const __local t_scene *scene, const t_hit hit, cons
 		tmp = 0;
 		light_ray.dir = LIGHT[i].pos - hit.pos;
 		light_ray.dist = length(light_ray.dir);
-		light_ray.dir = normalize(light_ray.dir);
+		light_ray.dir = fast_normalize(light_ray.dir);
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
 		light_hit.id = i;
 		light_hit.type = 3;
@@ -147,7 +147,7 @@ static unsigned int			phong2(const __local t_scene *scene, const t_hit hit, cons
 			tmp = dot(hit.normale, light_ray.dir);
 			if (tmp > 0)
 				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-			reflect = normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
+			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
 			tmp = dot(reflect, -ray);
 			if (tmp > 0)
 				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
@@ -164,7 +164,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, cons
 	t_hit			new_hit;
 	while (i > 0)
 	{
-		reflex = normalize(ray - (2 * (float)dot(old_hit.normale, ray) * old_hit.normale));
+		reflex = fast_normalize(ray - (2 * (float)dot(old_hit.normale, ray) * old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)

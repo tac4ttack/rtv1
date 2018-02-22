@@ -19,7 +19,7 @@ float					inter_cylinder(const __local t_scene *scene, const int id, const float
 	float				m;
 
 	pos = origin - CYLIND[id].pos;
-	abc = get_cylinder_abc(CYLIND[id].radius, normalize(CYLIND[id].dir), ray, origin);
+	abc = get_cylinder_abc(CYLIND[id].radius, fast_normalize(CYLIND[id].dir), ray, origin);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);
@@ -55,8 +55,8 @@ float3			get_cylinder_normal(const __local t_scene *scene, t_hit hit)
 	float doty = 0;
 
 	v = hit.pos - CYLIND[hit.id].pos;
-	doty = dot(v, normalize(CYLIND[hit.id].dir));
-	project = doty * normalize(CYLIND[hit.id].dir);
+	doty = dot(v, fast_normalize(CYLIND[hit.id].dir));
+	project = doty * fast_normalize(CYLIND[hit.id].dir);
 	res = v - project;
-	return (normalize(res));
+	return (fast_normalize(res));
 }
