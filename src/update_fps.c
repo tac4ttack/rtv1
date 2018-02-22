@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 18:22:21 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/02/22 17:09:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/22 17:17:20 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ void		update_fps(t_fps *fps)
 	if (fps->cur.tv_sec - fps->step.tv_sec)
 	{
 		fps->ret_fps = fps->fps;
+		/* remplacé par affichage sur hud directement
 		ft_putstr("FPS [");
 		ft_putnbr(fps->ret_fps);
 		ft_putstr("]\n");
+		*/
 		fps->fps = 0;
 		gettimeofday(&fps->step, NULL);
 	}
