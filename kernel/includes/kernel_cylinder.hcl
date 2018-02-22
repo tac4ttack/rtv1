@@ -19,7 +19,7 @@ float					inter_cylinder(const __local t_scene *scene, const int id, const float
 	float				m;
 
 	pos = origin - CYLIND[id].pos;
-	abc = get_cylinder_abc(CYLIND[id].radius, fast_normalize(CYLIND[id].dir), ray, origin);
+	abc = get_cylinder_abc(CYLIND[id].radius, fast_normalize(CYLIND[id].dir), ray, pos);
 	d = (abc.y * abc.y) - (4 * (abc.x * abc.z));
 	if (d < 0)
 		return (0);

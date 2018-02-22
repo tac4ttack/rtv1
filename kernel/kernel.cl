@@ -96,13 +96,13 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		}
 		else
 		{
-		tmp = dot(hit.normale, light_ray.dir);
-		if (tmp > 0)
-			res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-		reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-		tmp = dot(reflect, -ray);
-		if (tmp > 0)
-			res_color = color_specular(scene, hit, light_hit, res_color, tmp);
+			tmp = dot(hit.normale, light_ray.dir);
+			if (tmp > 0)
+				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
+			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
+			tmp = dot(reflect, -ray);
+			if (tmp > 0)
+				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
 		}
 	}
 	return (res_color);
@@ -174,10 +174,10 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 	unsigned int	bounce_color = 0;
 
 	hit.dist = MAX_DIST;
-	hit = ray_hit(scene, (ACTIVECAM.pos /*+ scene->mvt*/), ray);
+	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
 	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
-		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos /*+ scene->mvt*/);
+		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
 		color = phong(scene, hit, ray);
@@ -207,35 +207,20 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_sphere	*spheres)
 {
  	event_t	ev;
-	float3	test = 0;
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
 	wait_group_events(1, &ev);
-
-//	printf("ww = %d\n", scene->win_w);
 	ev = async_work_group_copy((__local char *)cameras, (__global char *)cameras_data, sizeof(t_cam) * scene->n_cams, 0);
 	wait_group_events(1, &ev);
-//	test = scene->cameras[0].pos;
-//	printf("cam x = %f y = %f z = %f\n", test.x, test.y, test.z);
 	ev = async_work_group_copy((__local char *)cones, (__global char *)cones_data, sizeof(t_cone) * scene->n_cones, 0);
 	wait_group_events(1, &ev);
-//	test = scene->cones[0].pos;
-//	printf("cone x = %f y = %f z = %f\n", test.x, test.y, test.z);
 	ev = async_work_group_copy((__local char *)cylinders, (__global char *)cylinders_data, sizeof(t_cylinder) * scene->n_cylinders, 0);
 	wait_group_events(1, &ev);
-//	test = scene->cylinders[0].pos;
-//	printf("cylinder x = %f y = %f z = %f\n", test.x, test.y, test.z);
 	ev = async_work_group_copy((__local char *)lights, (__global char *)lights_data, sizeof(t_light) * scene->n_lights, 0);
 	wait_group_events(1, &ev);
-//	test = scene->lights[0].pos;
-//	printf("light x = %f y = %f z = %f\n", test.x, test.y, test.z);
 	ev = async_work_group_copy((__local char *)planes, (__global char *)planes_data, sizeof(t_plane) * scene->n_planes, 0);
 	wait_group_events(1, &ev);
-//	test = scene->planes[0].pos;
-//	printf("plane x = %f y = %f z = %f\n", test.x, test.y, test.z);
 	ev = async_work_group_copy((__local char *)spheres, (__global char *)spheres_data, sizeof(t_sphere) * scene->n_spheres, 0);
 	wait_group_events(1, &ev);
-//	test = scene->spheres[0].pos;
-//	printf("sphere x = %f y = %f z = %f\n", test.x, test.y, test.z);
 
 	scene->cameras = cameras;
 	scene->cones = cones;
@@ -250,8 +235,6 @@ __kernel void	ray_trace(	__global	char		*output,
 	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 
 	float3	prim_ray = get_ray_cam(scene, pix);
-//	if (pix.x == 50 && pix.y == 500)
-//	printf("Depth: [%i]\n", scene->depth);
 	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
 	OUTPUTE = get_pixel_color(scene, prim_ray);

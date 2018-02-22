@@ -1,11 +1,6 @@
-#define DIBUG if ((scene.pix.x == 175 || scene.pix.x == 525 || scene.pix.x == 845) && scene.pix.y == 370)
-
 #define BACKCOLOR 0x00999999
 
 #define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
-
-#define DEG2RAD (M_PI / 180)
-#define RAD2DEG (180 / M_PI)
 
 #define CAM scene->cameras
 #define CONES scene->cones
@@ -13,7 +8,6 @@
 #define LIGHT scene->lights
 #define PLANE scene->planes
 #define SPHERE scene->spheres
-#define PARAM scene->param
 #define ACTIVECAM scene->cameras[scene->active_cam]
 
 #define OUTPUTE ((__global unsigned int *)output)[id]
