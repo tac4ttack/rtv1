@@ -100,13 +100,14 @@ static unsigned int			phong(const __local t_scene *scene, const t_hit hit, const
 		if (tmp > 0)
 			res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
 		reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-		tmp = dot(reflect, ray);
+		tmp = dot(reflect, -ray);
 		if (tmp > 0)
 			res_color = color_specular(scene, hit, light_hit, res_color, tmp);
 		}
 	}
 	return (res_color);
 }
+
 static unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
 	int					i = -1;
