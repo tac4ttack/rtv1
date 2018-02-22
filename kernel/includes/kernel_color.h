@@ -46,7 +46,7 @@ unsigned int	blend_ambiant(const unsigned int c1)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int			get_obj_hue(const t_scene scene, const t_hit hit)
+unsigned int			get_obj_hue(__local t_scene *scene, const t_hit hit)
 {
 	unsigned int		color = 0;
 
@@ -63,20 +63,20 @@ unsigned int			get_obj_hue(const t_scene scene, const t_hit hit)
 	return (color);
 }
 
-unsigned int	get_ambient(const t_scene scene, const unsigned int obj_color)
+unsigned int	get_ambient(__local t_scene *scene, const unsigned int obj_color)
 {
 	unsigned int r, g, b;
 
 	r = (obj_color & 0x00FF0000) >> 16;
 	g = (obj_color & 0x0000FF00) >> 8;
 	b = (obj_color & 0x000000FF);
-	r = (0.01 + r * PARAM->ambient.x > 255 ? 255 : 0.01 + r * PARAM->ambient.x);
-	g = (0.01 + g * PARAM->ambient.y > 255 ? 255 : 0.01 + g * PARAM->ambient.y);
-	b = (0.01 + b * PARAM->ambient.z > 255 ? 255 : 0.01 + b * PARAM->ambient.z);
+	r = (0.01 + r * scene->ambient.x > 255 ? 255 : 0.01 + r * scene->ambient.x);
+	g = (0.01 + g * scene->ambient.y > 255 ? 255 : 0.01 + g * scene->ambient.y);
+	b = (0.01 + b * scene->ambient.z > 255 ? 255 : 0.01 + b * scene->ambient.z);
 	return ((r << 16) + (g << 8) + b);
 }
 
-float3			get_obj_speculos(const t_scene scene, const t_hit hit)
+float3			get_obj_speculos(__local t_scene *scene, const t_hit hit)
 {
 	float3	speculos = 0;
 	
@@ -91,7 +91,7 @@ float3			get_obj_speculos(const t_scene scene, const t_hit hit)
 	return (speculos);
 }
 
-float3			get_obj_diffuse(const t_scene scene, const t_hit hit)
+float3			get_obj_diffuse(__local t_scene *scene, const t_hit hit)
 {
 	float3	diffuse = 0;
 	
@@ -106,7 +106,7 @@ float3			get_obj_diffuse(const t_scene scene, const t_hit hit)
 	return (diffuse);
 }
 
-unsigned int			color_diffuse(const t_scene scene, const t_hit hit, \
+unsigned int			color_diffuse(__local t_scene *scene, const t_hit hit, \
 										const t_hit light_hit, const unsigned int color, const float coef)
 {
 	float3			diffuse = get_obj_diffuse(scene, hit);
@@ -130,7 +130,7 @@ unsigned int			color_diffuse(const t_scene scene, const t_hit hit, \
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
 
-unsigned int			color_specular(const t_scene scene, const t_hit hit, \
+unsigned int			color_specular(__local t_scene *scene, const t_hit hit, \
 										const t_hit light_hit, const unsigned int color, const float coef)
 {
 	float3			speculos = get_obj_speculos(scene, hit);

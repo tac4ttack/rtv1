@@ -9,7 +9,7 @@ static float3	get_sphere_abc(const float radius, const float3 ray, const float3 
 }
 
 
-float			inter_sphere(const t_scene scene, const int id, const float3 ray, const float3 origin)
+float			inter_sphere(__local t_scene *scene, const int id, const float3 ray, const float3 origin)
 {
 	float3		abc = 0;
 	float		d = 0;

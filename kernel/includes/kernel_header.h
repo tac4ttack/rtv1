@@ -7,14 +7,14 @@
 #define DEG2RAD (M_PI / 180)
 #define RAD2DEG (180 / M_PI)
 
-#define CAM scene.cameras
-#define CONES scene.cones
-#define CYLIND scene.cylinders
-#define LIGHT scene.lights
-#define PLANE scene.planes
-#define SPHERE scene.spheres
-#define PARAM scene.param
-#define ACTIVECAM scene.cameras[scene.param->active_cam]
+#define CAM scene->cameras
+#define CONES scene->cones
+#define CYLIND scene->cylinders
+#define LIGHT scene->lights
+#define PLANE scene->planes
+#define SPHERE scene->spheres
+#define PARAM scene->param
+#define ACTIVECAM scene->cameras[scene->active_cam]
 
 #define OUTPUTE ((__global unsigned int *)output)[id]
 
@@ -121,14 +121,14 @@ typedef struct			s_param
 }						t_param;
 
 
-typedef struct			s_scen
+typedef struct			s_scene
 {
-	t_cam				__constant *cameras;
-	t_cone				__constant *cones;
-	t_cylinder			__constant *cylinders;
-	t_light				__constant *lights;
-	t_plane				__constant *planes;
-	t_sphere			__constant *spheres;
+	t_cam				__local *cameras;
+	t_cone				__local *cones;
+	t_cylinder			__local *cylinders;
+	t_light				__local *lights;
+	t_plane				__local *planes;
+	t_sphere			__local *spheres;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
@@ -143,17 +143,4 @@ typedef struct			s_scen
 	int					mou_x;
 	int					mou_y;
 	int					depth;
-}						t_scen;
-
-typedef struct			s_scene
-{
-	t_param				*param;
-	t_cam				__constant *cameras;
-	t_cone				__constant *cones;
-	t_cylinder			__constant *cylinders;
-	t_light				__constant *lights;
-	t_plane				__constant *planes;
-	t_sphere			__constant *spheres;
-	float3				ray;
-	int2				pix;
 }						t_scene;

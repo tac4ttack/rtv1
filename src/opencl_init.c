@@ -1,10 +1,11 @@
 #include "rtv1.h"
 
-int			opencl_builderrors(t_env *e, int err)
+int			opencl_builderrors(t_env *e, int err, cl_int ocl)
 {
 	size_t	len;
 	char	buffer[50000];
 
+	printf("\nOCL ERROR IS = %d\n", (int)ocl);  //remplacer par print erreur ocl
 	if (err == 1)
 		ft_putendl("Error: Failed to create device group!");
 	else if (err == 2)
@@ -31,53 +32,50 @@ int			opencl_builderrors(t_env *e, int err)
 
 int			opencl_allocate_scene_memory(t_env *e)
 {
-
 	if (NCAM > 0)
 		if (!(e->cameras_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_cam) * NCAM, e->cameras, NULL)))
-			return (opencl_builderrors(e, 7));
+		CL_MEM_COPY_HOST_PTR, sizeof(t_cam) * NCAM, e->cameras, &e->err)))
+			return (opencl_builderrors(e, 7, e->err));
 	if (NCON > 0)
 		if (!(e->cones_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_cone) * NCON, e->cones, NULL)))
-			return (opencl_builderrors(e, 7));
+		CL_MEM_COPY_HOST_PTR, sizeof(t_cone) * NCON, e->cones, &e->err)))
+			return (opencl_builderrors(e, 7, e->err));
 	if (NCYL > 0)
 		if (!(e->cylinders_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_cylinder) * NCYL, e->cylinders, NULL)))
-			return (opencl_builderrors(e, 7));
+		CL_MEM_COPY_HOST_PTR, sizeof(t_cylinder) * NCYL, e->cylinders, &e->err)))
+			return (opencl_builderrors(e, 7, e->err));
 	if (NLIG > 0)
 		if (!(e->lights_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_light) * NLIG, e->lights, NULL)))
-			return (opencl_builderrors(e, 7));
+		CL_MEM_COPY_HOST_PTR, sizeof(t_light) * NLIG, e->lights, &e->err)))
+			return (opencl_builderrors(e, 7, e->err));
 	if (NPLA > 0)
 		if (!(e->planes_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_plane) * NPLA, e->planes, NULL)))
-			return (opencl_builderrors(e, 7));
+		CL_MEM_COPY_HOST_PTR, sizeof(t_plane) * NPLA, e->planes, &e->err)))
+			return (opencl_builderrors(e, 7, e->err));
 	if (NSPH > 0)
 		if (!(e->spheres_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_sphere) * NSPH, e->spheres, NULL)))
-			return (opencl_builderrors(e, 7));
+		CL_MEM_COPY_HOST_PTR, sizeof(t_sphere) * NSPH, e->spheres, &e->err)))
+			return (opencl_builderrors(e, 7, e->err));
 	return (0);
 }
 
 int			opencl_build(t_env *e, unsigned int count)
 {
-	int		err;
-
-	if ((err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/", \
+	if ((e->err = clBuildProgram(e->program, 0, NULL, "-I ./kernel/includes/", \
 				NULL, NULL)) != CL_SUCCESS)
-		return (opencl_builderrors(e, 5));
-	if (!(e->kernel_rt = clCreateKernel(e->program, "ray_trace", &err)) \
-		|| err != CL_SUCCESS)
-		return (opencl_builderrors(e, 6));
+		return (opencl_builderrors(e, 5, e->err));
+	if (!(e->kernel_rt = clCreateKernel(e->program, "ray_trace", &e->err)) \
+		|| e->err != CL_SUCCESS)
+		return (opencl_builderrors(e, 6, e->err));
 	if (!(e->frame_buffer = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		count, NULL, NULL)))
-		return (opencl_builderrors(e, 7));
+		return (opencl_builderrors(e, 7, e->err));
 	if (!(e->target_obj_buf = clCreateBuffer(e->context, CL_MEM_WRITE_ONLY, \
 		sizeof(t_hit), NULL, NULL)))
-		return (opencl_builderrors(e, 7));
-	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_WRITE | \
+		return (opencl_builderrors(e, 7, e->err));
+	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_scene), e->scene, NULL)))
-			return (opencl_builderrors(e, 7));
+			return (opencl_builderrors(e, 7, e->err));
 	opencl_allocate_scene_memory(e);
 	return (0);
 }
@@ -107,21 +105,19 @@ void		load_kernel(t_env *e)
 
 int			opencl_init(t_env *e, unsigned int count)
 {
-	int		err;
-
 	load_kernel(e);
-	if ((err = clGetDeviceIDs(NULL, e->gpu ? CL_DEVICE_TYPE_GPU : \
+	if ((e->err = clGetDeviceIDs(NULL, e->gpu ? CL_DEVICE_TYPE_GPU : \
 				CL_DEVICE_TYPE_CPU, 1, &e->device_id, NULL)) != CL_SUCCESS)
-		return (opencl_builderrors(e, 1));
+		return (opencl_builderrors(e, 1, e->err));
 	if (!(e->context = clCreateContext(0, 1, &e->device_id, \
-				NULL, NULL, &err)))
-		return (opencl_builderrors(e, 2));
+				NULL, NULL, &e->err)))
+		return (opencl_builderrors(e, 2, e->err));
 	if (!(e->raytrace_queue = clCreateCommandQueue(e->context, \
-				e->device_id, 0, &err)))
-		return (opencl_builderrors(e, 3));
+				e->device_id, 0, &e->err)))
+		return (opencl_builderrors(e, 3, e->err));
 	if (!(e->program = clCreateProgramWithSource(e->context, 1, \
-				(const char **)&e->kernel_src, NULL, &err)))
-		return (opencl_builderrors(e, 4));
+				(const char **)&e->kernel_src, NULL, &e->err)))
+		return (opencl_builderrors(e, 4, e->err));
 	opencl_build(e, count);
 	return (0);
 }

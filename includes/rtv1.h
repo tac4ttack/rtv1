@@ -268,6 +268,7 @@ typedef	struct			s_env
 	int					debug;
 	t_xml				*xml;
 	char				*kernel_src;
+	cl_int				err;
 	cl_device_id		device_id;
 	cl_context			context;
 	cl_command_queue	raytrace_queue;
@@ -279,9 +280,11 @@ typedef	struct			s_env
 	int					gpu;
 	size_t				global;
 	size_t				local;
-	size_t				dif;
+
 	unsigned int		count;
+
 	t_param				param;
+	
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;

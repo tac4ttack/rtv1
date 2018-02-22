@@ -9,46 +9,37 @@
 #include "kernel_plane.h"
 #include "kernel_sphere.h"
 
-float3					rotate_obj(float3 v, float pitch, float yaw, float roll)
-{
-	float3				res;
-
-	res = rotat_zyx(v, pitch, yaw, roll);
-
-	return (normalize(res));
-}
-
-static t_hit			ray_hit(const float3 origin, const float3 ray, const t_scene scene)
+static t_hit			ray_hit(__local t_scene *scene, const float3 origin, const float3 ray)
 {
 	unsigned int			i = 0;
-	int						max = get_max_obj(PARAM);
+	int						max = get_max_obj(scene);
 	t_hit					hit = hit_init();
 	float					dist = 0;
 
 	while (i < max)
 	{
-		if (i < PARAM->n_cones)
+		if (i < scene->n_cones)
 			if (((dist = inter_cone(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 1;
 				hit.id = i;
 			}
-		if (i < PARAM->n_cylinders)
-			if (((dist = inter_cylinder(CYLIND[i], ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+		if (i < scene->n_cylinders)
+			if (((dist = inter_cylinder(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 2;
 				hit.id = i;
 			}
-		if (i < PARAM->n_planes)
+		if (i < scene->n_planes)
 			if (((dist = inter_plan(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
 				hit.type = 4;
 				hit.id = i;
 			}
-		if (i < PARAM->n_spheres)
+		if (i < scene->n_spheres)
 			if (((dist = inter_sphere(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
 			{
 				hit.dist = dist;
@@ -58,6 +49,17 @@ static t_hit			ray_hit(const float3 origin, const float3 ray, const t_scene scen
 		i++;
 	}
 	return (hit);
+}
+
+/*
+
+float3					rotate_obj(float3 v, float pitch, float yaw, float roll)
+{
+	float3				res;
+
+	res = rotat_zyx(v, pitch, yaw, roll);
+
+	return (normalize(res));
 }
 
 float3			rotate_matrix(float angle, float3 v)
@@ -97,9 +99,9 @@ float3			apply_matrix(float16 mat, float3 v)
 	res.y = mat[1] * v.x + mat[5] * v.y + mat[9] * v.z;
 	res.z = mat[2] * v.x + mat[6] * v.y + mat[10] * v.z;
 	return (res);
-}
+} */
 
-float3			get_hit_normale(t_scene scene, t_hit hit)
+float3			get_hit_normale(__local t_scene *scene, float3 ray, t_hit hit)
 {
 	float3		res;
 
@@ -109,7 +111,7 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 		res = get_cylinder_normal(scene, hit);
 	else if (hit.type == 4)
 	{
-		if (dot(PLANE[hit.id].normale, -scene.ray) < 0)
+		if (dot(PLANE[hit.id].normale, ray) < 0)
 			res = -PLANE[hit.id].normale;
 		else
 			res = PLANE[hit.id].normale;
@@ -119,7 +121,7 @@ float3			get_hit_normale(t_scene scene, t_hit hit)
 	return (fast_normalize(res));
 }
 
-static unsigned int			phong(const t_hit hit, const t_scene scene)
+static unsigned int			phong(__local t_scene *scene, const t_hit hit, const float3 ray)
 {
 	int					i = -1;
 	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
@@ -129,13 +131,13 @@ static unsigned int			phong(const t_hit hit, const t_scene scene)
 	t_light_ray			light_ray;
 	t_hit				light_hit = hit_init();
 
-	while (++i < PARAM->n_lights)
+	while (++i < scene->n_lights)
 	{
 		tmp = 0;
 		light_ray.dir = LIGHT[i].pos - hit.pos;
 		light_ray.dist = length(light_ray.dir);
 		light_ray.dir = normalize(light_ray.dir);
-		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
+		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
 		light_hit.id = i;
 		light_hit.type = 3;
 		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
@@ -146,7 +148,7 @@ static unsigned int			phong(const t_hit hit, const t_scene scene)
 			if (tmp > 0)
 				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
 			reflect = normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-			tmp = dot(reflect, -scene.ray);
+			tmp = dot(reflect, -ray);
 			if (tmp > 0)
 				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
 		}
@@ -154,39 +156,7 @@ static unsigned int			phong(const t_hit hit, const t_scene scene)
 	return (res_color);
 }
 
-unsigned int			phong2(t_hit hit, t_scene scene)
-{
-	int					i = -1;
-	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
-	float				tmp = 0;
-	float3				reflect = 0;
-
-	t_light_ray			light_ray;
-	t_hit				light_hit;
-
-	while (++i < PARAM->n_lights)
-	{
-		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = length(light_ray.dir);
-		light_ray.dir = normalize(light_ray.dir);
-		light_hit = ray_hit(hit.pos, light_ray.dir, scene);
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-		;
-		else
-		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0)
-				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-			reflect = normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-			tmp = dot(reflect, -scene.ray);
-			if (tmp > 0)
-				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
-		}
-	}
-	return (res_color);
-}
-
-static unsigned int		bounce(const t_scene scene, const t_hit old_hit, const int depth)
+static unsigned int		bounce(__local t_scene *scene, const float3 ray, const t_hit old_hit, const int depth)
 {
 	int				i = depth;
 	unsigned int	color = 0;
@@ -194,89 +164,87 @@ static unsigned int		bounce(const t_scene scene, const t_hit old_hit, const int 
 	t_hit			new_hit;
 	while (i > 0)
 	{
-		reflex = normalize(scene.ray - (2 * (float)dot(old_hit.normale, scene.ray) * old_hit.normale));
+		reflex = normalize(ray - (2 * (float)dot(old_hit.normale, ray) * old_hit.normale));
 		new_hit.dist = MAX_DIST;
-		new_hit = ray_hit(old_hit.pos, reflex, scene);
+		new_hit = ray_hit(scene, old_hit.pos, reflex);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
-			new_hit.normale = get_hit_normale(scene, new_hit);
+			new_hit.normale = get_hit_normale(scene, ray, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color += 0.1 * phong2(new_hit, scene);
+			color += 0.1 * phong(scene, new_hit, ray);
 		}
 		i--;
 	}
 	return (color);
 }
 
-static unsigned int	get_pixel_color(const t_scene scene)
+static unsigned int	get_pixel_color(__local t_scene *scene, float3 ray)
 {
 	t_hit			hit;
-	int				depth = PARAM->depth;
+	int				depth = scene->depth;
 	unsigned int	color  = 0;
 	unsigned int	bounce_color = 0;
 
 	hit.dist = MAX_DIST;
-	hit = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
+	hit = ray_hit(scene, (ACTIVECAM.pos + scene->mvt), ray);
 	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
-		hit.pos = (hit.dist * scene.ray) + (ACTIVECAM.pos + PARAM->mvt);
-		hit.normale = get_hit_normale(scene, hit);
+		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos + scene->mvt);
+		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
-		color = phong(hit, scene);
+		color = phong(scene, hit, ray);
 		if (depth > 0)
-			bounce_color = bounce(scene, hit, depth);
+			bounce_color = bounce(scene, ray, hit, depth);
 		return (color + bounce_color);
 //		return (blend_add(color, 0.8*bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
 }
 
-__kernel void	ray_trace(__global		char		*output,
-						  				t_param		param,
-						  __constant	t_cam		*cameras,
-						  __constant	t_cone		*cones,
-						  __constant	t_cylinder	*cylinders,
-						  __constant	t_light		*lights,
-						  __constant	t_plane		*planes,
-						  __constant	t_sphere	*spheres,
-						  __global		t_hit		*target_obj,
-						  __local		t_scen		*scen)
+__kernel void	ray_trace(	__global	char		*output,
+							__global	t_hit		*target_obj,
+							__constant	t_scene		*scene_data,
+							__constant	t_cam		*cameras_data,
+							__constant	t_cone		*cones_data,
+							__constant	t_cylinder	*cylinders_data,
+							__constant	t_light		*lights_data,
+							__constant	t_plane		*planes_data,
+							__constant	t_sphere	*spheres_data,
+							__local		t_scene		*scene,
+							__local		t_cam		*cameras,  
+							__local		t_cone		*cones,
+							__local		t_cylinder	*cylinders,
+							__local		t_light		*lights,
+							__local		t_plane		*planes,
+							__local		t_sphere	*spheres)
 {
-//	if (get_local_id(0) == 0 && get_local_id(1) == 0)
-//	{
-//		printf("workitem %d %d\nworkgroup %d %d\n\n", get_local_id(0), get_local_id(1), get_group_id(0),get_group_id(1));
-		scen->cameras = cameras;
-		scen->cones = cones;
-		scen->cameras = cameras;
-		scen->cameras = cameras;
-		scen->cameras = cameras;
-		scen->cameras = cameras;
-		scen->n_cams = param.n_cams;
-		scen->n_cones = param.n_cones;
-		scen->n_cylinders = param.n_cylinders;
-		scen->n_lights = param.n_lights;
-		scen->n_planes = param.n_planes;
-		scen->n_spheres = param.n_spheres;
-		scen->active_cam = param.active_cam;
-		scen->win_w = param.win_w;
-		scen->win_h = param.win_h;
-		scen->mvt = param.mvt;
-		scen->ambient = param.ambient;
-		scen->mou_x = param.mou_x;
-		scen->mou_y = param.mou_y;
-		scen->depth = param.depth;
-	//}
+ 	event_t	ev;
+	ev = async_work_group_copy(scene, scene_data, sizeof(t_cam), ev);
+	wait_group_events(1, &ev);
+//	ev = async_work_group_copy(scene->cameras, cameras_data, sizeof(t_cam) * scene->n_cams, 0);
+//	wait_group_events(1, &ev);
+//	ev = async_work_group_copy(scene->cones, cameras_data, sizeof(t_cone) * scene->n_cones, 0);
+//	wait_group_events(1, &ev);
+//	ev = async_work_group_copy(scene->cylinders, cameras_data, sizeof(t_cylinder) * scene->n_cylinders, 0);
+//	wait_group_events(1, &ev);
+//	ev = async_work_group_copy(scene->lights, cameras_data, sizeof(t_light) * scene->n_lights, 0);
+//	wait_group_events(1, &ev);
+//	ev = async_work_group_copy(scene->planes, cameras_data, sizeof(t_plane) * scene->n_planes, 0);
+//	wait_group_events(1, &ev);
+//	ev = async_work_group_copy(scene->spheres, cameras_data, sizeof(t_sphere) * scene->n_spheres, 0);
+//	wait_group_events(1, &ev);
 
-	t_scene         scene = grab_data(cameras, cones, cylinders, lights, planes, spheres, param);
+//	printf("bibi %d\n", sizeof(t_scene));
 
-	int2	pix;
+	uint2	pix;
 	pix.x = get_global_id(0);
 	pix.y = get_global_id(1);
-	int			id = pix.x + (scen->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 
-	scene.ray = get_ray_cam(ACTIVECAM, scene, pix.x, pix.y);
-	if (pix.x == scen->mou_x && pix.y == scen->mou_y)
-		*target_obj = ray_hit((ACTIVECAM.pos + PARAM->mvt), scene.ray, scene);
-	OUTPUTE = get_pixel_color(scene);
+	float3	prim_ray = get_ray_cam(scene, pix);
+
+	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
+		*target_obj = ray_hit(scene, (ACTIVECAM.pos + scene->mvt), prim_ray);
+	OUTPUTE = get_pixel_color(scene, prim_ray);
 }
