@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 13:48:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/22 22:48:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/22 23:09:45 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,5 @@ void			display_hud(t_env *e)
 	display_hud_cam(e);
 	display_hud_obj_pos(e);
 	display_hud_obj_dir(e);
-	mlx_string_put(e->mlx, e->win, e->win_w - 40, 10, 0x00ffffff, ft_itoa(e->fps.ret_fps));
+	mlx_string_put(e->mlx, e->win, e->win_w - 40, 10, 0x00ffffff, ft_itoa(e->fps.ret_fps)); // attention fuite
 }
