@@ -219,7 +219,7 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_plane		*planes,
 							__local		t_sphere	*spheres)
 {
-/* 	event_t	ev;
+ 	event_t	ev;
 	float3	test = 0;
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
 	wait_group_events(1, &ev);
@@ -248,13 +248,13 @@ __kernel void	ray_trace(	__global	char		*output,
 	wait_group_events(1, &ev);
 //	test = scene->spheres[0].pos;
 //	printf("sphere x = %f y = %f z = %f\n", test.x, test.y, test.z);
-*/
+
 
 	uint2	pix;
 	pix.x = get_global_id(0);
 	pix.y = get_global_id(1);
 	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
-	printf("id = %d\n", id);
+//	printf("id = %d\n", id);
 //	float3	prim_ray = get_ray_cam(scene, pix);
 
 //	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
