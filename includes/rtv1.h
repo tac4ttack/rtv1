@@ -246,7 +246,6 @@ typedef struct			s_scene
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	cl_float3			mvt;
 	cl_float3			ambient;
 	int					mou_x;
 	int					mou_y;
@@ -284,7 +283,7 @@ typedef	struct			s_env
 	unsigned int		count;
 
 	t_param				param;
-	
+
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;

@@ -13,8 +13,8 @@ static float3	get_cone_abc(const t_cone cone, const float3 ray, const float3 ori
 	return (abc);
 }
 
-float			inter_cone(__local t_scene *scene, const int id, const float3 ray, const float3 origin)
-{	
+float			inter_cone(const __local t_scene *scene, const int id, const float3 ray, const float3 origin)
+{
 	float3		abc = 0;
 	float		d = 0;
 	float		res1 = 0;
@@ -35,7 +35,7 @@ float			inter_cone(__local t_scene *scene, const int id, const float3 ray, const
 	return (res2);
 }
 
-float3			get_cone_normale(__local t_scene *scene, const t_hit hit)
+float3			get_cone_normale(const __local t_scene *scene, const t_hit hit)
 {
 	float3 res = 0;
 	float3 v = 0;

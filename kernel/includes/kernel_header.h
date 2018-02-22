@@ -138,7 +138,6 @@ typedef struct			s_scene
 	unsigned int		active_cam;
 	unsigned int		win_w;
 	unsigned int		win_h;
-	float3				mvt;
 	float3				ambient;
 	int					mou_x;
 	int					mou_y;
