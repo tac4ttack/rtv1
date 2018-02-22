@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:18 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/17 16:11:09 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/25 12:26:00 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,13 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 				SPECULAR expected in #6\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, cyl_node);
-	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", cyl_node->spec.x, cyl_node->spec.y , cyl_node->spec.z);}
+	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", cyl_node->spec.x, cyl_node->spec.y , cyl_node->spec.z);
+	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cylinder, REFLEX expected in #7\x1b[0m", e);
+	else
+		xml_data_reflex(e, att, i, cyl_node);
+	printf("reflex = %f\n", cyl_node->reflex);
+}
 
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 {
@@ -113,4 +119,8 @@ void		xml_push_cyl(t_env *e, t_node *list)
 	e->cylinders[list->id].height = list->height;
 	e->cylinders[list->id].diff = list->diff;
 	e->cylinders[list->id].spec = list->spec;
+	e->cylinders[list->id].reflex = list->reflex;
+	e->cylinders[list->id].pitch = 0;
+	e->cylinders[list->id].yaw = 0;
+	e->cylinders[list->id].roll = 0;
 }

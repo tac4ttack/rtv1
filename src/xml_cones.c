@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/11 13:57:34 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/01/25 12:19:22 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ static void	xml_cone_data_n(t_env *e, char **att, t_node *cone_node, int *i)
 	else
 		xml_data_speculos(e, att, i, cone_node);
 	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", cone_node->spec.x, cone_node->spec.y , cone_node->spec.z);
+	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
+		s_error("\x1b[2;31mError in cone, REFLEX expected in #7\x1b[0m", e);
+	else
+		xml_data_reflex(e, att, i, cone_node);
+	printf("reflex = %f\n", cone_node->reflex);
 }
 
 static void	xml_cone_data(t_env *e, char **att, t_node *cone_node, int *i)
@@ -105,4 +110,5 @@ void		xml_push_cone(t_env *e, t_node *list)
 	e->cones[list->id].color = list->color;
 	e->cones[list->id].diff = list->diff;
 	e->cones[list->id].spec = list->spec;
+	e->cones[list->id].reflex = list->reflex;
 }

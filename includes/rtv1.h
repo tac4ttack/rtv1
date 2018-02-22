@@ -4,6 +4,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <math.h>
+# include <sys/time.h>
 # include "libft.h"
 # include "mlx.h"
 
@@ -52,7 +53,7 @@
 # define NLIG					e->param.n_lights
 # define NPLA					e->param.n_planes
 # define NSPH					e->param.n_spheres
-# define ACTIVEOBJ				e->param.target_obj
+# define ACTIVEOBJ				e->target_obj
 # define CAM					e->cameras
 # define CONES					e->cones
 # define CYLIND					e->cylinders
@@ -64,6 +65,16 @@
 
 # define XML					e->xml
 # define SCN					e->scene
+
+typedef struct			s_fps
+{
+	struct timeval		step2;
+	struct timeval		step;
+	struct timeval		cur;
+	float				delta_time;
+	unsigned int		fps;
+	unsigned int		ret_fps;
+}						t_fps;
 
 typedef struct			s_p2i
 {
@@ -85,7 +96,6 @@ typedef struct			s_cam
 	cl_float3			pos;
 	cl_float3			dir;
 	cl_float			fov;
-//	cl_float3			ray;   DAFUQ IS THIS SHIT?
 	cl_float			pitch;
 	cl_float			yaw;
 	cl_float			roll;
@@ -99,6 +109,7 @@ typedef struct			s_cone
 	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 }						t_cone;
 
 typedef struct			s_cylinder
@@ -111,6 +122,10 @@ typedef struct			s_cylinder
 	cl_float			height;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			pitch;
+	cl_float			yaw;
+	cl_float			roll;
+	cl_float			reflex;
 }						t_cylinder;
 
 typedef struct			s_light
@@ -118,7 +133,8 @@ typedef struct			s_light
 	cl_int				type;
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float			intensity;
+	cl_float			shrink;
+	cl_float			brightness;
 	cl_int				color;
 }						t_light;
 
@@ -129,6 +145,7 @@ typedef struct			s_plane
 	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 }						t_plane;
 
 typedef struct			s_sphere
@@ -139,6 +156,7 @@ typedef struct			s_sphere
 	cl_int				color;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 }						t_sphere;
 
 typedef struct			s_param
@@ -154,9 +172,9 @@ typedef struct			s_param
 	int					win_h;
 	cl_float3			mvt;
 	cl_float3			ambient;
-	t_hit				target_obj;
 	int					mou_x;
 	int					mou_y;
+	int					depth;
 }						t_param;
 
 typedef struct			s_node
@@ -171,10 +189,12 @@ typedef struct			s_node
 	cl_float			angle;
 	cl_int				color;
 	cl_int				light;
-	cl_float			intensity;
+	cl_float			shrink;
+	cl_float			brightness;
 	cl_float			height;
 	cl_float3			diff;
 	cl_float3			spec;
+	cl_float			reflex;
 	struct s_node		*next;
 }						t_node;
 
@@ -226,10 +246,12 @@ typedef	struct			s_env
 	char				*kernel_src;
 	cl_device_id		device_id;
 	cl_context			context;
-	cl_command_queue	commands_raytrace;
+	cl_command_queue	raytrace_queue;
 	cl_program			program;
-	cl_kernel			kernel_raytrace;
-	cl_mem				output_ptr;
+	cl_kernel			kernel_rt;
+	cl_mem				frame_buffer;
+	cl_mem				target_obj_buf;
+	t_hit				target_obj;
 	int					gpu;
 	size_t				global;
 	size_t				local;
@@ -250,6 +272,7 @@ typedef	struct			s_env
 	cl_mem				spheres_mem;
 //	next data may be deleted after testing etc
 	char				run;
+	t_fps				fps;
 }						t_env;
 
 /*
@@ -259,8 +282,12 @@ typedef	struct			s_env
 void					init(t_env *e, int ac, char *av);
 void					set_hooks(t_env *e);
 
-void					obj_rot(t_env *e, short unsigned int mode, float angle);
-void					obj_ui(t_env *e);
+void					display_hud(t_env *e);
+
+void					ui_cam(t_env *e);
+void					ui_obj(t_env *e);
+cl_float3				*get_target_pos(t_env *e);
+cl_float3				*get_target_dir(t_env *e);
 
 void					xml_allocate_cam(t_env *e);
 void					xml_allocate_cone(t_env *e);
@@ -271,7 +298,9 @@ void					xml_allocate_sphere(t_env *e);
 int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);
 void					xml_data_angle(t_env *e, char **attributes, \
-										int *i, t_node *node);									
+										int *i, t_node *node);
+void					xml_data_brightness(t_env *e, char **attributes, \
+										int *i, t_node *node);
 void					xml_data_color(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_diffiouse(t_env *e, char **attributes, \
@@ -280,13 +309,15 @@ void					xml_data_dir(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_height(t_env *e, char **attributes, \
 										int *i, t_node *node);
-void					xml_data_intens(t_env *e, char **attributes, \
-										int *i, t_node *node);
 void					xml_data_normale(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_pos(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_radius(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_reflex(t_env *e, char **attributes, \
+										int *i, t_node *node);
+void					xml_data_shrink(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_speculos(t_env *e, char **attributes, \
 										int *i, t_node *node);										
@@ -334,6 +365,7 @@ int						opencl_allocate_scene_memory(t_env *e);
 void					opencl_set_args(t_env *e);
 int						draw(t_env *e);
 void					refresh(t_env *e);
+void					update_fps(t_fps *fps);
 
 cl_float3				normalize_vect(cl_float3 v);
 cl_float3				rotz(cl_float3 dir, float roll);

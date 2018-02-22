@@ -1,35 +1,20 @@
 TODO LIST PARSER:
 -----------------
-* rajouter la propriété 'reflexion' aux objets
-* rajouter la propriété 'refraction' aux objets
-
+* rajouter la propriété 'depth' à la scene (nombre de reflexions) 
+* rajouter la propriété indice de 'reflexion' aux objets
+* rajouter la propriété indice de 'refraction' aux objets
+* rajouter protection sur les direction, au moins une des composantes doit être > 0.001
 * segfault quand 1 seule composante diffuse ou specular
 
 CAMERA:
 -------
-	* direction autre que Z bug
-	* il faut sortir du couple hor ver
+	* direction pas du tout prise en compte pour le départ
+	* si direction avec multi composante alors bug deplacement
 
 CONE:
 -----
-	* lumiere hs
-	* pos semble ok
-	* dir fonctionne seulement avec 1 comme valeur sur UN SEUL axe
-	* angle ok sauf si 90 ou plus, facilement corrigeable dans parser
+	* calcul de la normale a faire
 
 CYLINDRE:
 ---------
-	* lumiere semble ok
-	* dir comportements bizarre avec 0 0 0, ou valeur virgule negative
-		--> atof fonctionne mal avec virgule negative
-	
-PLANE:
-------
-	* des fois la position rend la camera immobile, illusion d'optique?
-	* normale semble ok
-
-SPHERE:
--------:
-	* position semble ok
-	* direction inverifiable sans textures ou modificateur
-	* radius semble ok
+	* calcul de la normale avec changement de base (repere)

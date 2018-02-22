@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   obj_ui.c                                           :+:      :+:    :+:   */
+/*   ui_obj.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/17 15:03:16 by fmessina          #+#    #+#             */
-/*   Updated: 2018/01/17 16:43:32 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/16 16:58:04 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-static cl_float3		*get_target_dir(t_env *e)
+cl_float3		*get_target_dir(t_env *e)
 {
 	cl_float3			*res;
 	
@@ -31,7 +31,7 @@ static cl_float3		*get_target_dir(t_env *e)
 	return (res);
 }
 
-static cl_float3		*get_target_pos(t_env *e)
+cl_float3		*get_target_pos(t_env *e)
 {
 	cl_float3			*res;
 	
@@ -50,7 +50,7 @@ static cl_float3		*get_target_pos(t_env *e)
 	return (res);
 }
 
-void					obj_ui(t_env *e)
+void					ui_obj(t_env *e)
 {
 	cl_float3 *target;
 
@@ -72,6 +72,6 @@ void					obj_ui(t_env *e)
 		(KP_N8 ? target->y -= 0.1 : 0);
 		(KP_N5 ? target->y += 0.1 : 0);
 		(KP_N7 ? target->z -= 0.1 : 0);
-		(KP_N9 ? target->z += 0.1 : 0);
+		(KP_N9 ? target->z += 0.1 : 0);		
 	}
 }

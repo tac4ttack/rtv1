@@ -50,6 +50,7 @@ OBJ_NAME =				$(SRC_NAME:.c=.o)
 SRC =					$(addprefix $(SRC_PATH)/,$(SRC_NAME))
 SRC_PATH =				./src
 SRC_NAME =  			init.c \
+						hud.c \
 						main.c \
 						mlx_image_draw.c \
 						mlx_key_press.c \
@@ -57,11 +58,13 @@ SRC_NAME =  			init.c \
 						mlx_key_events.c \
 						mlx_main_loop.c \
 						mlx_mouse.c \
-						obj_ui.c \
 						opencl_compute.c \
 						opencl_init.c \
 						rotations.c \
 						tools.c \
+						update_fps.c \
+						ui_obj.c \
+						ui_cam.c \
 						vectors.c \
 						xml.c \
 						xml_cameras.c \
