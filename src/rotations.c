@@ -4,6 +4,12 @@ cl_float3           rotx(cl_float3 dir, const float pitch) // dir doit être nor
 {
     cl_float3       newdir;
 
+    if (dir.x == 0 && dir.y == 0 && dir.z == 0)
+    {
+        dir.x = 0.000001;
+        dir.y = 0.000001;
+        dir.z = 0.000001;
+    } 
     dir = normalize_vect(dir);
     newdir.x = dir.x;
     newdir.y = dir.y * cos(pitch) + dir.z * -sin(pitch);
@@ -15,6 +21,12 @@ cl_float3           roty(cl_float3 dir, const float yaw) // dir doit être norma
 {
     cl_float3       newdir;
 
+    if (dir.x == 0 && dir.y == 0 && dir.z == 0)
+    {
+        dir.x = 0.000001;
+        dir.y = 0.000001;
+        dir.z = 0.000001;
+    } 
     dir = normalize_vect(dir);
     newdir.x = dir.x * cos(yaw) + dir.z * sin(yaw);
     newdir.y = dir.y;
@@ -26,6 +38,12 @@ cl_float3           rotz(cl_float3 dir, const float roll) // dir doit être norm
 {
     cl_float3       newdir;
 
+    if (dir.x == 0 && dir.y == 0 && dir.z == 0)
+    {
+        dir.x = 0.000001;
+        dir.y = 0.000001;
+        dir.z = 0.000001;
+    } 
     dir = normalize_vect(dir);
     newdir.x = dir.x * cos(roll) + dir.y * -sin(roll);
     newdir.y = dir.x * sin(roll) + dir.y * cos(roll);
