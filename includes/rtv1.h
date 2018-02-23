@@ -66,15 +66,15 @@
 # define XML					e->xml
 # define SCN					e->scene
 
-typedef struct		s_fps
+typedef struct			s_fps
 {
-	struct timeval	step2;
-	struct timeval	step;
-	struct timeval	cur;
-	float			delta_time;
-	unsigned int	fps;
-	unsigned int	ret_fps;
-}					t_fps;
+	struct timeval		step2;
+	struct timeval		step;
+	struct timeval		cur;
+	float				delta_time;
+	unsigned int		fps;
+	unsigned int		ret_fps;
+}						t_fps;
 
 typedef struct			s_p2i
 {
