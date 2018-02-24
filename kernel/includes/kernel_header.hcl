@@ -12,6 +12,8 @@
 
 #define OUTPUTE ((__global unsigned int *)output)[id]
 
+#define OPTION_WAVE (1 << 1)
+
 typedef struct			s_light_ray
 {
 	float3				dir;
@@ -69,7 +71,7 @@ typedef struct			s_light
 	int					type;
 	float3				pos;
 	float3				dir;
-	float				shrink;
+	int					shrink;
 	float				brightness;
 	int					color;
 }						t_light;
@@ -136,4 +138,6 @@ typedef struct			s_scene
 	int					mou_x;
 	int					mou_y;
 	int					depth;
+	float				u_time;
+	int					flag;
 }						t_scene;

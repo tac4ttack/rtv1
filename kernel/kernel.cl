@@ -95,7 +95,7 @@ static t_hit			ray_hit2(const __local t_scene *scene, const float3 origin, const
 
 float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 {
-	float3		res;
+	float3		res, save;
 
 	if (hit.type == 1)
 		res = get_cone_normale(scene, hit);
@@ -107,10 +107,27 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 			res = -PLANE[hit.id].normale;
 		else
 			res = PLANE[hit.id].normale;
+
+		if (scene->flag & OPTION_WAVE)
+		{
+			/*					VAGUELETTE						*/
+			save = res;
+			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
+			return (fast_normalize(save));
+		}
 	}
 	else if (hit.type == 5)
 		res = hit.pos - SPHERE[hit.id].pos;
-	return (fast_normalize(res));
+	save = res;
+	if (scene->flag & OPTION_WAVE)
+	{
+		/*						VAGUELETTE							*/
+		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
+		//save.z = save.z + 0.8 * sin(save.x * 10 + scene->u_time);
+		//save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
+	}
+
+	return (fast_normalize(save));
 }
 
 unsigned int			color_diffuse2(const __local t_scene *scene, const t_hit hit, \
@@ -461,17 +478,20 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 				col_g = (res_color & 0x0000FF00) >> 8;
 				col_b = (res_color & 0x000000FF);
 
-				pow_of_spec = native_powr(tmp, (int)(LIGHT[light_hit.id].shrink));
+				pow_of_spec = native_powr(tmp, (LIGHT[light_hit.id].shrink));
 				light_color = LIGHT[light_hit.id].color;
-				//printf("%.2f\n", pow_of_spec);
-				//float a = pow_of_spec * 2;
 				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
-				//printf("%.2f\n", speculos.x);
 				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
 				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
 				(col_r > 255 ? col_r = 255 : 0);
 				(col_g > 255 ? col_g = 255 : 0);
 				(col_b > 255 ? col_b = 255 : 0);
+				/*col_r += ((LIGHT[light_hit.id].color & 0x00FF0000) >> 16) * pow_of_spec * speculos.x;
+				col_g += ((LIGHT[light_hit.id].color & 0x0000FF00) >> 8) * pow_of_spec * speculos.y;
+				col_b += (LIGHT[light_hit.id].color & 0x000000FF) * pow_of_spec * speculos.z;
+				(col_r > 255 ? col_r = 255 : 0);
+				(col_g > 255 ? col_g = 255 : 0);
+				(col_b > 255 ? col_b = 255 : 0);*/
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 		}
@@ -611,7 +631,9 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_cylinder	*cylinders,
 							__local		t_light		*lights,
 							__local		t_plane		*planes,
-							__local		t_sphere	*spheres)
+							__local		t_sphere	*spheres,
+							__private	float		u_time,
+							__private	int			flag)
 {
  	event_t	ev;
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
@@ -629,16 +651,34 @@ __kernel void	ray_trace(	__global	char		*output,
 	ev = async_work_group_copy((__local char *)spheres, (__global char *)spheres_data, sizeof(t_sphere) * scene->n_spheres, 0);
 	wait_group_events(1, &ev);
 
+	uint2	pix;
+	pix.x = get_global_id(0);
+	pix.y = get_global_id(1);
+
+
 	scene->cameras = cameras;
+	if (!pix.x && !pix.y)
+	{
+		printf("%i\n", sizeof(__private int));
+		printf("%.2f, %.2f, %.2f\n", scene->cameras->pos.x,
+		 							scene->cameras->pos.y,
+									 scene->cameras->pos.z);
+	}
 	scene->cones = cones;
 	scene->cylinders = cylinders;
 	scene->lights = lights;
 	scene->planes = planes;
 	scene->spheres = spheres;
+	scene->u_time = u_time;
+	scene->flag = flag;
+	if (!pix.x && !pix.y)
+	{
+		printf("%i\n", sizeof(__private int));
+		printf("%.2f, %.2f, %.2f\n", scene->cameras->pos.x,
+									scene->cameras->pos.y,
+									 scene->cameras->pos.z);
+	}
 
-	uint2	pix;
-	pix.x = get_global_id(0);
-	pix.y = get_global_id(1);
 	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 
 	float3	prim_ray = get_ray_cam(scene, pix);
