@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 11:05:41 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/07 14:12:58 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/25 21:19:56 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void		xml_data_dir(t_env *e, char **attributes, int *i, t_node *node)
 	}
 	else
 		s_error("\x1b[2;31mError reading DIR vector from scene\x1b[0m", e);
-	if  (node->pos.x == 0 && node->pos.y == 0 && node->pos.z == 0)
-		node->pos.x = 1;
+	if  (node->dir.x == 0 && node->dir.y == 0 && node->dir.z == 0)
+		node->dir.x = 1;
 }
 
 void		xml_data_normale(t_env *e, char **attributes, int *i, t_node *node)
@@ -60,6 +60,6 @@ void		xml_data_normale(t_env *e, char **attributes, int *i, t_node *node)
 	}
 	else
 		s_error("\x1b[2;31mError reading NORMALE vector from scene\x1b[0m", e);
-	if  (node->pos.x == 0 && node->pos.y == 0 && node->pos.z == 0)
-		node->pos.x = 1;
+	if  (node->normale.x == 0 && node->normale.y == 0 && node->normale.z == 0)
+		node->normale.x = 1;
 }
