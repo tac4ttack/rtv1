@@ -1,6 +1,7 @@
 #define BACKCOLOR 0x00999999
 
 #define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
+#define SHADOW_BIAS (float)1000.0
 
 #define CAM scene->cameras
 #define CONES scene->cones

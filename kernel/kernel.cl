@@ -19,28 +19,28 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 	while (i < max)
 	{
 		if (i < scene->n_cones)
-			if (((dist = inter_cone(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_cone(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0.f)
 			{
 				hit.dist = dist;
 				hit.type = 1;
 				hit.id = i;
 			}
 		if (i < scene->n_cylinders)
-			if (((dist = inter_cylinder(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_cylinder(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0.f)
 			{
 				hit.dist = dist;
 				hit.type = 2;
 				hit.id = i;
 			}
 		if (i < scene->n_planes)
-			if (((dist = inter_plan(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_plan(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0.f)
 			{
 				hit.dist = dist;
 				hit.type = 4;
 				hit.id = i;
 			}
 		if (i < scene->n_spheres)
-			if (((dist = inter_sphere(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
+			if (((dist = inter_sphere(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0.f)
 			{
 				hit.dist = dist;
 				hit.type = 5;
@@ -134,7 +134,7 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
 		light_hit.id = i;
 		light_hit.type = 3;
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0.f)
 			;
 		else
 		{
@@ -276,7 +276,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, cons
 		reflex = fast_normalize(ray - (2 * (float)dot(old_hit.normale, ray) * old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
-		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
+		if (new_hit.dist > 0.f && new_hit.dist < MAX_DIST)
 		{
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, ray, new_hit);
@@ -297,11 +297,11 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
-	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
+	if (hit.dist > 0.f && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normale = get_hit_normale(scene, ray, hit);
-		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
+		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 		color = phong2(scene, hit, ray);
 		if (depth > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
