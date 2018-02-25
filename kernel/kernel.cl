@@ -327,8 +327,7 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_light		*lights,
 							__local		t_plane		*planes,
 							__local		t_sphere	*spheres,
-							__private	float		u_time,
-							__private	int			flag)
+							__private	float		u_time)
 {
  	event_t	ev;
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
@@ -358,7 +357,6 @@ __kernel void	ray_trace(	__global	char		*output,
 	scene->planes = planes;
 	scene->spheres = spheres;
 	scene->u_time = u_time;
-	scene->flag = flag;
 
 	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
 
