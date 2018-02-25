@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_fps.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntoniolo <ntoniolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/19 18:22:21 by ntoniolo          #+#    #+#             */
-/*   Updated: 2018/02/22 22:48:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/24 19:17:42 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void		update_fps(t_fps *fps)
 		if (fps->cur.tv_sec != fps->step2.tv_sec)
 			fps->delta_time = (float)(fps->step2.tv_usec +
 								(1000000 - fps->cur.tv_usec)) / 1000000;
+		fps->u_time += fps->delta_time;
 	}
 	gettimeofday(&fps->cur, NULL);
 	if (fps->cur.tv_sec - fps->step.tv_sec)

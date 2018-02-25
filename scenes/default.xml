@@ -7,7 +7,7 @@ Comments rules:
 	Comments may appear anywhere in a document.
 	Comments must not appear within attribute values. -> a faire SEGFAULT :(
 	Comments cannot be nested inside the other comments.
-	
+
 Object informations have to be filled strictly like showed below:
 -----------------------------------------------------------------
 
@@ -63,7 +63,7 @@ Object informations have to be filled strictly like showed below:
 				reflex="0.42"
 				/>
 </scene>
---> 
+-->
 
 <scene res="1024, 768" ambient="0.1, 0.1, 0.1">
 	<cam		id="0"
@@ -112,7 +112,7 @@ Object informations have to be filled strictly like showed below:
 				radius="2"
 				color="0, 0, 255, 0"
 				diff="0.62, 0.6, 0.62"
-				spec="0.9, 0.9, 0.9"
+				spec="0.99, 0.99, 0.99"
 				reflex="0.42"
 				/>
 </scene>

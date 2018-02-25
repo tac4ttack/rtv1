@@ -65,12 +65,15 @@
 # define XML					e->xml
 # define SCN					e->scene
 
+# define OPTION_WAVE			(1 << 1)
+
 typedef struct			s_fps
 {
 	struct timeval		step2;
 	struct timeval		step;
 	struct timeval		cur;
 	float				delta_time;
+	float				u_time;
 	unsigned int		fps;
 	unsigned int		ret_fps;
 }						t_fps;
@@ -132,7 +135,7 @@ typedef struct			s_light
 	cl_int				type;
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float			shrink;
+	cl_int				shrink;
 	cl_float			brightness;
 	cl_int				color;
 }						t_light;
@@ -188,7 +191,7 @@ typedef struct			s_node
 	cl_float			angle;
 	cl_int				color;
 	cl_int				light;
-	cl_float			shrink;
+	cl_int				shrink;
 	cl_float			brightness;
 	cl_float			height;
 	cl_float3			diff;
@@ -249,6 +252,8 @@ typedef struct			s_scene
 	int					mou_x;
 	int					mou_y;
 	int					depth;
+	float				u_time;
+	int					flag;
 }						t_scene;
 
 typedef	struct			s_env
@@ -301,6 +306,8 @@ typedef	struct			s_env
 
 //	next data may be deleted after testing etc
 	char				run;
+
+	int					flag;
 }						t_env;
 
 /*

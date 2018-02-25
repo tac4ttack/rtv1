@@ -116,12 +116,12 @@ unsigned int			color_diffuse(const __local t_scene *scene, const t_hit hit, \
 	unsigned int	col_r = (color & 0x00FF0000) >> 16;
 	unsigned int	col_g = (color & 0x0000FF00) >> 8;
 	unsigned int	col_b = (color & 0x000000FF);
-	unsigned int	obj_r = (get_obj_hue(scene, hit) & 0x00FF0000) >> 16;
-	unsigned int	obj_g = (get_obj_hue(scene, hit) & 0x0000FF00) >> 8;
-	unsigned int	obj_b = (get_obj_hue(scene, hit) & 0x000000FF);
-	unsigned int	l_r = (get_obj_hue(scene, light_hit) & 0x00FF0000) >> 16;
-	unsigned int	l_g = (get_obj_hue(scene, light_hit) & 0x0000FF00) >> 8;
-	unsigned int	l_b = (get_obj_hue(scene, light_hit) & 0x000000FF);
+	unsigned int	obj_r = (get_obj_hue(scene, hit) & 0xFF0000) >> 16;
+	unsigned int	obj_g = (get_obj_hue(scene, hit) & 0x00FF00) >> 8;
+	unsigned int	obj_b = (get_obj_hue(scene, hit) & 0x0000FF);
+	unsigned int	l_r = (get_obj_hue(scene, light_hit) & 0xFF0000) >> 16;
+	unsigned int	l_g = (get_obj_hue(scene, light_hit) & 0x00FF00) >> 8;
+	unsigned int	l_b = (get_obj_hue(scene, light_hit) & 0x0000FF);
 
 	col_r += ((l_r * brightness) + obj_r) * coef * diffuse.x;
 	col_g += ((l_g * brightness) + obj_g) * coef * diffuse.y;

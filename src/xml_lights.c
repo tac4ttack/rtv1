@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/23 15:18:41 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/25 13:06:50 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 		s_error("\x1b[2;31mError in light, SHRINK expected in #4\x1b[0m", e);
 	else
 		xml_data_shrink(e, att, i, light_node);
-	printf("shrink = %f\n", light_node->shrink);
+	printf("shrink = %i\n", light_node->shrink);
 	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
 		s_error("\x1b[2;31mError in light, COLOR expected in #5\x1b[0m", e);
 	else
@@ -58,7 +58,7 @@ void		xml_node_light(t_env *e, char *node)
 	t_node	*light_node;
 	char	**tmp;
 	int		i;
-	
+
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
 	e->scene->n_lights++; // WIP
@@ -67,7 +67,7 @@ void		xml_node_light(t_env *e, char *node)
 	i = 1;
 	xml_light_data(e, tmp, light_node, &i);
 	if (tmp[i] == NULL)
-	{	
+	{
 		if (ft_strstr(tmp[i - 1], "/>") == NULL)
 			s_error("\x1b[2;31mError LIGHT node isn't closed\x1b[0m", e);
 	}

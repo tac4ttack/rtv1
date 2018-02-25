@@ -56,6 +56,7 @@ float3			get_cylinder_normal(const __local t_scene *scene, t_hit hit)
 
 	v = hit.pos - CYLIND[hit.id].pos;
 	doty = dot(v, fast_normalize(CYLIND[hit.id].dir));
+
 	project = doty * fast_normalize(CYLIND[hit.id].dir);
 	res = v - project;
 	return (fast_normalize(res));
