@@ -61,10 +61,26 @@
 			/>
 	<light 	id="0"
 			type="0"
-			pos="-5, 0, -10"
+			pos="-2, 0, -10"
 			dir="0, 0, 0"
-			brightness="1"
-			shrink="1000"
-			color="0, 255, 255, 255"
+			brightness="0.21"
+			shrink="21"
+			color="0, 255, 0, 0"
+			/>
+	<light 	id="1"
+			type="0"
+			pos="0, 0, -10"
+			dir="0, 0, 0"
+			brightness="0.21"
+			shrink="21"
+			color="0, 0, 255, 0"
+			/>
+	<light 	id="2"
+			type="0"
+			pos="2, 0, -10"
+			dir="0, 0, 0"
+			brightness="0.21"
+			shrink="21"
+			color="0, 0, 0, 255"
 			/>
 </scene>
