@@ -18,6 +18,8 @@ void		xml_data_type(t_env *e, char **attributes, int *i, t_node *node)
 	{
 		if (attributes[(*i)] == NULL)
 			s_error("\x1b[2;31mError reading LIGHT TYPE value\x1b[0m", e);
+		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
+			s_error("\x1b[2;31mError in TYPE from light\x1b[0m", e);
 		node->light = ft_atoi(attributes[(*i)++] + 6);
 		if (node->light < 0 || node->light > 2)
 			s_error("\x1b[2;31mError LIGHT TYPE not between 0 & 2\x1b[0m", e);
@@ -39,6 +41,8 @@ void		xml_data_color(t_env *e, char **attributes, int *i, t_node *node)
 		{
 			if (attributes[(*i)] == NULL)
 				s_error("\x1b[2;31mError reading COLOR value\x1b[0m", e);
+			if (j == 3 && attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
+				s_error("\x1b[2;31mError in COLOR from scene\x1b[0m", e);
 			if (j== 0)
 				channel[j] = ft_atoi(attributes[(*i)++] + 7);
 			else
@@ -60,6 +64,8 @@ void	xml_data_shrink(t_env *e, char **attributes, int *i, t_node *node)
 	{
 		if (attributes[(*i)] == NULL)
 			s_error("\x1b[2;31mError reading SHRINK value\x1b[0m", e);
+		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
+			s_error("\x1b[2;31mError in SHRINK from scene\x1b[0m", e);
 		node->shrink = ft_atoi(attributes[(*i)++] + 8);
 		if (node->shrink < 0)
 			s_error("\x1b[2;31mError SHRINK can't be negative\x1b[0m", e);

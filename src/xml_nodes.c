@@ -72,6 +72,11 @@ void				xml_node_generic(t_env *e, char *node, char mod)
 void				xml_process_node(t_env *e, char *node)
 {
 	XML->sub_node = ft_strsplit(node, ' ');
+	if (xml_check_attr(XML->sub_node) != 0)
+	{
+		printf("\x1b[2;31mError in node %s\x1b[0m", XML->sub_node[0]);
+		exit(0);
+	}
 	if (ft_strcmp(XML->sub_node[0], "!--") == 0 || XML->is_comm == 1)
 		xml_node_generic(e, node, 1);
 	else if (XML->is_comm == 0 && ft_strcmp(XML->sub_node[0], "?xml") == 0)
