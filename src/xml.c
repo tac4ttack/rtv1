@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:33:45 by fmessina          #+#    #+#             */
-/*   Updated: 2017/11/29 14:00:14 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/23 15:19:59 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		xml_get_file(t_env *e, int ac, char *av)
 	else
 	{
 		ft_putendl("\x1b[2;33mNo scene file specified, loading default\x1b[0m");
-		XML->scene = ft_strdup("./default.xml");
+		XML->scene = ft_strdup("./scenes/default.xml");
 	}
 	if ((XML->scene_fd = open(XML->scene, O_RDONLY)) < 0)
 		p_error("\x1b[2;31mCan't open scene file\x1b[0m", e);

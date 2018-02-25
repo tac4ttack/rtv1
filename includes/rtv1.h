@@ -7,6 +7,7 @@
 # include <sys/time.h>
 # include "libft.h"
 # include "mlx.h"
+# include <sys/time.h>
 
 # ifdef MAC_KEYS
 #  include "mac_keys.h"
@@ -42,17 +43,17 @@
 # define DEG2RAD				(M_PI / 180)
 # define RAD2DEG				(180 / M_PI)
 
-# define WIDTH					e->param.win_w
-# define HEIGHT					e->param.win_h
+# define WIDTH					e->scene->win_w
+# define HEIGHT					e->scene->win_h
 # define FOV					30
 # define DEPTH					2000 //DAFUQ IS THIS SHIT?
 
-# define NCAM					e->param.n_cams
-# define NCON					e->param.n_cones
-# define NCYL					e->param.n_cylinders
-# define NLIG					e->param.n_lights
-# define NPLA					e->param.n_planes
-# define NSPH					e->param.n_spheres
+# define NCAM					e->scene->n_cams
+# define NCON					e->scene->n_cones
+# define NCYL					e->scene->n_cylinders
+# define NLIG					e->scene->n_lights
+# define NPLA					e->scene->n_planes
+# define NSPH					e->scene->n_spheres
 # define ACTIVEOBJ				e->target_obj
 # define CAM					e->cameras
 # define CONES					e->cones
@@ -60,11 +61,12 @@
 # define LIGHT					e->lights
 # define PLANE					e->planes
 # define SPHERE					e->spheres
-# define PARAM					e->param
-# define ACTIVECAM				e->cameras[e->param.active_cam]
+# define ACTIVECAM				e->cameras[e->scene->active_cam]
 
 # define XML					e->xml
 # define SCN					e->scene
+
+# define OPTION_WAVE			(1 << 1)
 
 typedef struct			s_fps
 {
@@ -72,6 +74,7 @@ typedef struct			s_fps
 	struct timeval		step;
 	struct timeval		cur;
 	float				delta_time;
+	float				u_time;
 	unsigned int		fps;
 	unsigned int		ret_fps;
 }						t_fps;
@@ -133,7 +136,7 @@ typedef struct			s_light
 	cl_int				type;
 	cl_float3			pos;
 	cl_float3			dir;
-	cl_float			shrink;
+	cl_int				shrink;
 	cl_float			brightness;
 	cl_int				color;
 }						t_light;
@@ -189,7 +192,7 @@ typedef struct			s_node
 	cl_float			angle;
 	cl_int				color;
 	cl_int				light;
-	cl_float			shrink;
+	cl_int				shrink;
 	cl_float			brightness;
 	cl_float			height;
 	cl_float3			diff;
@@ -229,7 +232,7 @@ typedef struct			s_frame
 	int					endian;
 }						t_frame;
 
-typedef	struct			s_scene
+typedef struct			s_scene
 {
 	t_cam				*cameras;
 	t_cone				*cones;
@@ -237,20 +240,21 @@ typedef	struct			s_scene
 	t_light				*lights;
 	t_plane				*planes;
 	t_sphere			*spheres;
-	int					n_cams;
-	int					n_cones;
-	int					n_cylinders;
-	int					n_lights;
-	int					n_planes;
-	int					n_spheres;
-	int					active_cam;
-	int					win_w;
-	int					win_h;
-	cl_float3			mvt;
+	unsigned int		n_cams;
+	unsigned int		n_cones;
+	unsigned int		n_cylinders;
+	unsigned int		n_lights;
+	unsigned int		n_planes;
+	unsigned int		n_spheres;
+	unsigned int		active_cam;
+	unsigned int		win_w;
+	unsigned int		win_h;
 	cl_float3			ambient;
 	int					mou_x;
 	int					mou_y;
 	int					depth;
+	float				u_time;
+	int					flag;
 }						t_scene;
 
 typedef	struct			s_env
@@ -268,6 +272,7 @@ typedef	struct			s_env
 	int					debug;
 	t_xml				*xml;
 	char				*kernel_src;
+	cl_int				err;
 	cl_device_id		device_id;
 	cl_context			context;
 	cl_command_queue	raytrace_queue;
@@ -279,9 +284,10 @@ typedef	struct			s_env
 	int					gpu;
 	size_t				global;
 	size_t				local;
-	size_t				dif;
+
 	unsigned int		count;
-	t_param				param;
+
+
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;
@@ -294,9 +300,15 @@ typedef	struct			s_env
 	cl_mem				planes_mem;
 	t_sphere			*spheres;
 	cl_mem				spheres_mem;
+
+	t_scene				*scene;
+	cl_mem				scene_mem;
+	t_fps				fps;
+
 //	next data may be deleted after testing etc
 	char				run;
-	t_fps				fps;
+
+	int					flag;
 }						t_env;
 
 /*
@@ -344,7 +356,7 @@ void					xml_data_reflex(t_env *e, char **attributes, \
 void					xml_data_shrink(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_data_speculos(t_env *e, char **attributes, \
-										int *i, t_node *node);										
+										int *i, t_node *node);
 void					xml_data_type(t_env *e, char **attributes, \
 										int *i, t_node *node);
 void					xml_init(t_env *e, int ac, char *av);

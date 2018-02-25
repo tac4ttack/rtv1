@@ -12,12 +12,12 @@ void			mlx_keyboard_repeated(t_env *e)
 		KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9)
 		ui_obj(e);
 	if (KP_T)
-		printf("type : %d, id ; %d, x : %d, y : %d\n", e->target_obj.type, e->target_obj.id, e->param.mou_x, e->param.mou_y);
+		printf("type : %d, id ; %d, x : %d, y : %d\n", e->target_obj.type, e->target_obj.id, e->scene->mou_x, e->scene->mou_y);
 	if (KP_NPLU)
-		PARAM.depth++;
+		e->scene->depth++; // WIP
 	if (KP_NMIN)
-		(PARAM.depth > 0 ? PARAM.depth-- : 0);
+		(e->scene->depth > 0 ? e->scene->depth-- : 0); // WIP
 //	if (KP_NSTR)
-//		PARAM.refra++;
+//		e->scene->refra++;
 	opencl_allocate_scene_memory(e);
 }

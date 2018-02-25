@@ -81,13 +81,13 @@ void	xml_data_angle(t_env *e, char **attributes, int *i, t_node *node)
 	if (e && attributes && node)
 	{
 		if (attributes[(*i)] == NULL)
-			s_error("\x1b[2;31mError reading ANGLE value\x1b[0m", e);	
+			s_error("\x1b[2;31mError reading ANGLE value\x1b[0m", e);
 		node->angle = ft_atof(attributes[(*i)++] + 7);
 		if (node->angle < 0)
-			s_error("\x1b[2;31mError ANGLE can't be negative\x1b[0m", e);	
+			s_error("\x1b[2;31mError ANGLE can't be negative\x1b[0m", e);
 	}
 	else
-		s_error("\x1b[2;31mError reading ANGLE from scene\x1b[0m", e);	
+		s_error("\x1b[2;31mError reading ANGLE from scene\x1b[0m", e);
 }
 
 // à garder au chaud pour plus tard
@@ -103,18 +103,4 @@ void	xml_data_height(t_env *e, char **attributes, int *i, t_node *node)
 	}
 	else
 		s_error("\x1b[2;31mError reading HEIGHT from scene\x1b[0m", e);
-}
-
-void	xml_data_shrink(t_env *e, char **attributes, int *i, t_node *node)
-{
-	if (e && attributes && node)
-	{
-		if (attributes[(*i)] == NULL)
-			s_error("\x1b[2;31mError reading SHRINK value\x1b[0m", e);
-		node->shrink = ft_atof(attributes[(*i)++] + 8);
-		if (node->shrink < 0)
-			s_error("\x1b[2;31mError SHRINK can't be negative\x1b[0m", e);
-	}
-	else
-		s_error("\x1b[2;31mError reading SHRINK from scene\x1b[0m", e);
 }

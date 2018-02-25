@@ -1,7 +1,6 @@
 TODO LIST PARSER:
 -----------------
 * rajouter la propriété 'depth' à la scene (nombre de reflexions) 
-* rajouter la propriété indice de 'reflexion' aux objets
 * rajouter la propriété indice de 'refraction' aux objets
 * rajouter protection sur les direction, au moins une des composantes doit être > 0.001
 * segfault quand 1 seule composante diffuse ou specular
@@ -11,10 +10,3 @@ CAMERA:
 	* direction pas du tout prise en compte pour le départ
 	* si direction avec multi composante alors bug deplacement
 
-CONE:
------
-	* calcul de la normale a faire
-
-CYLINDRE:
----------
-	* calcul de la normale avec changement de base (repere)

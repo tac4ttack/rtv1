@@ -62,9 +62,9 @@ SRC_NAME =  			init.c \
 						opencl_init.c \
 						rotations.c \
 						tools.c \
-						update_fps.c \
 						ui_obj.c \
 						ui_cam.c \
+						update_fps.c \
 						vectors.c \
 						xml.c \
 						xml_cameras.c \
@@ -104,7 +104,8 @@ gpu: GPU
 gpu_flags:
 	$(eval GPU_MACRO = -DGPU)
 
-debug: clean cleanlibft debuglibft debug_flag gpu
+debuggpu: clean cleanlibft debuglibft debug_flag gpu
+debugcpu: clean cleanlibft debuglibft debug_flag cpu
 debug_flag:
 	$(eval DEBUG_MACRO = -DDEBUG -g)
 	$(eval ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer)

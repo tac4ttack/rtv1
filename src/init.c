@@ -64,26 +64,24 @@ void		frame_init(t_env *e)
 void		init(t_env *e, int ac, char *av)
 {
 	ft_bzero(e, sizeof(t_env));
-
-	ft_bzero(&e->param, sizeof(t_param));
 	ft_bzero(&e->target_obj, sizeof(t_hit));
-
-
-	
+	if (!(e->scene = malloc(sizeof(t_scene))))
+		s_error("\x1b[2;31mCan't initialize scene buffer\x1b[0m", e);
+	ft_bzero(e->scene, sizeof(t_scene));
 	xml_init(e, ac, av);
-	e->param.depth = 0;
+	e->scene->depth = 0;
+	e->win_w = e->scene->win_w;
+	e->win_h = e->scene->win_h;
+	e->count = e->win_h * e->win_w;
 	e->debug = DBUG;
-	e->win_w = e->param.win_w;
-	e->win_h = e->param.win_h;
 	e->cen_x = e->win_w / 2;
 	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
-	e->run = 0; //TMP ou pas?
+	e->run = 0;
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
-	e->count = e->win_h * e->win_w;
 	frame_init(e);
 	if (opencl_init(e, e->count * 4) != 0)
 	{

@@ -80,7 +80,7 @@
 			type="1"
 			pos="5, 8, 9"
 			dir="0, 0, 0"
-			shrink="42"
+			shrink="420"
 			color="0, 0, 255, 0"
 			/>
 -->
@@ -90,7 +90,7 @@
 			pos="6, 0, 0"
 			dir="0, 0, 0"
 			brightness="0.51"
-			shrink="100"
+			shrink="1000"
 			color="0, 255, 255, 255"
 			/>
 
