@@ -45,8 +45,7 @@
 
 # define WIDTH					e->scene->win_w
 # define HEIGHT					e->scene->win_h
-# define FOV					30
-# define DEPTH					2000 //DAFUQ IS THIS SHIT?
+# define DEPTH					e->scene->depth
 
 # define NCAM					e->scene->n_cams
 # define NCON					e->scene->n_cones
@@ -232,6 +231,20 @@ typedef struct			s_frame
 	int					endian;
 }						t_frame;
 
+typedef	struct			s_tor
+{
+	cl_float3			prim;
+//	cl_float3			refl;
+//	cl_float3			refr;
+	unsigned int		hit_type;
+	unsigned int		hit_id;
+//	float				coef_refl;
+//	float				coef_refr;
+	unsigned int		color;
+	char				check_g;
+	char				check_d;
+}						t_tor;
+
 typedef struct			s_scene
 {
 	t_cam				*cameras;
@@ -305,10 +318,8 @@ typedef	struct			s_env
 	cl_mem				scene_mem;
 	t_fps				fps;
 
-//	next data may be deleted after testing etc
 	char				run;
-
-	int					flag;
+	t_tor				*tree;
 }						t_env;
 
 /*
@@ -324,6 +335,8 @@ void					ui_cam(t_env *e);
 void					ui_obj(t_env *e);
 cl_float3				*get_target_pos(t_env *e);
 cl_float3				*get_target_dir(t_env *e);
+
+t_tor					*tor_create(t_env *e);
 
 void					xml_allocate_cam(t_env *e);
 void					xml_allocate_cone(t_env *e);

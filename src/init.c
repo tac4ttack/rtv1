@@ -78,12 +78,12 @@ void		init(t_env *e, int ac, char *av)
 	e->cen_y = e->win_h / 2;
 	e->gpu = IS_GPU;
 	e->run = 0;
+	e->tree = tor_create(e);
 	if (!(e->mlx = mlx_init()))
 		s_error("\x1b[2;31mError can't initialize minilibx\x1b[0m", e);
 	if (!(e->win = mlx_new_window(e->mlx, e->win_w, e->win_h, "RTv1")))
 		s_error("\x1b[2;31mError minilibx window creation failed\x1b[0m", e);
 	frame_init(e);
-	printf("%f, %f, %f\n", e->cameras[0].dir.x, e->cameras[0].dir.y, e->cameras[0].dir.z);
 	if (opencl_init(e, e->count * 4) != 0)
 	{
 		e->gpu = 0;
