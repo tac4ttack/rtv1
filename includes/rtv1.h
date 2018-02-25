@@ -332,6 +332,7 @@ void					xml_allocate_light(t_env *e);
 void					xml_allocate_plane(t_env *e);
 void					xml_allocate_sphere(t_env *e);
 int						xml_check_char(char c);
+int						xml_check_attr(char **att);
 char					*xml_check_line(t_env *e, char *buf);
 int						xml_check_node_format(char **node, int mod);
 void					xml_data_angle(t_env *e, char **attributes, \

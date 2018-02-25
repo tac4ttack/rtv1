@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <scene			res="1024, 768" ambient="0.15, 0.15, 0.15">
 	<cam		id="0"
-				pos="-5, -5, 0a"
-				dir="0, 0, 1"
+				pos="-5, -5, 0"
+				dir="1, 0, 0"
 				fov="30"
 				/>
 	<plane		id="0"
