@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/23 15:18:20 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/25 14:41:58 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 {
+	if (xml_check_node_format(att, 5) != 0)
+		s_error("\x1b[2;31mError PLANE format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
 		s_error("\x1b[2;31mError in plane, ID expected in #0\x1b[0m", e);
 	if (ft_atoi(att[(*i)] + 4) != (int)NPLA - 1)
@@ -66,7 +68,7 @@ void		xml_node_plane(t_env *e, char *node)
 	
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
-	e->scene->n_planes++; // WIP
+	e->scene->n_planes++;
 	plane_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;

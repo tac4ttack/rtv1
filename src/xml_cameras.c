@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/23 15:15:36 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/25 14:41:40 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void		xml_data_cam_fov(t_env *e, char **attributes, int *i, t_node *node)
 
 static void	xml_cam_data(t_env *e, char **att, t_node *cam_node, int *i)
 {
+	if (xml_check_node_format(att, 1) != 0)
+		s_error("\x1b[2;31mError CAM format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
 		s_error("\x1b[2;31mError in camera, ID expected in #0\x1b[0m", e);
 	if (ft_atoi(att[(*i)] + 4) != (int)NCAM - 1)

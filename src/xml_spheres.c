@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/23 15:18:31 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/25 14:41:54 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	xml_sphere_data_n(t_env *e, char **att, t_node *sphere_node, int *i)
 
 static void	xml_sphere_data(t_env *e, char **att, t_node *sphere_node, int *i)
 {
+	if (xml_check_node_format(att, 6) != 0)
+		s_error("\x1b[2;31mError SPHERE format\x1b[0m", e);
 	if (ft_strncmp(att[*i], "id=\"", 4) != 0)
 		s_error("\x1b[2;31mError in sphere, ID expected in #0\x1b[0m", e);
 	if (ft_atoi(att[(*i)] + 4) != (int)NSPH - 1)
@@ -71,7 +73,7 @@ void		xml_node_sphere(t_env *e, char *node)
 	
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
-	e->scene->n_spheres++; // WIP
+	e->scene->n_spheres++;
 	sphere_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;

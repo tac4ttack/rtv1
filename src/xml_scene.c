@@ -46,6 +46,8 @@ static void	xml_scene_parse(t_env *e, char *node)
 
 	i = 1;
 	tmp = ft_strsplit(node, ' ');
+	if (xml_check_node_format(tmp, 0) != 0)
+		s_error("\x1b[2;31mError CAM format\x1b[0m", e);
 	if (ft_strncmp(tmp[i], "res=\"", 5) != 0 || tmp[i] == NULL)
 		s_error("\x1b[2;31mError in scene RESOLUTION expected in #0\x1b[0m", e);
 	else

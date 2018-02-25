@@ -6,11 +6,40 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2017/12/07 17:02:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/25 14:38:18 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+int					xml_check_node_format(char **node, int mod)
+{
+	cl_int2				i;
+	
+	i.x = 0;
+	i.y = 0;
+	if (node)
+	{
+		i.y = (mod == 0 ? i.y = 6 : i.y);
+		i.y = (mod == 1 ? i.y = 10 : i.y);
+		i.y = (mod == 2 ? i.y = 21 : i.y);
+		i.y = (mod == 3 ? i.y = 22 : i.y);
+		i.y = (mod == 4 ? i.y = 16 : i.y);
+		i.y = (mod == 5 ? i.y = 20 : i.y);
+		i.y = (mod == 6 ? i.y = 21 : i.y);
+		while (i.x <= i.y)
+		{
+			if (i.x == i.y && node[i.x] != NULL)
+				return (1);
+			else
+				if (i.x < i.y && node[i.x] == NULL)
+					return (1);
+			i.x++;
+		}
+		return (0);
+	}
+	return (1);
+}
 
 void				xml_node_generic(t_env *e, char *node, char mod)
 {
