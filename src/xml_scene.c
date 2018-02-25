@@ -13,9 +13,9 @@ static void xml_scene_res(t_env *e, char **att, int *i)
 			s_error("\x1b[2;31mError scene Width/Height must be > 0\x1b[0m", e);
 		else
 		{
-			e->param.win_w = (w < 0 ? -w : w);
+			e->scene->win_w = (w < 0 ? -w : w);
 			e->scene->win_w = (w < 0 ? -w : w); // WIP
-			e->param.win_h = (h < 0 ? -h : h);
+			e->scene->win_h = (h < 0 ? -h : h);
 			e->scene->win_h = (h < 0 ? -h : h); // WIP
 		}
 	}
@@ -29,12 +29,9 @@ static void	xml_scene_ambient(t_env *e, char **att, int *i)
 	{
 		if (att[(*i)] == NULL)
 			s_error("\x1b[2;31mError reading AMBIENT scene node\x1b[0m", e);
-		e->scene->ambient.x = ft_atof(att[(*i)] + 9); // WIP
-		e->param.ambient.x = ft_atof(att[(*i)++] + 9);		
-		e->scene->ambient.y = ft_atof(att[(*i)]); // WIP
-		e->param.ambient.y = ft_atof(att[(*i)++]);		
-		e->scene->ambient.z = ft_atof(att[(*i)]); // WIP
-		e->param.ambient.z = ft_atof(att[(*i)++]);
+		e->scene->ambient.x = ft_atof(att[(*i)++] + 9);		
+		e->scene->ambient.y = ft_atof(att[(*i)++]);		
+		e->scene->ambient.z = ft_atof(att[(*i)++]);
 		
 // RAJOUTER CONTROLE DE LA VALEUR QUAND ON SAURA QUELLE VALEUR CA DOIT AVOIR t(ಠ益ಠt)
 	}
@@ -53,12 +50,12 @@ static void	xml_scene_parse(t_env *e, char *node)
 		s_error("\x1b[2;31mError in scene RESOLUTION expected in #0\x1b[0m", e);
 	else
 		xml_scene_res(e, tmp, &i);
-	printf("SCENE\nwidth = %d | height = %d\n", e->param.win_w, e->param.win_h);
+	printf("SCENE\nwidth = %d | height = %d\n", e->scene->win_w, e->scene->win_h);
 	if (ft_strncmp(tmp[i], "ambient=\"", 9) != 0 || tmp[(i)] == NULL)
 		s_error("\x1b[2;31mError in scene, AMBIENT expected in #1\x1b[0m", e);
 	else
 		xml_scene_ambient(e, tmp, &i);
-	printf("a.r = %f | a.g = %f | a.b = %f\n", e->param.ambient.x, e->param.ambient.y, e->param.ambient.z);
+	printf("a.r = %f | a.g = %f | a.b = %f\n", e->scene->ambient.x, e->scene->ambient.y, e->scene->ambient.z);
 	if (tmp[i] == NULL)
 	{
 		if (tmp[i - 1][ft_strlen(tmp[i - 1]) - 1] != '>')

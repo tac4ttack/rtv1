@@ -42,17 +42,17 @@
 # define DEG2RAD				(M_PI / 180)
 # define RAD2DEG				(180 / M_PI)
 
-# define WIDTH					e->param.win_w
-# define HEIGHT					e->param.win_h
+# define WIDTH					e->scene->win_w
+# define HEIGHT					e->scene->win_h
 # define FOV					30
 # define DEPTH					2000 //DAFUQ IS THIS SHIT?
 
-# define NCAM					e->param.n_cams
-# define NCON					e->param.n_cones
-# define NCYL					e->param.n_cylinders
-# define NLIG					e->param.n_lights
-# define NPLA					e->param.n_planes
-# define NSPH					e->param.n_spheres
+# define NCAM					e->scene->n_cams
+# define NCON					e->scene->n_cones
+# define NCYL					e->scene->n_cylinders
+# define NLIG					e->scene->n_lights
+# define NPLA					e->scene->n_planes
+# define NSPH					e->scene->n_spheres
 # define ACTIVEOBJ				e->target_obj
 # define CAM					e->cameras
 # define CONES					e->cones
@@ -60,8 +60,7 @@
 # define LIGHT					e->lights
 # define PLANE					e->planes
 # define SPHERE					e->spheres
-# define PARAM					e->param
-# define ACTIVECAM				e->cameras[e->param.active_cam]
+# define ACTIVECAM				e->cameras[e->scene->active_cam]
 
 # define XML					e->xml
 # define SCN					e->scene
@@ -282,7 +281,6 @@ typedef	struct			s_env
 
 	unsigned int		count;
 
-	t_param				param;
 
 	t_cam				*cameras;
 	cl_mem				cameras_mem;

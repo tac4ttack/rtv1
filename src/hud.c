@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 13:48:13 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/22 23:09:45 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/23 15:10:14 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static void		display_hud_cam(t_env *e)
 	char		*mvt;
 	char		*rot;
 
-	mvt = ft_strjoin_frs2("CAM.X = ", ft_ftoa(ACTIVECAM.pos.x + PARAM.mvt.x));
+	mvt = ft_strjoin_frs2("CAM.X = ", ft_ftoa(ACTIVECAM.pos.x));
 	mlx_string_put(e->mlx, e->win, 10, 10, 0x00ffffff, mvt);
 	free(mvt);
-	mvt = ft_strjoin_frs2("CAM.Y = ", ft_ftoa(ACTIVECAM.pos.y + PARAM.mvt.y));
+	mvt = ft_strjoin_frs2("CAM.Y = ", ft_ftoa(ACTIVECAM.pos.y));
 	mlx_string_put(e->mlx, e->win, 10, 25, 0x00ffffff, mvt);
 	free(mvt);
-	mvt = ft_strjoin_frs2("CAM.Z = ", ft_ftoa(ACTIVECAM.pos.z + PARAM.mvt.z));
+	mvt = ft_strjoin_frs2("CAM.Z = ", ft_ftoa(ACTIVECAM.pos.z));
 	mlx_string_put(e->mlx, e->win, 10, 40, 0x00ffffff, mvt);
 	free(mvt);
 	rot = ft_strjoin_frs2("CAM.PITCH = ", ft_ftoa(ACTIVECAM.pitch));
@@ -101,7 +101,7 @@ void			display_hud(t_env *e)
 {
 	char *refl;
 
-	refl = ft_strjoin_frs2("depth = ", ft_itoa(PARAM.depth));
+	refl = ft_strjoin_frs2("depth = ", ft_itoa(e->scene->depth));
 	mlx_string_put(e->mlx, e->win, 10, 115, 0x00ffffff, refl);
 	free(refl);
 	display_hud_cam(e);
