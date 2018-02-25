@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/25 14:41:40 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/25 15:48:52 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void		xml_node_cam(t_env *e, char *node)
 	
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
-	e->scene->n_cams++; // WIP
+	e->scene->n_cams++;
 	cam_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
@@ -97,6 +97,9 @@ void		xml_push_cam(t_env *e, t_node *list)
 {
 	e->cameras[list->id].pos = list->pos;
 	e->cameras[list->id].dir = list->dir;
+	e->cameras[list->id].dir.x = 0;
+	e->cameras[list->id].dir.y = 0;
+	e->cameras[list->id].dir.z = 1;
 	e->cameras[list->id].fov = list->fov;
 	e->cameras[list->id].pitch = 0;
 	e->cameras[list->id].yaw = 0;
