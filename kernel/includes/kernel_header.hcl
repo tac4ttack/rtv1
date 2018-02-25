@@ -98,25 +98,6 @@ typedef struct			s_sphere
 }						t_sphere;
 
 
-typedef struct			s_param
-{
-	unsigned int		n_cams;
-	unsigned int		n_cones;
-	unsigned int		n_cylinders;
-	unsigned int		n_lights;
-	unsigned int		n_planes;
-	unsigned int		n_spheres;
-	unsigned int		active_cam;
-	unsigned int		win_w;
-	unsigned int		win_h;
-	float3				mvt;
-	float3				ambient;
-	int					mou_x;
-	int					mou_y;
-	int					depth;
-}						t_param;
-
-
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
