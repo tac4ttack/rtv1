@@ -60,7 +60,7 @@ void		xml_node_cam(t_env *e, char *node)
 	
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
-	e->scene->n_cams++; // WIP
+	e->scene->n_cams++;
 	cam_node = xml_list_new(0);
 	tmp = ft_strsplit(node, ' ');
 	i = 1;
