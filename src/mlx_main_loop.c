@@ -9,6 +9,7 @@ int		mlx_main_loop(t_env *e)
 		mlx_clear_window(e->mlx, e->win);
 		draw(e);
 
+		/*
 		t_p2i a;
 		a.x = WIDTH / 2;
 		a.y = HEIGHT / 2 - 15;
@@ -21,6 +22,7 @@ int		mlx_main_loop(t_env *e)
 		b.x = WIDTH / 2 + 15;
 		b.y = HEIGHT / 2;
 		mlx_img_line(e->frame, a, b, 0x00660066);
+		*/
 
 		mlx_put_image_to_window(e->mlx, e->win, e->frame->ptr, 0, 0);
 		display_hud(e);
