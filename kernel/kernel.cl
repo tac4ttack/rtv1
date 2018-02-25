@@ -81,7 +81,7 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 	{
 		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
-		save.z = save.z + 0.8 * sin(save.x * 10 + scene->u_time);
+		save.z = res.z + 0.8 * sin(res.x * 10 + scene->u_time);
 		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
 	}
 
@@ -125,13 +125,8 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	float3 __private speculos;
 	speculos = 0;
 
-	light_ray.dir = LIGHT[0].pos - hit.pos;
-	light_ray.dist = fast_length(light_ray.dir);
-	light_ray.dir = fast_normalize(light_ray.dir);
-	light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-	light_hit.id = i;
-	light_hit.type = 3;
-
+	while (i < scene->n_lights)
+	{
 		tmp = 0;
 		light_ray.dir = LIGHT[i].pos - hit.pos;
 		light_ray.dist = fast_length(light_ray.dir);
@@ -140,7 +135,7 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 		light_hit.id = i;
 		light_hit.type = 3;
 		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-			res_color = 0;
+			;
 		else
 		{
 			tmp = dot(hit.normale, light_ray.dir);
@@ -158,7 +153,6 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 					diffuse = (float3 __private)SPHERE[hit.id].diff;
 				else
 					diffuse = 0.f;
-
 
 				if (hit.type == 1)
 					hue = (int __private)CONES[hit.id].color;
@@ -229,10 +223,13 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 		}
+		i++;
+	}
 	return (res_color);
 }
 
-unsigned int			phong3(const __local t_scene *scene, const t_hit hit, const float3 ray)
+//BACKUPD DE PHONH
+/*unsigned int			phong3(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
 	int					i = -1;
 	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
@@ -266,43 +263,7 @@ unsigned int			phong3(const __local t_scene *scene, const t_hit hit, const float
 		}
 	}
 	return (res_color);
-}
-
-unsigned int			phong4(const __local t_scene *scene, const t_hit hit, const float3 ray)
-{
-	int					i = -1;
-	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
-	float				tmp;
-	float3				reflect = 0;
-
-	t_light_ray			light_ray;
-	t_hit				light_hit = hit_init();
-
-	while (++i < scene->n_lights)
-	{
-		tmp = 0;
-		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = fast_length(light_ray.dir);
-		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-		light_hit.id = i;
-		light_hit.type = 3;
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-		{
-		}
-		else
-		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0)
-				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-			tmp = dot(reflect, -ray);
-			if (tmp > 0)
-				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
-		}
-	}
-	return (res_color);
-}
+}*/
 
 static unsigned int		bounce(const __local t_scene *scene, const float3 ray, const t_hit old_hit, const int depth)
 {
@@ -341,7 +302,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
-		color = phong3(scene, hit, ray);
+		color = phong2(scene, hit, ray);
 		if (depth > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
 		return (color + bounce_color);
