@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 16:28:15 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 15:03:46 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/26 18:14:44 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,9 @@ int			xml_check_attr(char **att)
 			return (1);
 		}
 		++i;
-<<<<<<< HEAD
 		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || \
 		ft_strcmp(att[i], "-->") == 0 || ft_strcmp(att[i], "/>-->") == 0))
 		++i;
-=======
-		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || ft_strcmp(att[i], "-->") == 0))
-			++i;
->>>>>>> a1ff84b83417ffe47e547f30a496e1273af84307
 	}
 	return (0);
 }
