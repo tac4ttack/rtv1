@@ -26,7 +26,7 @@ void		xml_read_file(t_env *e)
 		else if (status == 0)
 			break ;
 		else
-		{	
+		{
 			buf = xml_check_line(e, ft_strtrim_free(buf));
 			XML->scene = ft_strjoin_free(XML->scene, ft_strjoin_frs1(buf, " "));
 		}

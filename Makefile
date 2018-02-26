@@ -76,6 +76,7 @@ SRC_NAME =  			init.c \
 						xml_cones.c \
 						xml_cylinders.c \
 						xml_data_float.c \
+						xml_data_float3.c \
 						xml_data_int.c \
 						xml_data_vector.c \
 						xml_lights.c \

@@ -12,6 +12,26 @@
 
 #include "rtv1.h"
 
+static void	xml_light_data_v(t_env *e, char **att, t_node *light_node, int *i)
+{
+	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
+		s_error("\x1b[2;31mError in light, DIR expected in #3\x1b[0m", e);
+	else
+		xml_data_dir(e, att, i, light_node);
+	if (ft_strncmp(att[*i], "brightness=\"", 12) != 0)
+		s_error("\x1b[2;31mError in light BRIGHTNESS expected in #4\x1b[0m", e);
+	else
+		xml_data_brightness(e, att, i, light_node);
+	if (ft_strncmp(att[*i], "shrink=\"", 8) != 0)
+		s_error("\x1b[2;31mError in light, SHRINK expected in #4\x1b[0m", e);
+	else
+		xml_data_shrink(e, att, i, light_node);
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
+		s_error("\x1b[2;31mError in light, COLOR expected in #5\x1b[0m", e);
+	else
+		xml_data_color(e, att, i, light_node);
+}
+
 static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 {
 	if (xml_check_node_format(att, 4) != 0)
@@ -22,37 +42,15 @@ static void	xml_light_data(t_env *e, char **att, t_node *light_node, int *i)
 		s_error("\x1b[2;31mError in light, ID is incorrect\x1b[0m", e);
 	else
 		light_node->id = ft_atoi(att[(*i)++] + 4);
-	printf("\nLIGHT id = %d\n", light_node->id);
 	if (ft_strncmp(att[*i], "type=\"", 6) != 0)
 		s_error("\x1b[2;31mError in light, TYPE expected in #1\x1b[0m", e);
 	else
 		xml_data_type(e, att, i, light_node);
-	printf("type = %d\n", light_node->type);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[2;31mError in light, POS expected in #2\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, light_node);
-	printf("pos x = %f | y = %f | z = %f\n", light_node->pos.x, light_node->pos.y, light_node->pos.z);
-	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
-		s_error("\x1b[2;31mError in light, DIR expected in #3\x1b[0m", e);
-	else
-		xml_data_dir(e, att, i, light_node);
-	printf("dir x = %f | y = %f | z = %f\n", light_node->dir.x, light_node->dir.y, light_node->dir.z);
-	if (ft_strncmp(att[*i], "brightness=\"", 12) != 0)
-		s_error("\x1b[2;31mError in light BRIGHTNESS expected in #4\x1b[0m", e);
-	else
-		xml_data_brightness(e, att, i, light_node);
-	printf("brightness = %f\n", light_node->brightness);
-	if (ft_strncmp(att[*i], "shrink=\"", 8) != 0)
-		s_error("\x1b[2;31mError in light, SHRINK expected in #4\x1b[0m", e);
-	else
-		xml_data_shrink(e, att, i, light_node);
-	printf("shrink = %i\n", light_node->shrink);
-	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
-		s_error("\x1b[2;31mError in light, COLOR expected in #5\x1b[0m", e);
-	else
-		xml_data_color(e, att, i, light_node);
-	printf("color = %xd\n", light_node->color);
+	xml_light_data_v(e, att, light_node, i);
 }
 
 void		xml_node_light(t_env *e, char *node)

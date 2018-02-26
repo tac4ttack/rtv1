@@ -14,26 +14,22 @@
 
 static void	xml_plane_data_n(t_env *e, char **att, t_node *plane_node, int *i)
 {
-	if (ft_strncmp(att[*i], "color=\"",	7) != 0)
+	if (ft_strncmp(att[*i], "color=\"", 7) != 0)
 		s_error("\x1b[2;31mError in plane, COLOR expected in #3\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, plane_node);
-	printf("color = %xd\n", plane_node->color);
 	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
 		s_error("\x1b[2;31mError in plane, DIFFUSE expected in #4\x1b[0m", e);
 	else
 		xml_data_diffiouse(e, att, i, plane_node);
-	printf("diff.x = %f | diff.y = %f | diff.z = %f\n", plane_node->diff.x, plane_node->diff.y, plane_node->diff.z);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
 		s_error("\x1b[2;31mError in plane, SPECULAR expected in #5\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, plane_node);
-	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", plane_node->spec.x, plane_node->spec.y , plane_node->spec.z);
 	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
 		s_error("\x1b[2;31mError in plane, REFLEX expected in #6\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, plane_node);
-	printf("reflex = %f\n", plane_node->reflex);
 }
 
 static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
@@ -46,17 +42,14 @@ static void	xml_plane_data(t_env *e, char **att, t_node *plane_node, int *i)
 		s_error("\x1b[2;31mError in plane, ID is incorrect\x1b[0m", e);
 	else
 		plane_node->id = ft_atoi(att[(*i)++] + 4);
-	printf("\nPLANE id = %d\n", plane_node->id);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[2;31mError in plane, POS expected in #1\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, plane_node);
-	printf("pos x = %f | y = %f | z = %f\n", plane_node->pos.x, plane_node->pos.y, plane_node->pos.z);
 	if (ft_strncmp(att[*i], "normale=\"", 9) != 0)
 		s_error("\x1b[2;31mError in plane, NORMALE expected in #2\x1b[0m", e);
 	else
 		xml_data_normale(e, att, i, plane_node);
-	printf("normale x = %f | y = %f | z = %f\n", plane_node->normale.x, plane_node->normale.y, plane_node->normale.z);
 	xml_plane_data_n(e, att, plane_node, i);
 }
 
@@ -65,7 +58,7 @@ void		xml_node_plane(t_env *e, char *node)
 	t_node	*plane_node;
 	char	**tmp;
 	int		i;
-	
+
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
 	e->scene->n_planes++;

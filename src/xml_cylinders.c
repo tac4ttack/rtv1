@@ -18,29 +18,24 @@ static void	xml_cylinder_data_n(t_env *e, char **att, t_node *cyl_node, int *i)
 		s_error("\x1b[2;31mError in cylinder, COLOR expected in #4\x1b[0m", e);
 	else
 		xml_data_color(e, att, i, cyl_node);
-	printf("color= %xd\n", cyl_node->color);
 	if (ft_strncmp(att[*i], "height=\"", 8) != 0)
 		s_error("\x1b[2;31mError in cylinder, HEIGHT expected in #5\x1b[0m", e);
 	else
 		xml_data_height(e, att, i, cyl_node);
-	printf("height= %lf\n", cyl_node->height);
 	if (ft_strncmp(att[*i], "diff=\"", 6) != 0)
 		s_error("\x1b[2;31mError in cylinder, \
 				DIFFUSE expected in #5\x1b[0m", e);
 	else
 		xml_data_diffiouse(e, att, i, cyl_node);
-	printf("diff.x = %f | diff.y = %f | diff.z = %f\n", cyl_node->diff.x, cyl_node->diff.y, cyl_node->diff.z);
 	if (ft_strncmp(att[*i], "spec=\"", 6) != 0)
 		s_error("\x1b[2;31mError in cylinder, \
 				SPECULAR expected in #6\x1b[0m", e);
 	else
 		xml_data_speculos(e, att, i, cyl_node);
-	printf("spec.x = %f | spec.y = %f | spec.z = %f\n", cyl_node->spec.x, cyl_node->spec.y , cyl_node->spec.z);
 	if (ft_strncmp(att[*i], "reflex=\"", 6) != 0)
 		s_error("\x1b[2;31mError in cylinder, REFLEX expected in #7\x1b[0m", e);
 	else
 		xml_data_reflex(e, att, i, cyl_node);
-	printf("reflex = %f\n", cyl_node->reflex);
 }
 
 static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
@@ -53,22 +48,18 @@ static void	xml_cylinder_data(t_env *e, char **att, t_node *cyl_node, int *i)
 		s_error("\x1b[2;31mError in cylinder, ID is incorrect\x1b[0m", e);
 	else
 		cyl_node->id = ft_atoi(att[(*i)++] + 4);
-	printf("\nCYLINDER id = %d\n", cyl_node->id);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[2;31mError in cylinder, POS expected in #1\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, cyl_node);
-	printf("pos x = %f | y = %f | z = %f\n", cyl_node->pos.x, cyl_node->pos.y, cyl_node->pos.z);
 	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
 		s_error("\x1b[2;31mError in cylinder, DIR expected in #2\x1b[0m", e);
 	else
 		xml_data_dir(e, att, i, cyl_node);
-	printf("dir x = %f | y = %f | z = %f\n", cyl_node->dir.x, cyl_node->dir.y, cyl_node->dir.z);
 	if (ft_strncmp(att[*i], "radius=\"", 8) != 0)
 		s_error("\x1b[2;31mError in cylinder, RADIUS expected in #3\x1b[0m", e);
 	else
 		xml_data_radius(e, att, i, cyl_node);
-	printf("radius = %f\n", cyl_node->radius);
 	xml_cylinder_data_n(e, att, cyl_node, i);
 }
 

@@ -28,37 +28,36 @@ void		xml_data_type(t_env *e, char **attributes, int *i, t_node *node)
 		s_error("\x1b[2;31mError reading LIGHT TYPE from scene\x1b[0m", e);
 }
 
-void		xml_data_color(t_env *e, char **attributes, int *i, t_node *node)
+void		xml_data_color(t_env *e, char **attr, int *i, t_node *node)
 {
-	int		channel[4];
+	int		chan[4];
 	int		j;
 
-	j = 0;
-	ft_memset(channel, 0, 4 * sizeof(int));
-	if (e && attributes && node)
+	j = -1;
+	ft_memset(chan, 0, 4 * sizeof(int));
+	if (e && attr && node)
 	{
-		while (j < 4)
+		while (++j < 4)
 		{
-			if (attributes[(*i)] == NULL)
+			if (attr[(*i)] == NULL)
 				s_error("\x1b[2;31mError reading COLOR value\x1b[0m", e);
-			if (j == 3 && attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
+			if (j == 3 && attr[(*i)][ft_strlen(attr[*i]) - 1] != '\"')
 				s_error("\x1b[2;31mError in COLOR from scene\x1b[0m", e);
-			if (j== 0)
-				channel[j] = ft_atoi(attributes[(*i)++] + 7);
+			if (j == 0)
+				chan[j] = ft_atoi(attr[(*i)++] + 7);
 			else
-				channel[j] = ft_atoi(attributes[(*i)++]);
-			if (channel[j] < 0 || channel[j] > 255)
+				chan[j] = ft_atoi(attr[(*i)++]);
+			if (chan[j] < 0 || chan[j] > 255)
 				s_error("\x1b[2;31mError COLOR range is 0 to 255\x1b[0m", e);
-			j++;
 		}
-		node->color = ((channel[0] << 24) + (channel[1] << 16) + \
-						(channel[2] << 8) + channel[3]);
+		node->color = ((chan[0] << 24) + (chan[1] << 16) + \
+		(chan[2] << 8) + chan[3]);
 	}
 	else
 		s_error("\x1b[2;31mError reading COLOR from scene\x1b[0m", e);
 }
 
-void	xml_data_shrink(t_env *e, char **attributes, int *i, t_node *node)
+void		xml_data_shrink(t_env *e, char **attributes, int *i, t_node *node)
 {
 	if (e && attributes && node)
 	{

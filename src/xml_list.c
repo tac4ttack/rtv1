@@ -36,7 +36,7 @@ void		xml_list_add_first(t_node **begin, t_node *node)
 void		xml_list_clean(t_env *e, t_node **list)
 {
 	t_node	*tmp;
-	
+
 	tmp = *list;
 	if (*list)
 	{
