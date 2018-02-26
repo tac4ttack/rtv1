@@ -530,7 +530,6 @@ __kernel void	ray_trace(	__global	char		*output,
 	pix.x = get_global_id(0);
 	pix.y = get_global_id(1);
 
-
 	scene->cameras = cameras;
 	scene->cones = cones;
 	scene->cylinders = cylinders;
@@ -538,7 +537,21 @@ __kernel void	ray_trace(	__global	char		*output,
 	scene->planes = planes;
 	scene->spheres = spheres;
 	scene->u_time = u_time;
-	
+
+	if (0)
+	{
+		printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
+		printf("t_cam 				: %-20lu\n", sizeof(t_cam));
+		printf("t_cone 				: %-20lu\n", sizeof(t_cone));
+		printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
+		printf("t_light 			: %-20lu\n", sizeof(t_light));
+		printf("t_plane 			: %-20lu\n", sizeof(t_plane));
+		printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
+		printf("t_tor 				: %-20lu\n", sizeof(t_tor));
+		printf("t_scene 			: %-20lu\n", sizeof(t_scene));
+		printf("\n");
+	}
+
 	__private t_tor	mojo[2047];
 	__private t_tor *tree = &mojo;
 

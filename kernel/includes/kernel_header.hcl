@@ -14,6 +14,7 @@
 #define OUTPUTE ((__global unsigned int *)output)[id]
 
 #define OPTION_WAVE (1 << 1)
+#define FLAG_DEBUG (1 << 2)
 
 typedef struct			s_light_ray
 {
@@ -115,11 +116,17 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
+	//void				*void1;
 	t_cone				__local *cones;
+	//void				*void2;
 	t_cylinder			__local *cylinders;
+	//void				*void3;
 	t_light				__local *lights;
+	//void				*void4;
 	t_plane				__local *planes;
+	//void				*void5;
 	t_sphere			__local *spheres;
+	void				*void6;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;

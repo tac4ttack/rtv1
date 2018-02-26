@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adalenco <adalenco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:46:22 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 20:14:49 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/26 23:11:43 by ntoniolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,15 @@ void		env_init(t_env *e)
 	e->gpu = IS_GPU;
 	e->run = 0;
 	e->tree = tor_create(e);
+	//printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
+	printf("t_cam 				: %-20lu\n", sizeof(t_cam));
+	printf("t_cone 				: %-20lu\n", sizeof(t_cone));
+	printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
+	printf("t_light 			: %-20lu\n", sizeof(t_light));
+	printf("t_plane 			: %-20lu\n", sizeof(t_plane));
+	printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
+	printf("t_tor 				: %-20lu\n", sizeof(t_tor));
+	printf("t_scene 			: %-20lu\n", sizeof(t_scene));
 }
 
 void		init(t_env *e, int ac, char *av)
