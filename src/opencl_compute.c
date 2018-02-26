@@ -20,11 +20,11 @@ void		opencl_set_args(t_env *e)
 	e->err |= clSetKernelArg(e->kernel_rt, 14, sizeof(t_plane) * NPLA + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 15, sizeof(t_sphere) * NSPH + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 16, sizeof(float), &(e->fps.u_time));
-	// rajouter tor
+	e->err |= clSetKernelArg(e->kernel_rt, 17, sizeof(t_tor), e->tree);
+
 	if (e->err != CL_SUCCESS)
 	{
-		ft_putnbr((int)e->err); // à remplacer avec une fonction print erreur opencl (fonction à foutre des qu'on a un code erreur ocl)
-		ft_putchar('\n');
+		opencl_print_error(e->err);
 		s_error("Error: Failed to send arguments to kernel!", e);
 	}
 }
@@ -43,8 +43,7 @@ int			get_imgptr(t_env *e)
 	}
 	if (e->err != CL_SUCCESS)
 	{
-		ft_putnbr((int)e->err); // print ocl error
-		ft_putchar('\n');
+		opencl_print_error(e->err);
 		s_error("Error: Failed to read output array!", e);
 	}
 	return (0);
@@ -59,15 +58,14 @@ int			draw(t_env *e)
 			CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL); // useless avec le tableau G?
 	if (e->err != CL_SUCCESS)
 	{
-		ft_putnbr((int)e->err); // print ocl error
-		ft_putchar('\n');
+		opencl_print_error(e->err);
 		s_error("Error: Failed to retrieve kernel work group info!", e);
 	}
 	e->err = clEnqueueNDRangeKernel(e->raytrace_queue, e->kernel_rt, 2, NULL, \
 			g, NULL, 0, NULL, NULL);
 	if (e->err)
 	{
-		printf("%d\n", (int)e->err); // print ocl error
+		opencl_print_error(e->err);
 		s_error("Error: Failed to execute kernel!\n", e);
 	}
 	get_imgptr(e);

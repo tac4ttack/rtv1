@@ -12,12 +12,12 @@
 
 #include "rtv1.h"
 
-int			opencl_builderrors(t_env *e, int err, cl_int ocl)
+int			opencl_builderrors(t_env *e, int err, int errorcode)
 {
 	size_t	len;
 	char	buffer[50000];
 
-	printf("\nOCL ERROR IS = %d\n", (int)ocl);  //remplacer par print erreur ocl
+	opencl_print_error(errorcode);
 	if (err == 1)
 		ft_putendl("Error: Failed to create device group!");
 	else if (err == 2)
