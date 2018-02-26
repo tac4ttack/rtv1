@@ -47,6 +47,7 @@
 # define HEIGHT					e->scene->win_h
 # define DEPTH					e->scene->depth
 
+# define KRT					e->kernel_rt
 # define NCAM					e->scene->n_cams
 # define NCON					e->scene->n_cones
 # define NCYL					e->scene->n_cylinders
@@ -269,6 +270,7 @@ typedef struct			s_scene
 	int					depth;
 	float				u_time;
 	int					flag;
+	int					tor_count;
 }						t_scene;
 
 typedef	struct			s_env
@@ -343,6 +345,7 @@ void					opencl_close(t_env *e);
 int						opencl_init(t_env *e, unsigned int count);
 void					opencl_print_error(int error);
 void					opencl_set_args(t_env *e);
+int						opencl_builderrors(t_env *e, int err, int errorcode);
 void					p_error(char *str, t_env *e);
 void					print_usage();
 int						quit(t_env *e);

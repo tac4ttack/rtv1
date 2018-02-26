@@ -63,6 +63,7 @@ SRC_NAME =  			init.c \
 						opencl_compute.c \
 						opencl_error.c \
 						opencl_init.c \
+						opencl_memalloc.c \
 						rotations.c \
 						tools.c \
 						tree_of_ray.c \
@@ -85,6 +86,7 @@ SRC_NAME =  			init.c \
 						xml_planes.c \
 						xml_scene.c \
 						xml_spheres.c \
+						hooks.c \
 						xml_tools.c	
 
 default: gpu

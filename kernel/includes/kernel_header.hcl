@@ -135,4 +135,5 @@ typedef struct			s_scene
 	int					depth;
 	float				u_time;
 	int					flag;
+	int					tor_count;
 }						t_scene;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_key_press.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/26 19:37:50 by adalenco          #+#    #+#             */
+/*   Updated: 2018/02/26 19:37:51 by adalenco         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
 static	void	mlx_key_press_1(int key, t_env *e)
@@ -116,6 +128,10 @@ static	void	mlx_key_press_4(int key, t_env *e)
 	(key == K_F11 ? e->keys.k_f11 = 1 : 0);
 }
 
+/*
+**gerer le key repeat
+*/
+
 int				mlx_key_press(int key, t_env *e)
 {
 	if (e->debug == 1)
@@ -124,14 +140,6 @@ int				mlx_key_press(int key, t_env *e)
 		ft_putnbr(key);
 		ft_putchar('\n');
 	}
-//	TROUVER MOYEN D'EVITER LE KEY REPEAT DE FOLIE
-//	if (key == K_1)
-//	{
-//		if (e->scene->flag & OPTION_WAVE)
-//			e->scene->flag ^= OPTION_WAVE;
-//		else
-//			e->scene->flag |= OPTION_WAVE;
-//	}
 	(key == K_F12 ? e->keys.k_f12 = 1 : 0);
 	(key == K_F13 ? e->keys.k_f13 = 1 : 0);
 	(key == K_F14 ? e->keys.k_f14 = 1 : 0);

@@ -1,5 +1,9 @@
 #include "rtv1.h"
 
+/*
+**	inutile car on construit pas l'arbre côté CPU
+*/
+
 int		tor_flush(t_env *e)
 {
 	if (e->tree)

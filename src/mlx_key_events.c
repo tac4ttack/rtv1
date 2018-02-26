@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_key_events.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/26 19:47:00 by adalenco          #+#    #+#             */
+/*   Updated: 2018/02/26 20:12:57 by fmessina         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
 void			mlx_keyboard_repeated(t_env *e)
@@ -17,19 +29,14 @@ void			mlx_keyboard_repeated(t_env *e)
 			e->scene->depth++;
 		if (KP_NMIN)
 			(e->scene->depth > 0 ? e->scene->depth-- : 0);
-		if (tor_flush(e) != 0)
-			s_error("\x1b[2;31mError flushing the Tree of Ray\x1b[0m", e);
-		e->tree = tor_create(e);
+		e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
 	}
-//	TROUVER MOYEN D'EVITER KEY REPEAT DE FOLIE cf mlx_key_press.c
 	if (KP_1)
 	{
 		if (e->scene->flag & OPTION_WAVE)
 			e->scene->flag ^= OPTION_WAVE;
 		else
 			e->scene->flag |= OPTION_WAVE;
-	}		
-//	if (KP_NSTR)
-//		e->scene->refra++;
+	}
 	opencl_allocate_scene_memory(e);
 }
