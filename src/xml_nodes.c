@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:01:40 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/25 14:38:18 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:57:30 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void				xml_process_node(t_env *e, char *node)
 	XML->sub_node = ft_strsplit(node, ' ');
 	if (xml_check_attr(XML->sub_node) != 0)
 	{
-		printf("\x1b[2;31mError in node %s\x1b[0m", XML->sub_node[0]);
+		printf("\x1b[2;31mError in %s node\x1b[0m", XML->sub_node[0]);
 		exit(0);
 	}
 	if (ft_strcmp(XML->sub_node[0], "!--") == 0 || XML->is_comm == 1)
