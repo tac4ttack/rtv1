@@ -36,22 +36,18 @@ static void	xml_cam_data(t_env *e, char **att, t_node *cam_node, int *i)
 		s_error("\x1b[2;31mError in camera, ID is incorrect\x1b[0m", e);
 	else
 		cam_node->id = ft_atoi(att[(*i)++] + 4);
-	printf("\nCAMERA id = %d\n", cam_node->id);
 	if (ft_strncmp(att[*i], "pos=\"", 5) != 0)
 		s_error("\x1b[2;31mError in camera, POS expected in #1\x1b[0m", e);
 	else
 		xml_data_pos(e, att, i, cam_node);
-	printf("pos x = %f | y = %f | z = %f\n", cam_node->pos.x, cam_node->pos.y, cam_node->pos.z);
 	if (ft_strncmp(att[*i], "dir=\"", 5) != 0)
 		s_error("\x1b[2;31mError in camera, DIR expected in #2\x1b[0m", e);
 	else
 		xml_data_dir(e, att, i, cam_node);
-	printf("dir x = %f | y = %f | z = %f\n", cam_node->dir.x, cam_node->dir.y, cam_node->dir.z);
 	if (ft_strncmp(att[*i], "fov=\"", 5) != 0)
-	s_error("\x1b[2;31mError in camera, FOV expected in #3\x1b[0m", e);
+		s_error("\x1b[2;31mError in camera, FOV expected in #3\x1b[0m", e);
 	else
 		xml_data_cam_fov(e, att, i, cam_node);
-	printf("fov = %f\n", cam_node->fov);
 }
 
 void		xml_node_cam(t_env *e, char *node)
@@ -59,7 +55,7 @@ void		xml_node_cam(t_env *e, char *node)
 	t_node	*cam_node;
 	char	**tmp;
 	int		i;
-	
+
 	if (XML->in_scene != 1)
 		s_error("\x1b[2;31mError node is outside scene\x1b[0m", e);
 	e->scene->n_cams++;

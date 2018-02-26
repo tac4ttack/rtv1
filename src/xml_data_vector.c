@@ -42,7 +42,7 @@ void		xml_data_dir(t_env *e, char **attributes, int *i, t_node *node)
 	}
 	else
 		s_error("\x1b[2;31mError reading DIR vector from scene\x1b[0m", e);
-	if  (node->dir.x == 0 && node->dir.y == 0 && node->dir.z == 0)
+	if (node->dir.x == 0 && node->dir.y == 0 && node->dir.z == 0)
 		node->dir.x = 1;
 }
 
@@ -60,6 +60,6 @@ void		xml_data_normale(t_env *e, char **attributes, int *i, t_node *node)
 	}
 	else
 		s_error("\x1b[2;31mError reading NORMALE vector from scene\x1b[0m", e);
-	if  (node->normale.x == 0 && node->normale.y == 0 && node->normale.z == 0)
+	if (node->normale.x == 0 && node->normale.y == 0 && node->normale.z == 0)
 		node->normale.x = 1;
 }

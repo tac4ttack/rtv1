@@ -30,9 +30,6 @@ void		update_fps(t_fps *fps)
 	if (fps->cur.tv_sec - fps->step.tv_sec)
 	{
 		fps->ret_fps = fps->fps;
-	//	ft_putstr("FPS ["); //FPS counter moved on hud
-	//	ft_putnbr(fps->ret_fps);
-	//	ft_putstr("]\n");
 		fps->fps = 0;
 		gettimeofday(&fps->step, NULL);
 	}

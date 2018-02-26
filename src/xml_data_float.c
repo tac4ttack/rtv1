@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   xml_data_float.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/26 18:27:06 by adalenco          #+#    #+#             */
+/*   Updated: 2018/02/26 18:27:07 by adalenco         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
 void	xml_data_reflex(t_env *e, char **attributes, int *i, t_node *node)
@@ -9,7 +21,7 @@ void	xml_data_reflex(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[2;31mError in REFLEX from scene\x1b[0m", e);
 		node->reflex = ft_atof(attributes[(*i)++] + 8);
-		if (node->reflex < 0 || node->reflex > 1)
+		if (check_float(NULL, node->reflex, 1))
 			s_error("\x1b[2;31mError REFLEX must be 0 <= n <= 1\x1b[0m", e);
 	}
 	else
@@ -25,49 +37,11 @@ void	xml_data_brightness(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[2;31mError in BRIGHT from scene\x1b[0m", e);
 		node->brightness = ft_atof(attributes[(*i)++] + 12);
-		if (node->brightness < 0 || node->brightness > 1)
+		if (check_float(NULL, node->brightness, 1))
 			s_error("\x1b[2;31mError BRIGHTNESS must be 0 <= n <= 1\x1b[0m", e);
 	}
 	else
 		s_error("\x1b[2;31mError reading BRIGHTNESS from scene\x1b[0m", e);
-}
-
-void	xml_data_speculos(t_env *e, char **attributes, int *i, t_node *node)
-{
-	if (e && attributes && node)
-	{
-		if (attributes[(*i)] == NULL)
-			s_error("\x1b[2;31mError reading SPECULAR value\x1b[0m", e);
-		node->spec.x = ft_atof(attributes[(*i)++] + 6);
-		node->spec.y = ft_atof(attributes[(*i)++]);
-		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
-			s_error("\x1b[2;31mError in SPEC from scene\x1b[0m", e);
-		node->spec.z = ft_atof(attributes[(*i)++]);
-// RAJOUTER CONTROLE DE LA VALEUR QUAND ON SAURA QUELLE VALEUR CA DOIT AVOIR t(ಠ益ಠt)
-		if (node->spec.x < 0 || node->spec.y < 0 || node->spec.z < 0)
-			s_error("\x1b[2;31mError SPECULAR can't be 0 or less\x1b[0m", e);
-	}
-	else
-		s_error("\x1b[2;31mError reading SPECULAR from scene\x1b[0m", e);
-}
-
-void	xml_data_diffiouse(t_env *e, char **attributes, int *i, t_node *node)
-{
-	if (e && attributes && node)
-	{
-		if (attributes[(*i)] == NULL)
-			s_error("\x1b[2;31mError reading DIFFUSE value\x1b[0m", e);
-		node->diff.x = ft_atof(attributes[(*i)++] + 6);
-		node->diff.y = ft_atof(attributes[(*i)++]);
-		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
-			s_error("\x1b[2;31mError in DIFF from scene\x1b[0m", e);
-		node->diff.z = ft_atof(attributes[(*i)++]);
-// RAJOUTER CONTROLE DE LA VALEUR QUAND ON SAURA QUELLE VALEUR CA DOIT AVOIR t(ಠ益ಠt)
-		if (node->diff.x < 0 || node->diff.y < 0 || node->diff.z < 0)
-			s_error("\x1b[2;31mError DIFFUSE can't be 0 or less\x1b[0m", e);
-	}
-	else
-		s_error("\x1b[2;31mError reading DIFFUSE from scene\x1b[0m", e);
 }
 
 void	xml_data_radius(t_env *e, char **attributes, int *i, t_node *node)
@@ -95,14 +69,15 @@ void	xml_data_angle(t_env *e, char **attributes, int *i, t_node *node)
 		if (attributes[(*i)][ft_strlen(attributes[*i]) - 1] != '\"')
 			s_error("\x1b[2;31mError in ANGLE from scene\x1b[0m", e);
 		node->angle = ft_atof(attributes[(*i)++] + 7);
-		if (node->angle < 0)
-			s_error("\x1b[2;31mError ANGLE can't be negative\x1b[0m", e);
 	}
 	else
 		s_error("\x1b[2;31mError reading ANGLE from scene\x1b[0m", e);
 }
 
-// à garder au chaud pour plus tard
+/*
+** à garder au chaud pour plus tard
+*/
+
 void	xml_data_height(t_env *e, char **attributes, int *i, t_node *node)
 {
 	if (e && attributes && node)

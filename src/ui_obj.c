@@ -14,8 +14,8 @@
 
 cl_float3		*get_target_dir(t_env *e)
 {
-	cl_float3			*res;
-	
+	cl_float3	*res;
+
 	res = NULL;
 	if (ACTIVEOBJ.type != 0)
 	{
@@ -33,8 +33,8 @@ cl_float3		*get_target_dir(t_env *e)
 
 cl_float3		*get_target_pos(t_env *e)
 {
-	cl_float3			*res;
-	
+	cl_float3	*res;
+
 	res = NULL;
 	if (ACTIVEOBJ.type != 0)
 	{
@@ -50,9 +50,9 @@ cl_float3		*get_target_pos(t_env *e)
 	return (res);
 }
 
-void					ui_obj(t_env *e)
+void			ui_obj(t_env *e)
 {
-	cl_float3 *target;
+	cl_float3	*target;
 
 	target = NULL;
 	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O)
@@ -72,6 +72,6 @@ void					ui_obj(t_env *e)
 		(KP_N8 ? target->y -= 0.1 : 0);
 		(KP_N5 ? target->y += 0.1 : 0);
 		(KP_N7 ? target->z -= 0.1 : 0);
-		(KP_N9 ? target->z += 0.1 : 0);		
+		(KP_N9 ? target->z += 0.1 : 0);
 	}
 }
