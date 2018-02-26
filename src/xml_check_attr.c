@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xml_attr_check.c                                   :+:      :+:    :+:   */
+/*   xml_check_attr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 16:28:15 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/25 16:28:18 by adalenco         ###   ########.fr       */
+/*   Updated: 2018/02/26 15:03:46 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int			xml_attr_check(char *attr, int dec, int type)// type 1 ',', type 2 '"'
 	return (0);
 }
 */
+
+// Problème avec noeud commenté
+// on doit pouvoir écrire "/>-->" pour la fin d'un noeud commenté
+// au lieu d'obligatoirement "/> -->"
+
 
 int			xml_check_attnode(char *att, int j)
 {
@@ -74,12 +79,12 @@ int			xml_check_attr(char **att)
 		//printf("indice : %i, %s, att : %s\n", j, att[0], att[i] + j);
 		if (xml_check_attnode(att[i], j) == 1)
 		{
-			printf("error dans ce %s\n", att[i]);
+			printf("\x1b[2;31mXML syntax error \"%s\"\x1b[0m\n", att[i]);
 			return (1);
 		}
 		++i;
 		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || ft_strcmp(att[i], "-->") == 0))
-		++i;
+			++i;
 	}
 	return (0);
 }
