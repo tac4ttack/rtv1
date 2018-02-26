@@ -92,6 +92,146 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 	return (fast_normalize(save));
 }
 
+unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
+{
+	int					i;
+	i = 0;
+	unsigned int		res_color;
+	res_color = get_ambient(scene, get_obj_hue(scene, hit));
+	float				tmp;
+	tmp = 0;
+	float3				reflect;
+	reflect = 0;
+	float3 __private	diffuse;
+	diffuse = 0;
+	float __private	brightness;
+	brightness = 0;
+	int __private hue;
+	hue = 0;
+	int __private hue_light;
+	hue_light = 0;
+	unsigned int __private col_r, col_g, col_b, obj_r, obj_g, obj_b, l_r, l_b, l_g;
+	col_r = 0;
+	col_g = 0;
+	col_b = 0;
+	obj_r = 0;
+	obj_g = 0;
+	obj_b = 0;
+	l_r = 0;
+	l_g = 0;
+	l_b = 0;
+	t_light_ray			light_ray;
+	t_hit				light_hit;
+	float __private pow_of_spec;
+	pow_of_spec = 0;
+	int __private light_color;
+	light_color = 0;
+	float3 __private speculos;
+	speculos = 0;
+
+	while (i < scene->n_lights)
+	{
+		tmp = 0;
+		light_ray.dir = LIGHT[i].pos - hit.pos;
+		light_ray.dist = fast_length(light_ray.dir);
+		light_ray.dir = fast_normalize(light_ray.dir);
+		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
+		light_hit.id = i;
+		light_hit.type = 3;
+		if (light_hit.dist < light_ray.dist && light_hit.dist > 0.f)
+			;
+		else
+		{
+			tmp = dot(hit.normale, light_ray.dir);
+			if (tmp > 0.f)
+			{
+				brightness = (float __private)LIGHT[light_hit.id].brightness;
+
+				if (hit.type == 1)
+					diffuse = (float3 __private)CONES[hit.id].diff;
+				else if (hit.type == 2)
+					diffuse = (float3 __private)CYLIND[hit.id].diff;
+				else if (hit.type == 4)
+					diffuse = (float3 __private)PLANE[hit.id].diff;
+				else if (hit.type == 5)
+					diffuse = (float3 __private)SPHERE[hit.id].diff;
+				else
+					diffuse = 0.f;
+
+				if (hit.type == 1)
+					hue = (int __private)CONES[hit.id].color;
+				if (hit.type == 2)
+					hue = (int __private)CYLIND[hit.id].color;
+				if (hit.type == 3)
+					hue = (int __private)LIGHT[hit.id].color;
+				if (hit.type == 4)
+					hue = (int __private)PLANE[hit.id].color;
+				if (hit.type == 5)
+					hue = (int __private)SPHERE[hit.id].color;
+
+				if (hit.type == 1)
+					hue_light = (int __private)CONES[light_hit.id].color;
+				if (hit.type == 2)
+					hue_light = (int __private)CYLIND[light_hit.id].color;
+				if (hit.type == 3)
+					hue_light = (int __private)LIGHT[light_hit.id].color;
+				if (hit.type == 4)
+					hue_light = (int __private)PLANE[light_hit.id].color;
+				if (hit.type == 5)
+					hue_light = (int __private)SPHERE[light_hit.id].color;
+				col_r = (res_color & 0xFF0000) >> 16;
+				col_g = (res_color & 0x00FF00) >> 8;
+				col_b = (res_color & 0x0000FF);
+				obj_r = (hue & 0xFF0000) >> 16;
+				obj_g = (hue & 0x00FF00) >> 8;
+				obj_b = (hue & 0x00000FF);
+				l_r = (hue_light & 0xFF0000) >> 16;
+				l_g = (hue_light & 0x00FF00) >> 8;
+				l_b = (hue_light & 0x0000FF);
+
+				col_r += ((l_r * brightness) + obj_r) * tmp * diffuse.x;
+				col_g += ((l_g * brightness) + obj_g) * tmp * diffuse.y;
+				col_b += ((l_b * brightness) + obj_b) * tmp * diffuse.z;
+				(col_r > 255 ? col_r = 255 : 0);
+				(col_g > 255 ? col_g = 255 : 0);
+				(col_b > 255 ? col_b = 255 : 0);
+				res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			}
+			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
+			tmp = dot(reflect, -ray);
+			if (tmp > 0.f)
+			{
+				speculos = 0.f;
+				if (hit.type == 1)
+					speculos = (float3 __private)CONES[hit.id].spec;
+				else if (hit.type == 2)
+					speculos = (float3 __private)CYLIND[hit.id].spec;
+				else if (hit.type == 4)
+					speculos = (float3 __private)PLANE[hit.id].spec;
+				else if (hit.type == 5)
+					speculos = (float3 __private)SPHERE[hit.id].spec;
+				else
+					speculos = 0.f;
+				col_r = (res_color & 0x00FF0000) >> 16;
+				col_g = (res_color & 0x0000FF00) >> 8;
+				col_b = (res_color & 0x000000FF);
+
+				pow_of_spec = native_powr(tmp, (LIGHT[light_hit.id].shrink));
+				light_color = LIGHT[light_hit.id].color;
+				col_r += (((light_color & 0xFF0000) >> 16) * pow_of_spec) * speculos.x;
+				col_g += ((light_color & 0x00FF00) >> 8) * pow_of_spec * speculos.y;
+				col_b += (light_color & 0x0000FF) * pow_of_spec * speculos.z;
+				(col_r > 255 ? col_r = 255 : 0);
+				(col_g > 255 ? col_g = 255 : 0);
+				(col_b > 255 ? col_b = 255 : 0);
+				res_color = ((col_r << 16) + (col_g << 8) + col_b);
+			}
+		}
+		i++;
+	}
+	return (res_color);
+}
+
 unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
 
@@ -153,6 +293,8 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	col_b = (0.01 + col_b * scene->ambient.z > 255 ? 255 : 0.01 + col_b * scene->ambient.z);
 	res_color = ((col_r << 16) + (col_g << 8) + col_b);
 
+	while (++i < scene->n_lights)
+	{
 	light_ray.dir = LIGHT[i].pos - hit.pos;
 	light_ray.dist = fast_length(light_ray.dir);
 	light_ray.dir = fast_normalize(light_ray.dir);
@@ -261,10 +403,13 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 				res_color = ((col_r << 16) + (col_g << 8) + col_b);
 			}
 		}
+		i++;
+	}
 	return (res_color);
 }
 
-unsigned int			phong3(const __local t_scene *scene, const t_hit hit, const float3 ray)
+/* BACKUP OF PHONG
+unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
 {
 	int					i = -1;
 	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
@@ -298,43 +443,7 @@ unsigned int			phong3(const __local t_scene *scene, const t_hit hit, const float
 		}
 	}
 	return (res_color);
-}
-
-unsigned int			phong4(const __local t_scene *scene, const t_hit hit, const float3 ray)
-{
-	int					i = -1;
-	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
-	float				tmp;
-	float3				reflect = 0;
-
-	t_light_ray			light_ray;
-	t_hit				light_hit = hit_init();
-
-	while (++i < scene->n_lights)
-	{
-		tmp = 0;
-		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = fast_length(light_ray.dir);
-		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-		light_hit.id = i;
-		light_hit.type = 3;
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-		{
-		}
-		else
-		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0)
-				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-			tmp = dot(reflect, -ray);
-			if (tmp > 0)
-				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
-		}
-	}
-	return (res_color);
-}
+} */
 
 static unsigned int		bounce(const __local t_scene *scene, const float3 ray, const t_hit old_hit, const int depth)
 {
@@ -352,7 +461,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, cons
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, ray, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color += 0.1 * phong2(scene, new_hit, reflex);
+			color += 0.1 * phong(scene, new_hit, reflex);
 		}
 		i--;
 	}
@@ -374,7 +483,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 
-		color = phong2(scene, hit, ray);
+		color = phong(scene, hit, ray);
 		if (depth > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
 		return (color + bounce_color);
@@ -399,8 +508,8 @@ __kernel void	ray_trace(	__global	char		*output,
 							__local		t_light		*lights,
 							__local		t_plane		*planes,
 							__local		t_sphere	*spheres,
-							__private	float		u_time,
-							__private	t_tor		*tree)
+							__private	float		u_time)/*,
+							__global	t_tor		*tree)*/
 {
  	event_t	ev;
 	ev = async_work_group_copy((__local char *)scene, (__global char *)scene_data, sizeof(t_scene), 0);
