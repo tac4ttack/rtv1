@@ -320,31 +320,51 @@ typedef	struct			s_env
 	t_tor				*tree;
 }						t_env;
 
-/*
-*****		comment template		*****
-*/
-
-void					init(t_env *e, int ac, char *av);
-void					set_hooks(t_env *e);
-
+cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
 void					display_hud(t_env *e);
-
-void					ui_cam(t_env *e);
-void					ui_obj(t_env *e);
-cl_float3				*get_target_pos(t_env *e);
+int						draw(t_env *e);
+void					error(void);
 cl_float3				*get_target_dir(t_env *e);
-
+cl_float3				*get_target_pos(t_env *e);
+void					init(t_env *e, int ac, char *av);
+void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
+int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
+void					mlx_keyboard_repeated(t_env *e);
+int						mlx_key_press(int key, t_env *e);
+int						mlx_key_release(int key, t_env *e);
+int						mlx_key_simple(int key, t_env *e);
+int						mlx_main_loop(t_env *e);
+int						mlx_mouse_events(int btn, int x, int y, t_env *e);
+cl_float3				normalize_vect(cl_float3 v);
+int						opencl_allocate_scene_memory(t_env *e);
+void					opencl_close(t_env *e);
+int						opencl_init(t_env *e, unsigned int count);
+void					opencl_print_error(int error);
+void					opencl_set_args(t_env *e);
+void					p_error(char *str, t_env *e);
+void					print_usage();
+int						quit(t_env *e);
+void					refresh(t_env *e);
+cl_float3				rotz(cl_float3 dir, float roll);
+cl_float3				roty(cl_float3 dir, float yaw);
+cl_float3				rotx(cl_float3 dir, float pitch);
+cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
+void					s_error(char *str, t_env *e);
+void					set_hooks(t_env *e);
+cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
 t_tor					*tor_create(t_env *e);
 int						tor_flush(t_env *e);
-
+void					ui_cam(t_env *e);
+void					ui_obj(t_env *e);
+void					update_fps(t_fps *fps);
 void					xml_allocate_cam(t_env *e);
 void					xml_allocate_cone(t_env *e);
 void					xml_allocate_cyl(t_env *e);
 void					xml_allocate_light(t_env *e);
 void					xml_allocate_plane(t_env *e);
 void					xml_allocate_sphere(t_env *e);
-int						xml_check_char(char c);
 int						xml_check_attr(char **att);
+int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);
 int						xml_check_node_format(char **node, int mod);
 void					xml_data_angle(t_env *e, char **attributes, \
@@ -393,37 +413,5 @@ void					xml_push_cyl(t_env *e, t_node *list);
 void					xml_push_light(t_env *e, t_node *list);
 void					xml_push_plane(t_env *e, t_node *list);
 void					xml_push_sphere(t_env *e, t_node *list);
-
-int						quit(t_env *e);
-void					error(void);
-void					s_error(char *str, t_env *e);
-void					p_error(char *str, t_env *e);
-void					print_usage();
-
-int						mlx_img_pix_put(t_frame *sce, int x, int y, int color);
-void					mlx_img_line(t_frame *sce, t_p2i p1, t_p2i p2, int c);
-int						mlx_main_loop(t_env *e);
-int						mlx_mouse_events(int btn, int x, int y, t_env *e);
-void					mlx_keyboard_repeated(t_env *e);
-int						mlx_key_release(int key, t_env *e);
-int						mlx_key_press(int key, t_env *e);
-int						mlx_key_simple(int key, t_env *e);
-
-int						opencl_init(t_env *e, unsigned int count);
-void					opencl_close(t_env *e);
-int						opencl_allocate_scene_memory(t_env *e);
-void					opencl_set_args(t_env *e);
-void					opencl_print_error(int error);
-int						draw(t_env *e);
-void					refresh(t_env *e);
-void					update_fps(t_fps *fps);
-
-cl_float3				normalize_vect(cl_float3 v);
-cl_float3				rotz(cl_float3 dir, float roll);
-cl_float3				roty(cl_float3 dir, float yaw);
-cl_float3				rotx(cl_float3 dir, float pitch);
-cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
-cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
-cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
 
 #endif

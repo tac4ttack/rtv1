@@ -1,7 +1,7 @@
 TODO LIST COMMON:
 -----------------
 * norm norm norm
-* sortie d'erreur opencl, mettre code erreur et sa traduction
+* sortie d'erreur opencl, mettre code erreur et sa traduction -> FAIT FLO
 * faire une touche pour reload le kernel en pleine execution
 * génération damier -> Noé on the job
 * bruit de perlinpinpin -> Chaton?
@@ -10,7 +10,7 @@ TODO LIST COMMON:
 * kernel post process Cel Shading
 * faire la conversion vers le type d'objets générique
 * finir le TREE OF RAY
-	-> creation OK
+	-> creation OK FLO
 	-> preremplissage
 	-> transmission
 	-> remplissage vecteurs etc
