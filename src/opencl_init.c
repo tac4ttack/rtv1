@@ -5,7 +5,7 @@ int			opencl_builderrors(t_env *e, int err, cl_int ocl)
 	size_t	len;
 	char	buffer[50000];
 
-	printf("\nOCL ERROR IS = %d\n", (int)ocl);  //remplacer par print erreur ocl
+	opencl_print_error(e->err);
 	if (err == 1)
 		ft_putendl("Error: Failed to create device group!");
 	else if (err == 2)

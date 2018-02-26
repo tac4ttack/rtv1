@@ -413,6 +413,7 @@ int						opencl_init(t_env *e, unsigned int count);
 void					opencl_close(t_env *e);
 int						opencl_allocate_scene_memory(t_env *e);
 void					opencl_set_args(t_env *e);
+void					opencl_print_error(int error);
 int						draw(t_env *e);
 void					refresh(t_env *e);
 void					update_fps(t_fps *fps);

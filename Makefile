@@ -61,6 +61,7 @@ SRC_NAME =  			init.c \
 						mlx_main_loop.c \
 						mlx_mouse.c \
 						opencl_compute.c \
+						opencl_error.c \
 						opencl_init.c \
 						rotations.c \
 						tools.c \
