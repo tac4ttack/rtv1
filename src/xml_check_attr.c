@@ -78,7 +78,8 @@ int			xml_check_attr(char **att)
 			return (1);
 		}
 		++i;
-		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || ft_strcmp(att[i], "-->") == 0))
+		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || \
+		ft_strcmp(att[i], "-->") == 0 || ft_strcmp(att[i], "/>-->") == 0))
 		++i;
 	}
 	return (0);
