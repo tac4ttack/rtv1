@@ -43,6 +43,8 @@ endif
 
 MLX =					$(MLX_PATH)/libmlx.a
 
+NUKLEAR =				./nuklear
+
 OBJ =					$(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 OBJ_PATH =				./obj
 OBJ_NAME =				$(SRC_NAME:.c=.o)
@@ -92,7 +94,7 @@ $(NAME): libft mlx $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
 	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
-	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
+	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH) -I $(NUKLEAR) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
 	@echo "$(GREEN)Creating ./obj path and making binaries from source files$(EOC)"
