@@ -20,8 +20,8 @@ void		opencl_set_args(t_env *e)
 	e->err |= clSetKernelArg(e->kernel_rt, 14, sizeof(t_plane) * NPLA + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 15, sizeof(t_sphere) * NSPH + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 16, sizeof(float), &(e->fps.u_time));
-	e->err |= clSetKernelArg(e->kernel_rt, 17, sizeof(t_tor), e->tree);
-
+	e->err |= clSetKernelArg(e->kernel_rt, 17, \
+								sizeof(t_tor) * e->node_count , e->tree);
 	if (e->err != CL_SUCCESS)
 	{
 		opencl_print_error(e->err);

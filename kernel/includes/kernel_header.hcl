@@ -98,6 +98,19 @@ typedef struct			s_sphere
 	float				reflex;
 }						t_sphere;
 
+typedef	struct			s_tor
+{
+	float3				prim;
+//	float3				refl;
+//	float3				refr;
+	unsigned int		hit_type;
+	unsigned int		hit_id;
+//	float				coef_refl;
+//	float				coef_refr;
+	unsigned int		color;
+	char				check_g;
+	char				check_d;
+}						t_tor;
 
 typedef struct			s_scene
 {

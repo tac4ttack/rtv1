@@ -318,6 +318,7 @@ typedef	struct			s_env
 
 	char				run;
 	t_tor				*tree;
+	int					node_count;
 }						t_env;
 
 cl_float3				add_cl_float(cl_float3 v1, cl_float3 v2);
