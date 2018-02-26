@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   opencl_compute.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/26 19:40:38 by adalenco          #+#    #+#             */
+/*   Updated: 2018/02/26 19:40:39 by adalenco         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
 void		opencl_set_args(t_env *e)
@@ -20,8 +32,6 @@ void		opencl_set_args(t_env *e)
 	e->err |= clSetKernelArg(e->kernel_rt, 14, sizeof(t_plane) * NPLA + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 15, sizeof(t_sphere) * NSPH + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 16, sizeof(float), &(e->fps.u_time));
-	e->err |= clSetKernelArg(e->kernel_rt, 17, \
-								sizeof(t_tor) * e->node_count , e->tree);
 	if (e->err != CL_SUCCESS)
 	{
 		opencl_print_error(e->err);
@@ -29,10 +39,14 @@ void		opencl_set_args(t_env *e)
 	}
 }
 
+/*
+** the "CL_TRUE" flag blocks the read operation until
+** 	all work items have finished their computation
+*/
+
 int			get_imgptr(t_env *e)
 {
 	clFinish(e->raytrace_queue);
-	 // the "CL_TRUE" flag blocks the read operation until all work items have finished their computation
 	e->err = clEnqueueReadBuffer(e->raytrace_queue, e->frame_buffer, CL_TRUE, 0, \
 			(e->count * 4), e->frame->pix, 0, NULL, NULL);
 	if (e->run == 1)
@@ -55,7 +69,7 @@ int			draw(t_env *e)
 
 	opencl_set_args(e);
 	e->err = clGetKernelWorkGroupInfo(e->kernel_rt, e->device_id, \
-			CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL); // useless avec le tableau G?
+			CL_KERNEL_WORK_GROUP_SIZE, sizeof(e->local), &e->local, NULL);
 	if (e->err != CL_SUCCESS)
 	{
 		opencl_print_error(e->err);

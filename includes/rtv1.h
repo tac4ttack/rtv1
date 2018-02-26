@@ -343,6 +343,7 @@ void					opencl_close(t_env *e);
 int						opencl_init(t_env *e, unsigned int count);
 void					opencl_print_error(int error);
 void					opencl_set_args(t_env *e);
+int						opencl_builderrors(t_env *e, int err, int errorcode);
 void					p_error(char *str, t_env *e);
 void					print_usage();
 int						quit(t_env *e);

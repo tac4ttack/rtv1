@@ -99,7 +99,8 @@ static void		display_hud_obj_dir(t_env *e)
 
 void			display_hud(t_env *e)
 {
-	char *refl;
+	char		*refl;
+	char		*fps;
 
 	refl = ft_strjoin_frs2("depth = ", ft_itoa(e->scene->depth));
 	mlx_string_put(e->mlx, e->win, 10, 115, 0x00ffffff, refl);
@@ -107,5 +108,7 @@ void			display_hud(t_env *e)
 	display_hud_cam(e);
 	display_hud_obj_pos(e);
 	display_hud_obj_dir(e);
-	mlx_string_put(e->mlx, e->win, e->win_w - 40, 10, 0x00ffffff, ft_itoa(e->fps.ret_fps)); // attention fuite
+	fps = ft_itoa(e->fps.ret_fps);
+	mlx_string_put(e->mlx, e->win, e->win_w - 40, 10, 0x00ffffff, fps);
+	free(fps);
 }
