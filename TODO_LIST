@@ -4,6 +4,7 @@ TODO LIST COMMON:
 * sortie d'erreur opencl, mettre code erreur et sa traduction -> FAIT FLO
 * faire une touche pour reload le kernel en pleine execution
 * génération damier -> Noé on the job
+* faire print_usage
 * bruit de perlinpinpin -> Chaton?
 * kernel post process Sepia -> Flo
 * kernel post process Stereoscopie -> Flo?
