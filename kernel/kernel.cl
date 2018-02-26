@@ -372,7 +372,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normale = get_hit_normale(scene, ray, hit);
-		hit.pos = hit.pos + ((hit.dist / 100) * hit.normale);
+		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 
 		color = phong2(scene, hit, ray);
 		if (depth > 0)
