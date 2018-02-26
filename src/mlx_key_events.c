@@ -11,10 +11,14 @@ void			mlx_keyboard_repeated(t_env *e)
 	if (KP_I || KP_J || KP_K || KP_L || KP_U || KP_O || \
 		KP_N4 || KP_N6 || KP_N8 || KP_N5 || KP_N7 || KP_N9)
 		ui_obj(e);
-	if (KP_NPLU)
-		e->scene->depth++;
-	if (KP_NMIN)
-		(e->scene->depth > 0 ? e->scene->depth-- : 0);
+	if (KP_NPLU || KP_NPLU)
+	{
+		if (KP_NPLU)
+			e->scene->depth++;
+		if (KP_NMIN)
+			(e->scene->depth > 0 ? e->scene->depth-- : 0);
+		e->tree = tor_create(e);
+	}
 //	TROUVER MOYEN D'EVITER KEY REPEAT DE FOLIE cf mlx_key_press.c
 	if (KP_1)
 	{

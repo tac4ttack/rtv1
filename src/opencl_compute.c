@@ -20,6 +20,7 @@ void		opencl_set_args(t_env *e)
 	e->err |= clSetKernelArg(e->kernel_rt, 14, sizeof(t_plane) * NPLA + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 15, sizeof(t_sphere) * NSPH + 4, NULL);
 	e->err |= clSetKernelArg(e->kernel_rt, 16, sizeof(float), &(e->fps.u_time));
+	// rajouter tor
 	if (e->err != CL_SUCCESS)
 	{
 		ft_putnbr((int)e->err); // à remplacer avec une fonction print erreur opencl (fonction à foutre des qu'on a un code erreur ocl)

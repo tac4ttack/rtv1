@@ -297,10 +297,8 @@ typedef	struct			s_env
 	int					gpu;
 	size_t				global;
 	size_t				local;
-
 	unsigned int		count;
-
-
+	
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;
@@ -337,6 +335,7 @@ cl_float3				*get_target_pos(t_env *e);
 cl_float3				*get_target_dir(t_env *e);
 
 t_tor					*tor_create(t_env *e);
+int						tor_flush(t_env *e);
 
 void					xml_allocate_cam(t_env *e);
 void					xml_allocate_cone(t_env *e);

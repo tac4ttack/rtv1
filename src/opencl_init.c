@@ -59,6 +59,7 @@ int			opencl_allocate_scene_memory(t_env *e)
 	if (!(e->scene_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
 		CL_MEM_COPY_HOST_PTR, sizeof(t_scene), e->scene, NULL)))
 			return (opencl_builderrors(e, 7, e->err));
+	// rajouter creation TOR
 	return (0);
 }
 
