@@ -83,8 +83,14 @@ int			xml_check_attr(char **att)
 			return (1);
 		}
 		++i;
+<<<<<<< HEAD
+		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || \
+		ft_strcmp(att[i], "-->") == 0 || ft_strcmp(att[i], "/>-->") == 0))
+		++i;
+=======
 		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || ft_strcmp(att[i], "-->") == 0))
 			++i;
+>>>>>>> a1ff84b83417ffe47e547f30a496e1273af84307
 	}
 	return (0);
 }
