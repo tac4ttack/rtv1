@@ -12,21 +12,12 @@
 
 #include "rtv1.h"
 
-int			opencl_builderrors(t_env *e, int err, int errorcode)
+void		opencl_advanced_errors(t_env *e, int err)
 {
 	size_t	len;
 	char	buffer[50000];
 
-	opencl_print_error(errorcode);
-	if (err == 1)
-		ft_putendl("Error: Failed to create device group!");
-	else if (err == 2)
-		ft_putendl("Error: Failed to create compute context!");
-	else if (err == 3)
-		ft_putendl("Error: Failed to create commands queue!");
-	else if (err == 4)
-		ft_putendl("Error: Failed to create compute program!");
-	else if (err == 5)
+	if (err == 5)
 	{
 		ft_putendl("Error: Failed to build program executable!\n");
 		clGetProgramBuildInfo(e->program, e->device_id, \
@@ -39,13 +30,27 @@ int			opencl_builderrors(t_env *e, int err, int errorcode)
 		ft_putendl("Error: Failed to allocate device memory!\n");
 	if (err >= 5)
 		exit(1);
+}
+
+int			opencl_builderrors(t_env *e, int err, int errorcode)
+{
+	opencl_print_error(errorcode);
+	if (err == 1)
+		ft_putendl("Error: Failed to create device group!");
+	else if (err == 2)
+		ft_putendl("Error: Failed to create compute context!");
+	else if (err == 3)
+		ft_putendl("Error: Failed to create commands queue!");
+	else if (err == 4)
+		ft_putendl("Error: Failed to create compute program!");
+	opencl_advanced_errors(e, err);
 	return (EXIT_FAILURE);
 }
 
 int			opencl_build(t_env *e, unsigned int count)
 {
-	if ((e->err = clBuildProgram(e->program, 0, NULL, "-g -I ./kernel/includes/ ", \
-				NULL, NULL)) != CL_SUCCESS)
+	if ((e->err = clBuildProgram(e->program, 0, NULL, \
+	"-g -I ./kernel/includes/ ", NULL, NULL)) != CL_SUCCESS)
 		return (opencl_builderrors(e, 5, e->err));
 	if (!(KRT = clCreateKernel(e->program, "ray_trace", &e->err)) \
 		|| e->err != CL_SUCCESS)

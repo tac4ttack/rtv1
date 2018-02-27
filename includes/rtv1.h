@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rtv1.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/27 15:18:10 by adalenco          #+#    #+#             */
+/*   Updated: 2018/02/27 15:18:12 by adalenco         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RTV1_H
 # define RTV1_H
 
@@ -236,12 +248,8 @@ typedef struct			s_frame
 typedef	struct			s_tor
 {
 	cl_float3			prim;
-//	cl_float3			refl;
-//	cl_float3			refr;
 	unsigned int		hit_type;
 	unsigned int		hit_id;
-//	float				coef_refl;
-//	float				coef_refr;
 	unsigned int		color;
 	char				check_g;
 	char				check_d;
@@ -301,7 +309,7 @@ typedef	struct			s_env
 	size_t				global;
 	size_t				local;
 	unsigned int		count;
-	
+
 	t_cam				*cameras;
 	cl_mem				cameras_mem;
 	t_cone				*cones;
@@ -320,7 +328,6 @@ typedef	struct			s_env
 	t_fps				fps;
 
 	char				run;
-	t_tor				*tree;
 	int					node_count;
 }						t_env;
 
@@ -357,8 +364,6 @@ cl_float3				rotcam(cl_float3 vect, float rad_pitch, float rad_yaw);
 void					s_error(char *str, t_env *e);
 void					set_hooks(t_env *e);
 cl_float3				sub_cl_float(cl_float3 v1, cl_float3 v2);
-t_tor					*tor_create(t_env *e);
-int						tor_flush(t_env *e);
 void					ui_cam(t_env *e);
 void					ui_obj(t_env *e);
 void					update_fps(t_fps *fps);

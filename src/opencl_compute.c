@@ -47,8 +47,8 @@ void		opencl_set_args(t_env *e)
 int			get_imgptr(t_env *e)
 {
 	clFinish(e->raytrace_queue);
-	e->err = clEnqueueReadBuffer(e->raytrace_queue, e->frame_buffer, CL_TRUE, 0, \
-			(e->count * 4), e->frame->pix, 0, NULL, NULL);
+	e->err = clEnqueueReadBuffer(e->raytrace_queue, e->frame_buffer, CL_TRUE, \
+	0, (e->count * 4), e->frame->pix, 0, NULL, NULL);
 	if (e->run == 1)
 	{
 		e->err = clEnqueueReadBuffer(e->raytrace_queue, e->target_obj_buf, \

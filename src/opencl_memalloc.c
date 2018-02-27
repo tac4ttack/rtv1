@@ -20,7 +20,8 @@ int			opencl_allocate_obj_memory(t_env *e)
 			return (opencl_builderrors(e, 7, e->err));
 	if (NCYL > 0)
 		if (!(e->cylinders_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \
-		CL_MEM_COPY_HOST_PTR, sizeof(t_cylinder) * NCYL, e->cylinders, &e->err)))
+		CL_MEM_COPY_HOST_PTR, sizeof(t_cylinder) \
+		* NCYL, e->cylinders, &e->err)))
 			return (opencl_builderrors(e, 7, e->err));
 	if (NPLA > 0)
 		if (!(e->planes_mem = clCreateBuffer(e->context, CL_MEM_READ_ONLY | \

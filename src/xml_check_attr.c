@@ -58,6 +58,8 @@ int			xml_check_attr(char **att)
 	i = 1;
 	while (att[i])
 	{
+		if (ft_strcmp(att[0], "!--") == 0)
+			return (0);
 		j = 0;
 		if (att[i][j] >= 97 && att[i][j] <= 122)
 			while (att[i][j] && att[i][j] != '=')
@@ -67,10 +69,7 @@ int			xml_check_attr(char **att)
 		if (att[i][j] == '=')
 			j += 2;
 		if (xml_check_attnode(att[i], j) == 1)
-		{
-			printf("\x1b[2;31mXML syntax error \"%s\"\x1b[0m\n", att[i]);
 			return (1);
-		}
 		++i;
 		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || \
 		ft_strcmp(att[i], "-->") == 0 || ft_strcmp(att[i], "/>-->") == 0))

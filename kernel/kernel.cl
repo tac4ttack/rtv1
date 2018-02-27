@@ -72,9 +72,8 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 
 		if (scene->flag & OPTION_WAVE)
 		{
-			/*					VAGUELETTE						*/
 			save = res;
-			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
+			save.y = res.y + 0.8 * sin((hit.pos.x /*+ scene->u_time*/));
 			return (fast_normalize(save));
 		}
 	}
@@ -83,7 +82,6 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 	save = res;
 	if (scene->flag & OPTION_WAVE)
 	{
-		/*						VAGUELETTE							*/
 		save.x = res.x + 0.8 * sin(res.y * 10 + scene->u_time);
 		save.z = save.z + 0.8 * sin(save.x * 10 + scene->u_time);
 		save.y = res.y + 0.8 * sin(res.x * 10 + scene->u_time);
@@ -279,7 +277,7 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	else if (hit.type == 2)
 		speculos = (float3 __private)CYLIND[hit.id].spec;
 	else if (hit.type == 4)
-		speculos = 0;//speculos = (float3 __private)PLANE[hit.id].spec;
+		speculos = 0;
 	else if (hit.type == 5)
 		speculos = (float3 __private)SPHERE[hit.id].spec;
 	else
@@ -408,43 +406,6 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	return (res_color);
 }
 
-/* BACKUP OF PHONG
-unsigned int			phong(const __local t_scene *scene, const t_hit hit, const float3 ray)
-{
-	int					i = -1;
-	unsigned int		res_color = get_ambient(scene, get_obj_hue(scene, hit));
-	float				tmp;
-	float3				reflect = 0;
-
-	t_light_ray			light_ray;
-	t_hit				light_hit = hit_init();
-
-	while (++i < scene->n_lights)
-	{
-		tmp = 0;
-		light_ray.dir = LIGHT[i].pos - hit.pos;
-		light_ray.dist = fast_length(light_ray.dir);
-		light_ray.dir = fast_normalize(light_ray.dir);
-		light_hit = ray_hit(scene, hit.pos, light_ray.dir);
-		light_hit.id = i;
-		light_hit.type = 3;
-		if (light_hit.dist < light_ray.dist && light_hit.dist > 0)
-		{
-		}
-		else
-		{
-			tmp = dot(hit.normale, light_ray.dir);
-			if (tmp > 0)
-				res_color = color_diffuse(scene, hit, light_hit, res_color, tmp);
-			reflect = fast_normalize(((float)(2.0 * dot(hit.normale, light_ray.dir)) * hit.normale) - light_ray.dir);
-			tmp = dot(reflect, -ray);
-			if (tmp > 0)
-				res_color = color_specular(scene, hit, light_hit, res_color, tmp);
-		}
-	}
-	return (res_color);
-} */
-
 static unsigned int		bounce(const __local t_scene *scene, const float3 ray, const t_hit old_hit, const int depth)
 {
 	int				i = depth;
@@ -477,17 +438,15 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 
 	hit.dist = MAX_DIST;
 	hit = ray_hit(scene, (ACTIVECAM.pos), ray);
-	if (hit.dist > 0 && hit.dist < MAX_DIST) // ajout d'une distance max pour virer acnee mais pas fiable a 100%
+	if (hit.dist > 0 && hit.dist < MAX_DIST)
 	{
 		hit.pos = (hit.dist * ray) + (ACTIVECAM.pos);
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
-
 		color = phong(scene, hit, ray);
 		if (depth > 0)
 			bounce_color = bounce(scene, ray, hit, depth);
 		return (color + bounce_color);
-//		return (blend_add(color, 0.8*bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
 }
@@ -537,25 +496,7 @@ __kernel void	ray_trace(	__global	char		*output,
 	scene->planes = planes;
 	scene->spheres = spheres;
 	scene->u_time = u_time;
-
-	if (0)
-	{
-		printf("t_light_ray			: %-20lu\n", sizeof(t_light_ray));
-		printf("t_cam 				: %-20lu\n", sizeof(t_cam));
-		printf("t_cone 				: %-20lu\n", sizeof(t_cone));
-		printf("t_cylinder 			: %-20lu\n", sizeof(t_cylinder));
-		printf("t_light 			: %-20lu\n", sizeof(t_light));
-		printf("t_plane 			: %-20lu\n", sizeof(t_plane));
-		printf("t_sphere 			: %-20lu\n", sizeof(t_sphere));
-		printf("t_tor 				: %-20lu\n", sizeof(t_tor));
-		printf("t_scene 			: %-20lu\n", sizeof(t_scene));
-		printf("\n");
-	}
-
-	__private t_tor	mojo[2047];
-	__private t_tor *tree = &mojo;
-
-	int			id = pix.x + (scene->win_w * pix.y); // NE PAS VIRER ID CAR BESOIN DANS MACRO OUTPUTE
+	int			id = pix.x + (scene->win_w * pix.y);
 
 	float3	prim_ray = get_ray_cam(scene, pix);
 

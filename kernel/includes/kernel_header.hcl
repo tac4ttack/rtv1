@@ -1,6 +1,6 @@
 #define BACKCOLOR 0x00999999
 
-#define MAX_DIST 10000000.0 // epsilon 0.00000001 ?
+#define MAX_DIST 10000000.0
 #define SHADOW_BIAS 1000
 
 #define CAM scene->cameras
@@ -102,12 +102,8 @@ typedef struct			s_sphere
 typedef	struct			s_tor
 {
 	float3				prim;
-//	float3				refl;
-//	float3				refr;
 	unsigned int		hit_type;
 	unsigned int		hit_id;
-//	float				coef_refl;
-//	float				coef_refr;
 	unsigned int		color;
 	char				check_g;
 	char				check_d;
@@ -116,17 +112,11 @@ typedef	struct			s_tor
 typedef struct			s_scene
 {
 	t_cam				__local *cameras;
-	//void				*void1;
 	t_cone				__local *cones;
-	//void				*void2;
 	t_cylinder			__local *cylinders;
-	//void				*void3;
 	t_light				__local *lights;
-	//void				*void4;
 	t_plane				__local *planes;
-	//void				*void5;
 	t_sphere			__local *spheres;
-	void				*void6;
 	unsigned int		n_cams;
 	unsigned int		n_cones;
 	unsigned int		n_cylinders;
