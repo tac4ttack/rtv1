@@ -32,16 +32,28 @@ float					inter_cylinder(const __local t_scene *scene, const int id, const float
 	}
 	if (res1 < 0 && res2 < 0)
 		return (0);
-	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 < 0))
+
+	float3 project = 0;
+	float doty = 0;
+	float3 v = 0;
+
+	if ((res1 < res2 && res1 > 0) || (res1 > res2 && res2 <= 0))
 	{
-		if (CYLIND[id].height == 0 || (dot(ray, fast_normalize(CYLIND[id].dir) * res1 +
-			dot(origin, fast_normalize(CYLIND[id].dir))) < CYLIND[id].height && dot(ray, fast_normalize(CYLIND[id].dir) * res1 +
-			dot(origin, fast_normalize(CYLIND[id].dir))) > 0))
+		v = ((ray * res1) + ACTIVECAM.pos) - CYLIND[id].pos;
+		doty = dot(v, fast_normalize(CYLIND[id].dir));
+		project = doty * fast_normalize(CYLIND[id].dir);
+		doty = fast_length(project);
+		
+		if (CYLIND[id].height == 0 || (doty < CYLIND[id].height && doty > 0))
 			return (res1);
 	}
-	if (CYLIND[id].height ==  0 || (dot(ray, fast_normalize(CYLIND[id].dir) * res2 +
-			dot(origin, fast_normalize(CYLIND[id].dir))) < CYLIND[id].height && dot(ray, fast_normalize(CYLIND[id].dir) * res2 +
-			dot(origin, fast_normalize(CYLIND[id].dir))) > 0))
+	if (res2 == 0)
+		return (0);
+	v = ((ray * res2) + ACTIVECAM.pos) - CYLIND[id].pos;
+	doty = dot(v, fast_normalize(CYLIND[id].dir));
+	project = doty * fast_normalize(CYLIND[id].dir);
+	doty = fast_length(project);
+	if (CYLIND[id].height ==  0 || (doty < CYLIND[id].height && doty > 0))
 		return (res2);
 	else
 		return (0);

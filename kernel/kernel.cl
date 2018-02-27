@@ -73,7 +73,7 @@ float3			get_hit_normale(const __local t_scene *scene, float3 ray, t_hit hit)
 		if (scene->flag & OPTION_WAVE)
 		{
 			save = res;
-			save.y = res.y + 0.8 * sin((hit.pos.x /*+ scene->u_time*/));
+			save.y = res.y + 0.8 * sin((hit.pos.x + scene->u_time));
 			return (fast_normalize(save));
 		}
 	}
