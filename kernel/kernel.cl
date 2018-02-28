@@ -406,25 +406,27 @@ unsigned int			phong2(const __local t_scene *scene, const t_hit hit, const float
 	return (res_color);
 }
 
-static unsigned int		bounce(const __local t_scene *scene, const float3 ray, const t_hit old_hit, const int depth)
+static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hit old_hit, int depth)
 {
-	int				i = depth;
 	unsigned int	color = 0;
-	float3			reflex = 0;
+	float3			reflex = ray;
 	t_hit			new_hit;
-	while (i > 0)
+	while (depth > 0)
 	{
-		reflex = fast_normalize(ray - (2 * (float)dot(old_hit.normale, ray) * old_hit.normale));
+		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
 		new_hit.dist = MAX_DIST;
 		new_hit = ray_hit(scene, old_hit.pos, reflex);
 		if (new_hit.dist > 0 && new_hit.dist < MAX_DIST)
 		{
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
-			new_hit.normale = get_hit_normale(scene, ray, new_hit);
+			new_hit.normale = get_hit_normale(scene, reflex, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color += blend_multiply(phong(scene, new_hit, reflex), 0.1);
+			color = blend_coef(blend_add(color, phong(scene, new_hit, reflex)), 0.2);
 		}
-		i--;
+		if (new_hit.type != 4)
+			return (color);
+		old_hit = new_hit;
+		--depth;
 	}
 	return (color);
 }
@@ -432,7 +434,6 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, cons
 static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 {
 	t_hit			hit;
-	int				depth = scene->depth;
 	unsigned int	color  = 0;
 	unsigned int	bounce_color = 0;
 
@@ -444,8 +445,8 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 		color = phong(scene, hit, ray);
-		if (depth > 0 && hit.type == 4)
-			bounce_color = bounce(scene, ray, hit, depth);
+		if (scene->depth > 0 && hit.type == 4)
+			bounce_color = bounce(scene, ray, hit, scene->depth);
 		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
