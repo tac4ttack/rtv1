@@ -105,6 +105,7 @@ typedef struct			s_hit
 	int					id;
 	cl_float3			pos;
 	cl_float3			normale;
+	float				reflex;
 }						t_hit;
 
 typedef struct			s_cam

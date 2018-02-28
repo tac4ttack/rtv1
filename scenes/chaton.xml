@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
-<!-- La scene made in Chaton -->
+<!-- La scene made in Chaton 1024, 768-->
 
-<scene		res="1024, 768" ambient="0.1, 0.1, 0.1">
+<scene		res="1920, 1080" ambient="0.1, 0.1, 0.1">
 
 <cam		id="0"
 			pos="0, 0, -100"
@@ -38,31 +38,40 @@
 			/>
 
 <plane		id="3"
-			pos="20, 0, 0"
-			normale="-1, 0, 0"
-			color="0, 0, 0, 255"
+			pos="0, 0, -140"
+			normale="0, 0, -1"
+			color="0, 0, 80, 144"
 			diff="0.42, 0.42, 0.42"
 			spec="0.50, 0.50, 0.50"
 			reflex="0"
 			/>
 
 <plane		id="4"
+			pos="20, 0, 0"
+			normale="-1, 0, 0"
+			color="0, 0, 0, 255"
+			diff="0.42, 0.42, 0.42"
+			spec="0.50, 0.50, 0.50"
+			reflex="0.5"
+			/>
+
+<plane		id="5"
 			pos="-20, 0, 0"
 			normale="1, 0, 0"
 			color="0, 144, 0, 144"
 			diff="0.42, 0.42, 0.42"
 			spec="0, 0, 0"
-			reflex="0"
+			reflex="0.5"
 			/>
 
 <sphere		id="0"
 			pos="0, -5, 0"
 			dir="0, 0, 0"
 			radius="2"
-			color="0, 0, 255, 0"
+			color="0, 255, 0, 0"
 			diff="0.42, 0.42, 0.42"
 			spec="0.50, 0.50, 0.50"
-			reflex="0.42"
+			reflex="0"
 			/>
 
 <sphere		id="1"
@@ -110,7 +119,7 @@
 			color="0, 0, 144, 144"
 			diff="0.42, 0.42, 0.42"
 			spec="0.42, 0.42, 0.42"
-			reflex="0.42"
+			reflex="0"
 			/>
 
 <cylinder	id="0"
