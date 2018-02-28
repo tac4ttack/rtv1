@@ -422,7 +422,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, cons
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, ray, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color += 0.1 * phong(scene, new_hit, reflex);
+			color += blend_multiply(phong(scene, new_hit, reflex), 0.1);
 		}
 		i--;
 	}
@@ -444,9 +444,9 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 		color = phong(scene, hit, ray);
-		if (depth > 0)
+		if (depth > 0 && hit.type == 4)
 			bounce_color = bounce(scene, ray, hit, depth);
-		return (color + bounce_color);
+		return (blend_add(color, bounce_color));
 	}
 	return (get_ambient(scene, BACKCOLOR));
 }
