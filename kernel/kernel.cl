@@ -5,7 +5,6 @@
 #include "kernel_cone.hcl"
 #include "kernel_cylinder.hcl"
 #include "kernel_data.hcl"
-#include "kernel_debug.hcl"
 #include "kernel_plane.hcl"
 #include "kernel_sphere.hcl"
 
