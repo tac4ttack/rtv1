@@ -11,7 +11,7 @@
 #define SPHERE scene->spheres
 #define ACTIVECAM scene->cameras[scene->active_cam]
 
-#define OUTPUTE ((__global unsigned int *)output)[id]
+#define OUTPUT ((__global unsigned int *)output)[id]
 
 #define OPTION_WAVE (1 << 1)
 #define FLAG_DEBUG (1 << 2)

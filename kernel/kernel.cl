@@ -504,5 +504,5 @@ __kernel void	ray_trace(	__global	char		*output,
 	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
 
-	OUTPUTE = get_pixel_color(scene, prim_ray);
+	OUTPUT = get_pixel_color(scene, prim_ray);
 }
