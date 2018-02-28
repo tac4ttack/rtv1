@@ -35,7 +35,7 @@ unsigned int	blend_add(const unsigned int c1, const unsigned int c2)
 	return ((r << 16) + (g << 8) + b);
 }
 
-unsigned int	blend_coef(const unsigned int c1, const float coef)
+unsigned int	blend_factor(const unsigned int c1, const float coef)
 {
 	unsigned int r, g, b;
 	unsigned int r1 = (c1 & 0x00FF0000) >> 16;
@@ -46,6 +46,21 @@ unsigned int	blend_coef(const unsigned int c1, const float coef)
 	g = g1 * coef;
 	b = b1 * coef;
 	return ((r << 16) + (g << 8) + b);
+}
+
+float			get_obj_reflex(const __local t_scene *scene, const t_hit hit)
+{
+	float		coef = 0;
+
+	if (hit.type == 1)
+		coef = CONES[hit.id].reflex;
+	if (hit.type == 2)
+		coef = CYLIND[hit.id].reflex;
+	if (hit.type == 4)
+		coef = PLANE[hit.id].reflex;
+	if (hit.type == 5)
+		coef = SPHERE[hit.id].reflex;
+	return (coef);
 }
 
 unsigned int			get_obj_hue(const __local t_scene *scene, const t_hit hit)

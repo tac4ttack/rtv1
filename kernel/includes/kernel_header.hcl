@@ -29,7 +29,6 @@ typedef struct			s_hit
 	int					id;
 	float3				pos;
 	float3				normale;
-	float				reflex;
 }						t_hit;
 
 typedef struct			s_cam

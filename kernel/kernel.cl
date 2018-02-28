@@ -28,7 +28,6 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 				hit.dist = dist;
 				hit.type = 1;
 				hit.id = i;
-				hit.reflex = CONES[i].reflex;
 			}
 		if (i < scene->n_cylinders)
 			if (((dist = inter_cylinder(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
@@ -36,7 +35,6 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 				hit.dist = dist;
 				hit.type = 2;
 				hit.id = i;
-				hit.reflex = CYLIND[i].reflex;
 			}
 		if (i < scene->n_planes)
 			if (((dist = inter_plan(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
@@ -44,7 +42,6 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 				hit.dist = dist;
 				hit.type = 4;
 				hit.id = i;
-				hit.reflex = PLANE[i].reflex;
 			}
 		if (i < scene->n_spheres)
 			if (((dist = inter_sphere(scene, i, ray, origin)) < hit.dist || hit.dist == 0) && dist > 0)
@@ -52,7 +49,6 @@ static t_hit			ray_hit(const __local t_scene *scene, const float3 origin, const 
 				hit.dist = dist;
 				hit.type = 5;
 				hit.id = i;
-				hit.reflex = SPHERE[i].reflex;
 			}
 		i++;
 	}
@@ -415,6 +411,7 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 	unsigned int	color = 0;
 	float3			reflex = ray;
 	t_hit			new_hit;
+	float			reflex_coef = get_obj_reflex(scene, old_hit);
 	while (depth > 0)
 	{
 		reflex = fast_normalize(reflex - (2 * (float)dot(old_hit.normale, reflex) * old_hit.normale));
@@ -425,9 +422,9 @@ static unsigned int		bounce(const __local t_scene *scene, const float3 ray, t_hi
 			new_hit.pos = (new_hit.dist * reflex) + old_hit.pos;
 			new_hit.normale = get_hit_normale(scene, reflex, new_hit);
 			new_hit.pos = new_hit.pos + ((new_hit.dist / 100) * new_hit.normale);
-			color = blend_coef(blend_add(color, phong(scene, new_hit, reflex)), old_hit.reflex);
+			color = blend_factor(blend_add(color, phong(scene, new_hit, reflex)), reflex_coef);
 		}
-		if (new_hit.reflex == 0)
+		if ((reflex_coef = get_obj_reflex(scene, new_hit)) == 0)
 			return (color);
 		old_hit = new_hit;
 		--depth;
@@ -449,7 +446,7 @@ static unsigned int	get_pixel_color(const __local t_scene *scene, float3 ray)
 		hit.normale = get_hit_normale(scene, ray, hit);
 		hit.pos = hit.pos + ((hit.dist / SHADOW_BIAS) * hit.normale);
 		color = phong(scene, hit, ray);
-		if (scene->depth > 0 && hit.reflex > 0)
+		if (scene->depth > 0  && (get_obj_reflex(scene, hit) > 0))
 			bounce_color = bounce(scene, ray, hit, scene->depth);
 		return (blend_add(color, bounce_color));
 	}
