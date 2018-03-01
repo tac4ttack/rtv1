@@ -1,3 +1,6 @@
+#ifndef KERNEL_COLOR_HCL
+# define KERNEL_COLOR_HCL
+
 unsigned int	blend_multiply(const unsigned int c1, const unsigned int c2)
 {
 	unsigned int r, g, b;
@@ -166,3 +169,5 @@ unsigned int			color_specular(const __local t_scene *scene, const t_hit hit, \
 	(col_b > 255 ? col_b = 255 : 0);
 	return ((col_r << 16) + (col_g << 8) + col_b);
 }
+
+#endif

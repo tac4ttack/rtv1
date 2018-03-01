@@ -1,3 +1,6 @@
+#ifndef KERNEL_HEADER_HCL
+# define KERNEL_HEADER_HCL
+
 #define BACKCOLOR 0x00999999
 
 #define MAX_DIST 10000000.0
@@ -134,3 +137,5 @@ typedef struct			s_scene
 	int					flag;
 	int					tor_count;
 }						t_scene;
+
+#endif
