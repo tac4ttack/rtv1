@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/27 15:18:10 by adalenco          #+#    #+#             */
-/*   Updated: 2018/03/01 18:20:52 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 23:47:23 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,7 +376,7 @@ void					xml_allocate_cyl(t_env *e);
 void					xml_allocate_light(t_env *e);
 void					xml_allocate_plane(t_env *e);
 void					xml_allocate_sphere(t_env *e);
-int						xml_check_attr(char **att);
+int						xml_check_attr(t_env *e, char **att);
 int						check_float(cl_float3 *clf, float f, int mod);
 int						xml_check_char(char c);
 char					*xml_check_line(t_env *e, char *buf);

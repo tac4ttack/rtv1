@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/25 16:28:15 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 18:14:44 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 23:48:47 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,30 +50,31 @@ int			xml_check_attnode(char *att, int j)
 	return (0);
 }
 
-int			xml_check_attr(char **att)
+int			xml_check_attr(t_env *e, char **att)
 {
 	int		i;
 	int		j;
 
 	i = 1;
-	while (att[i])
-	{
-		if (ft_strcmp(att[0], "!--") == 0)
-			return (0);
-		j = 0;
-		if (att[i][j] >= 97 && att[i][j] <= 122)
-			while (att[i][j] && att[i][j] != '=')
-				j++;
-		if (att[i][j] == 0)
-			return (1);
-		if (att[i][j] == '=')
-			j += 2;
-		if (xml_check_attnode(att[i], j) == 1)
-			return (1);
-		++i;
-		while (att[i] && (ft_strcmp(att[i], "/>") == 0 || \
-		ft_strcmp(att[i], "-->") == 0 || ft_strcmp(att[i], "/>-->") == 0))
+	if (XML->is_comm == 0)
+		while (att[i])
+		{
+			if (ft_strcmp(att[0], "!--") == 0)
+				return (0);
+			j = 0;
+			if (att[i][j] >= 97 && att[i][j] <= 122)
+				while (att[i][j] && att[i][j] != '=')
+					j++;
+			if (att[i][j] == 0)
+				return (1);
+			if (att[i][j] == '=')
+				j += 2;
+			if (xml_check_attnode(att[i], j) == 1)
+				return (1);
 			++i;
-	}
+			while (att[i] && (ft_strcmp(att[i], "/>") == 0 || \
+			ft_strcmp(att[i], "-->") == 0 || ft_strcmp(att[i], "/>-->") == 0))
+				++i;
+		}
 	return (0);
 }
