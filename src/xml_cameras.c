@@ -93,9 +93,6 @@ void		xml_push_cam(t_env *e, t_node *list)
 {
 	e->cameras[list->id].pos = list->pos;
 	e->cameras[list->id].dir = list->dir;
-	e->cameras[list->id].dir.x = 0;
-	e->cameras[list->id].dir.y = 0;
-	e->cameras[list->id].dir.z = 1;
 	e->cameras[list->id].fov = list->fov;
 	e->cameras[list->id].pitch = 0;
 	e->cameras[list->id].yaw = 0;
