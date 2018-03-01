@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:46 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/25 14:41:58 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:57:10 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		xml_allocate_plane(t_env *e)
 void		xml_push_plane(t_env *e, t_node *list)
 {
 	e->planes[list->id].pos = list->pos;
-	e->planes[list->id].normale = list->normale;
+	e->planes[list->id].normale = normalize_vect(list->normale);
 	e->planes[list->id].color = list->color;
 	e->planes[list->id].diff = list->diff;
 	e->planes[list->id].spec = list->spec;

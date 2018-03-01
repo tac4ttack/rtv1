@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:58 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/25 14:42:08 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:56:54 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void		xml_push_light(t_env *e, t_node *list)
 {
 	e->lights[list->id].type = list->light;
 	e->lights[list->id].pos = list->pos;
-	e->lights[list->id].dir = list->dir;
+	e->lights[list->id].dir = normalize_vect(list->dir);
 	e->lights[list->id].brightness = list->brightness;
 	e->lights[list->id].shrink = list->shrink;
 	e->lights[list->id].color = list->color;

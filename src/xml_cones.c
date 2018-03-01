@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:38 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/25 14:42:22 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:56:34 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void		xml_allocate_cone(t_env *e)
 void		xml_push_cone(t_env *e, t_node *list)
 {
 	e->cones[list->id].pos = list->pos;
-	e->cones[list->id].dir = list->dir;
+	e->cones[list->id].dir = normalize_vect(list->dir);
 	e->cones[list->id].angle = list->angle;
 	e->cones[list->id].color = list->color;
 	e->cones[list->id].diff = list->diff;

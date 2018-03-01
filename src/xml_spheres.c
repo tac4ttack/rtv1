@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:26 by fmessina          #+#    #+#             */
-/*   Updated: 2018/02/25 14:41:54 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:57:21 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void		xml_allocate_sphere(t_env *e)
 void		xml_push_sphere(t_env *e, t_node *list)
 {
 	e->spheres[list->id].pos = list->pos;
-	e->spheres[list->id].dir = list->dir;
+	e->spheres[list->id].dir = normalize_vect(list->dir);
 	e->spheres[list->id].radius = list->radius;
 	e->spheres[list->id].color = list->color;
 	e->spheres[list->id].diff = list->diff;
