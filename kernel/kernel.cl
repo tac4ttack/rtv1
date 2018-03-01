@@ -511,5 +511,4 @@ __kernel void	ray_trace(	__global	char		*output,
 	if (scene->flag & OPTION_BW)
 		final_color = desaturate(final_color);
 	OUTPUT = final_color;
-
 }
