@@ -1,3 +1,6 @@
+#ifndef KERNEL_CAM_HCL
+# define KERNEL_CAM_HCL
+
 float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
 {
 	float3					cam_ray = 0;
@@ -9,3 +12,5 @@ float3						get_ray_cam(__local t_scene *scene, const uint2 pix)
 	cam_ray = rotat_zyx(cam_ray, ACTIVECAM.pitch, ACTIVECAM.yaw, 0);
 	return(fast_normalize(cam_ray));
 }
+
+#endif

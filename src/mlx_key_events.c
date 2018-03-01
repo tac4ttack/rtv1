@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:47:00 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 20:12:57 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:19:38 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ void			mlx_keyboard_repeated(t_env *e)
 		if (KP_NMIN)
 			(e->scene->depth > 0 ? e->scene->depth-- : 0);
 		e->scene->tor_count = pow(2, e->scene->depth + 1) - 1;
-	}
-	if (KP_1)
-	{
-		if (e->scene->flag & OPTION_WAVE)
-			e->scene->flag ^= OPTION_WAVE;
-		else
-			e->scene->flag |= OPTION_WAVE;
 	}
 	opencl_allocate_scene_memory(e);
 }

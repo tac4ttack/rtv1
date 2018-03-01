@@ -501,10 +501,16 @@ __kernel void	ray_trace(	__global	char		*output,
 	scene->u_time = u_time;
 	int			id = pix.x + (scene->win_w * pix.y);
 
+	unsigned int final_color = 0;
+
 	float3	prim_ray = get_ray_cam(scene, pix);
 
 	if (pix.x == scene->mou_x && pix.y == scene->mou_y)
 		*target_obj = ray_hit(scene, ACTIVECAM.pos, prim_ray);
-
-	OUTPUT = get_pixel_color(scene, prim_ray);
+	final_color = get_pixel_color(scene, prim_ray);
+	if (scene->flag & OPTION_SEPIA)
+		final_color = sepiarize(final_color);
+	if (scene->flag & OPTION_BW)
+		final_color = desaturate(final_color);
+	OUTPUT = final_color;
 }

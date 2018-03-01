@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_key_release.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 18:50:30 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 18:50:32 by adalenco         ###   ########.fr       */
+/*   Updated: 2018/03/01 18:19:31 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,6 @@ int				mlx_key_release(int key, t_env *e)
 	mlx_key_release_2(key, e);
 	mlx_key_release_3(key, e);
 	mlx_key_release_4(key, e);
+	mlx_key_no_repeat_event(e, key);
 	return (0);
 }
