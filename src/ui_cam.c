@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-void		rot_cam(t_env *e)
+void		moove_cam(t_env *e)
 {
 	if (KP_W)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, \
@@ -37,7 +37,7 @@ void		rot_cam(t_env *e)
 void		ui_cam(t_env *e)
 {
 	if (KP_W || KP_S || KP_C || KP_SPC || KP_D || KP_A)
-		rot_cam(e);
+		moove_cam(e);
 	(KP_DA ? ACTIVECAM.pitch += 2 : 0);
 	(KP_UA ? ACTIVECAM.pitch -= 2 : 0);
 	(KP_LA ? ACTIVECAM.yaw -= 2 : 0);
