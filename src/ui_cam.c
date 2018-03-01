@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ui_cam.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adalenco <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 19:02:45 by adalenco          #+#    #+#             */
-/*   Updated: 2018/02/26 19:02:47 by adalenco         ###   ########.fr       */
+/*   Updated: 2018/03/01 21:45:42 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void		moove_cam(t_env *e)
+void		move_cam(t_env *e)
 {
 	if (KP_W)
 		ACTIVECAM.pos = add_cl_float(rotcam(ACTIVECAM.dir, \
@@ -37,7 +37,7 @@ void		moove_cam(t_env *e)
 void		ui_cam(t_env *e)
 {
 	if (KP_W || KP_S || KP_C || KP_SPC || KP_D || KP_A)
-		moove_cam(e);
+		move_cam(e);
 	(KP_DA ? ACTIVECAM.pitch += 2 : 0);
 	(KP_UA ? ACTIVECAM.pitch -= 2 : 0);
 	(KP_LA ? ACTIVECAM.yaw -= 2 : 0);

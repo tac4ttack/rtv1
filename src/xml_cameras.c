@@ -6,7 +6,7 @@
 /*   By: fmessina <fmessina@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 14:49:04 by fmessina          #+#    #+#             */
-/*   Updated: 2018/03/01 21:32:50 by fmessina         ###   ########.fr       */
+/*   Updated: 2018/03/01 21:43:41 by fmessina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,15 @@ void		xml_allocate_cam(t_env *e)
 void		xml_push_cam(t_env *e, t_node *list)
 {
 	e->cameras[list->id].pos = list->pos;
-	list->dir.x += 0.00001;
-	list->dir.y += 0.00001;
-	list->dir.z += 0.00001;
-	e->cameras[list->id].dir = normalize_vect(list->dir);
 	e->cameras[list->id].fov = list->fov;
-	e->cameras[list->id].pitch = 0;
-	e->cameras[list->id].yaw = 0;
-	e->cameras[list->id].roll = 0;
+//	list->dir.x += 0.00001;
+//	list->dir.y += 0.00001;
+//	list->dir.z += 0.00001;
+	e->cameras[list->id].pitch = list->dir.x;
+	e->cameras[list->id].yaw = list->dir.y;
+	e->cameras[list->id].roll = list->dir.z;
+	e->cameras[list->id].dir.x = 0;
+	e->cameras[list->id].dir.y = 0;
+	e->cameras[list->id].dir.z = 1;
+	e->cameras[list->id].dir = normalize_vect(list->dir);
 }
