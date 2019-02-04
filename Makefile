@@ -5,7 +5,6 @@ CFLAGS +=				-Wall -Wextra -Werror
 OFLAGS := 				-O3 -Ofast
 RM := 					rm -rf
 
-INC = 					$(addprefix $(INC_PATH)/,$(INC_NAMES))
 INC_PATH =				./includes
 
 LIBFT :=				$(LIBFT_PATH)/libft.a
@@ -85,17 +84,17 @@ SRC_NAME =  			init.c \
 						xml_scene.c \
 						xml_spheres.c \
 						hooks.c \
-						xml_tools.c	
+						xml_tools.c
 
 default: gpu
 
 all: libft mlx $(NAME)
 
-$(NAME): $(SRC) $(INC) $(OBJ_PATH) $(OBJ)
+$(NAME): $(SRC) $(OBJ_PATH) $(OBJ)
 	@echo "$(GREEN)Compiling $(NAME) with $(OS_NAME) MLX version$(EOC)"
 	$(CC) -o $@ $(OBJ) -L$(LIBFT_PATH) $(LIBFTFLAGS) $(MLX) $(MLXFLAGS) $(LIBMATHFLAGS) $(OPENCL) $(ASANFLAGS)
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(INCLUDES_PATH) $(INC)
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -I $(INC_PATH) -I $(LIBFT_INC_PATH) -I $(MLX_PATH) $(GPU_MACRO) $(KEYS) $(DEBUG_MACRO) $(ASANFLAGS)
 
 $(OBJ_PATH):
@@ -119,13 +118,13 @@ debug_flag:
 debuglibft:
 	@echo "Compiling Libft library with ASan"
 	make -C $(LIBFT_PATH)/ debug all
-	
+
 clean:
 	@echo "$(GREEN)Cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting .obj files$(EOC)"
 	@rm -rf $(OBJ_PATH)
 
-fclean: clean 
+fclean: clean
 	@echo "$(GREEN)Full cleaning...$(EOC)"
 	@echo "$(GREEN)Deleting $(NAME) executable and config file$(EOC)"
 	@rm -rf $(NAME) ./config
